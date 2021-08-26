@@ -1,0 +1,420 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_name %} 
+<h3 style="color:#035397">Dashboard</h3>
+{% endblock page_name %}
+
+{% block content_css %}
+<style>
+    .filter{
+    width:200px !important;
+  }
+  .form-select{
+  background-color:#f0f2fa !important;
+  border: none !important;
+}
+.upload-input{
+  display: inline-block;
+  background-color: indigo;
+  color: white;
+  padding: 0.5rem;
+  /* font-family: sans-serif; */
+  border-radius: 0.3rem;
+  cursor: pointer;
+  /* margin-top: 1rem; */
+}
+body{
+  height: 100%;
+  width:100%;
+}
+.topnav {
+  overflow: hidden;
+  /* background-image: linear-gradient(#68A000, #3E5622); */
+  /* background-image: linear-gradient(180deg,#0575e6 20%, #021b78); */
+  /* background: -webkit-gradient(linear, center top, center bottom, color-stop(0%,#0575e6), color-stop(20%,#0575e6), color-stop(40%,#021b78), color-stop(90%,#021b78), color-stop(100%,#021b78)); */
+  background-color: #035397;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  width:100%;
+  height: 65px;
+}
+.data{
+  height: 940px !important;
+  background-image: linear-gradient(#00bbff, #035397);
+  display: flex;
+  max-height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.dataTables_length{
+  display:none !important;
+}
+table>tbody>tr>td{
+  padding-bottom: 20px !important;
+  padding-top:10px !important;
+}
+</style>
+{% endblock content_css %}
+
+{% block search_bar %} 
+<div class='row ms-4 bar'>
+          <div class='col-lg-4 filter'>
+              <select class='form-select' name="location" id="department" >
+                <option>Department</option>
+                <option>Biz Apps</option>
+                <option>Software Developer</option>
+                {% for i in site%}
+                  <option value="{{i.id}}">{{i.name}}</option>
+                {% endfor %}
+              </select>
+          </div>
+          <div class='col-lg-4 filter'>
+              <select class='form-select' name='branch' id='branch'>
+                <option>Branch</option>
+                <option>Mumabai Ho</option>
+                <option>Bengaluru</option>
+                  {% for i in demp %}
+                  <option value='{{i.id}}'>{{i.name}}</option>
+                  {% endfor %}
+              </select>
+          </div>
+          <div class="col-lg-4 filter">
+              <select class='form-select' id="status" name="status">
+                <option>Status</option>
+                <option>Fully Vaccinated</option>
+                <option>Partially Vaccinated</option>
+                <option>Not Vaccinated</option>
+                 
+              </select>
+          </div>       
+</div>
+{% endblock search_bar %}
+{% block content %}
+<div class='row'>
+    <div class='col-lg-9'>
+        <div class='container mt-5'>
+          <div class='container mt-5 justify-content-center'>
+            <div class='row'>
+              <div class='col-lg-2'>
+                  <!-- <button>Data</button> -->
+                  <a href="/static/sampletemplate/template.csv" download  class='btn btn-primary ' style="color:black ;background-color:#ffffff; width:150px;height: 40px; " id='site_csvsample'><img src="/static/img/download.png" height='20px'> Template</a>
+              </div>
+              <div class='col-lg-2'>
+                  <form action="/dashboard/" method="POST" enctype="multipart/form-data" id='upload_csv'> 
+                      {% csrf_token %}
+                      <label for="upload" class='upload-input' style="width:150px;height: 40px;   background-image: linear-gradient(#00bbff, #848ccf);" ><img src="/static/img/plus.png" height='20px'> Upload File</label>                    
+                      <input type="file" id="upload" name="upload" hidden/>
+                  </form>
+              </div>
+              <div class='col-lg-6'>
+
+              </div>
+              <div class='col-lg-2'>
+                <button id="export" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #848ccf);"><img src="/static/img/export.png" height='30px'></button>
+              <!-- </div>
+              <div class='col-lg-1'> -->
+                <button id="exportemail" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #848ccf);"><img src="/static/img/send-mail.png" height='30px'></button>
+              </div>
+          </div>
+          </div> 
+        </div>
+        <div class='container-fluid	'>
+          <div class="container mt-5 justify-content-center">
+            <div class="card ">
+                <div class='topnav p-4'>
+                    <div class='row'>
+                        <div class='col-lg-3'>
+                            <labe class='text-center text-light ms-4'>Emp</labe>
+                        </div>
+                        <div class='col-lg-2'>
+                            <labe class='text-center text-light '>Emp Code</labe>
+                        </div>
+                        <div class='col-lg-2'>
+                            <labe class='text-center text-light '>Branch</labe>
+                        </div>
+                        <div class='col-lg-3'>
+                            <labe class='text-center text-light '>Department</labe>
+                        </div>
+                        <div class='col-lg-2'>
+                          <labe class='text-center text-light '>Status</labe>
+                      </div>
+                    </div>
+                </div>
+                <div class='p-4 pt-2'>
+                  <table id="myTable">
+                    <tbody>
+                      {% for emps in emp %}
+                      <tr class='border-bottom' >
+                        <td style="width: 19em !important" class='ms-4'>{{emps.name}}</td>
+                        <td style="width: 13em !important ">{{emps.emp_code}}</td>
+                        <td style="width: 13em !important ">{{emps.branch}}</td>
+                        <td style="width: 18.62em !important ">{{emps.department}}</td>
+                        <td>{{emps.vaccination_status}}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+      </div>
+    </div>
+    </div>
+    <div class='col-lg-3'> 
+      <div class='container-fluid data'  style=" width: 100%;height: 100%;max-height: 100%;background-size: cover;">
+        <img src="/media/cowin_status_pie.png" style="margin-top: 20px;"> 
+        <div class='row m-4'>
+          <div class='card '>
+            <div class='rows'>
+              <div class='col-lg-3'>
+                <h1 style="color: #035397; font-weight:500px !important;">{{total}}</h1>
+              </div>
+              <div class='col-lg-4'>
+                <h5 class="card-title">Total Employee</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='row m-4 '>
+          <div class='card'>
+            <div class='rows'>
+              <div class='col-lg-3'>
+                <h1 style="color:lightgreen">{{fully_vaccinated}}</h1>
+              </div>
+              <div class='col-lg-4'>
+                <h5 class="card-title">Fully Vaccinated</h5>
+              </div>
+          </div>
+        </div>
+        </div>
+        <div class='row m-4'>
+          <div class='card'>
+            <div class='rows'>
+              <div class='col-lg-3'>
+                <h1 style="color:orange">{{partial_vaccinated}}</h1>
+              </div>
+              <div class='col-lg-4'>
+                <h5 class="card-title">Partially Vaccinated</h5>
+              </div>
+          </div>
+        </div>
+        </div>
+        <div class='row m-4'>
+          <div class='card'>
+            <div class='rows'>
+              <div class='col-lg-3'>
+                <h1 style="color: red;">{{not_vaccinated}}</h1>
+              </div>
+              <div class='col-lg-4'>
+                <h5 class="card-title">Not Vaccinated</h5>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block content_js %}
+    <script>
+      $('#department').click(function(){
+        var input, filter , table , tr , td , i, txtvalue;
+        input =  $('#department').val();
+        filter = input.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        // alert(tr.length)
+        // alert(filter)
+        for(i = 0 ; i< tr.length; i++){
+          td = tr[i].getElementsByTagName("td")[3];
+          if(td){
+            txtvalue = td.textContent || td.innerText;
+            // alert(txtvalue.toUpperCase())
+            // alert(filter)
+            // alert(txtvalue)
+            if(txtvalue.toUpperCase().indexOf(filter) > -1){
+              tr[i].style.display = '';
+            }else{
+              tr[i].style.display = 'none';
+            }
+
+          }
+        }
+      })
+
+
+      $('#branch').click(function(){
+        var input , filter, table, tr, td,i,txtvalue;
+        input = $('#branch').val();
+        filter = input.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        // alert(tr.length)
+        // alert(filter)
+        for(i = 0 ; i< tr.length; i++){
+          td = tr[i].getElementsByTagName("td")[2];
+          if(td){
+            txtvalue = td.textContent || td.innerText;
+            // alert(txtvalue.toUpperCase())
+            // alert(filter)
+            // alert(txtvalue)
+            if(txtvalue.toUpperCase().indexOf(filter) > -1){
+              tr[i].style.display = '';
+            }else{
+              tr[i].style.display = 'none';
+            }
+
+          }
+        }
+
+      })
+
+      $('#status').click(function(){
+        var input, filter , table , tr , td,i,txtvalue;
+        input = $('#status').val();
+        filter = input.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        // alert(tr.length)
+        // alert(filter)
+        for(i = 0 ; i< tr.length; i++){
+          td = tr[i].getElementsByTagName("td")[4];
+          if(td){
+            txtvalue = td.textContent || td.innerText;
+            // alert(txtvalue.toUpperCase())
+            // alert(filter)
+            // alert(txtvalue)
+            if(txtvalue.toUpperCase().indexOf(filter) > -1){
+              tr[i].style.display = '';
+              console.log(txtvalue)
+              console.log(tr[i].innerText)
+            }else{
+              tr[i].style.display = 'none';
+            }
+
+          }
+        }
+      
+      })
+
+      $('#export').click(function(){
+        var arrData=[];
+   // loop over each table row (tr)
+          $("#myTable tr").each(function(){
+                var currentRow=$(this);
+                if(currentRow.is(':hidden')){
+                 console.log('working')
+                }else{
+                    // console.log(currentRow.length)
+                  var col1_value=currentRow.find("td:eq(0)").text();
+                  var col2_value=currentRow.find("td:eq(1)").text();
+                  var col3_value=currentRow.find("td:eq(2)").text();
+                  var col4_value=currentRow.find("td:eq(3)").text();
+                  var col5_value=currentRow.find("td:eq(4)").text();
+                  var row = []
+                  // row.push('Name','Emp Code','Branch','Department','Status')
+                 row.push(col1_value,col2_value,col3_value,col4_value,col5_value)
+                  arrData.push(row.join(","))
+                  console.log('rows',row)
+                  var obj={};
+                  obj.col1=col1_value;
+                  obj.col2=col2_value;
+                  obj.col3=col3_value;
+                  obj.col4=col4_value;
+                  obj.col5=col5_value;
+                  console.log('array data',arrData);
+                  downloadCSVFile(arrData.join("\n"), "status.csv");
+                  // htmlToCSV(arrData, "status.csv");
+                }    
+          });   
+        })
+
+
+
+      function htmlToCSV(html, filename) {
+        var data = [];
+        var rows = document.querySelectorAll("table tr");
+        console.log(rows.length)
+        for (var i = 0; i < rows.length; i++) {
+          var row = [], cols = rows[i].querySelectorAll("td, th");            
+          for (var j = 0; j < cols.length; j++) {
+                  row.push(cols[j].innerText);
+                      }
+          // console.log(row.join(","))
+          data.push(row.join(",")); 
+          // console.log('NEXT LINE',data.join("\n"))		
+        }
+
+        // downloadCSVFile(data.join("\n"), );
+      }
+
+      function downloadCSVFile(csv, filename) {
+        var csv_file, download_link;
+
+        csv_file = new Blob([csv], {type: "text/csv"});
+
+        download_link = document.createElement("a");
+
+        download_link.download = filename;
+
+        download_link.href = window.URL.createObjectURL(csv_file);
+
+        download_link.style.display = "none";
+
+        document.body.appendChild(download_link);
+
+        download_link.click();
+      }
+
+      $('#exportemail').click(function(){
+        var arrData=[];
+        $("#myTable tr").each(function(){
+                var currentRow=$(this);
+                if(currentRow.is(':hidden')){
+                 console.log('working')
+                }else{
+                    // console.log(currentRow.length)
+                  var col1_value=currentRow.find("td:eq(0)").text();
+                  var col2_value=currentRow.find("td:eq(1)").text();
+                  var col3_value=currentRow.find("td:eq(2)").text();
+                  var col4_value=currentRow.find("td:eq(3)").text();
+                  var col5_value=currentRow.find("td:eq(4)").text();
+                  var row = []
+                  // row.push('Name','Emp Code','Branch','Department','Status')
+                 row.push(col1_value,col2_value,col3_value,col4_value,col5_value)
+                  arrData.push(row.join(","))
+                  console.log('rows',row)
+                  var obj={};
+                  obj.col1=col1_value;
+                  obj.col2=col2_value;
+                  obj.col3=col3_value;
+                  obj.col4=col4_value;
+                  obj.col5=col5_value;
+                  console.log('array data',arrData);
+                  // htmlToCSV(arrData, "status.csv");
+                }    
+          }); 
+          $.ajax({
+            type : 'POST',
+            url :  "{% url 'exportfile' %}",
+            data : {'data':arrData},
+            success : function(response){
+            //reset the form after successful submit
+              alert(response) 
+            },
+            error : function(response){
+                console.log(response)
+            }
+        });
+
+      })
+
+        $('#upload').change(function(){
+            $('#upload_csv').submit();
+            })
+            $(function() {
+              $("#table_id").dataTable();
+            });
+    </script> 
+{% endblock content_js %}
