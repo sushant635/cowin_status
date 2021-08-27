@@ -9,8 +9,6 @@ from requests.auth import HTTPBasicAuth
 import  json
 import hashlib
 from requests.structures import CaseInsensitiveDict
-import matplotlib.pyplot as plt
-import numpy as np
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 import pandas as pd 
@@ -19,6 +17,7 @@ from django.core.mail import EmailMessage
 from cowin_status_app import settings
 from io import StringIO
 import csv
+
 
 # Create your views here.
 @login_required
@@ -133,6 +132,7 @@ def dashboard(request):
                             txnId = re['txnId']
                             print('txndid',txnId)
                             request.session['txnId'] = txnId
+                            # return confirmOTP(request)
                             return redirect('/confirmotp/')
                         else:
                             print('not working')
@@ -245,9 +245,14 @@ def dashboard2(request):
                     vaccination_status = i['vaccination_status']
                     vaccine = i['vaccine']
                     dose1_date = i['dose1_date']
+                    dose2_date = i['dose2_date']
                     name = i['name']
+                    birth_year = i['birth_year']
+                    beneficiary_reference_id = i['beneficiary_reference_id']
+                    gender = i['gender']
 
-                    temp = {'name':name,'emp_code':emp_code,'branch':branch,'department':department,'vaccination_status':vaccination_status}
+                    temp = {'name':name,'emp_code':emp_code,'branch':branch,'department':department,'vaccination_status':vaccination_status,\
+                        'vaccine':vaccine,'dose1_date':dose1_date,'dose2_date':dose2_date,'birth_year':birth_year,'beneficiary_reference_id':beneficiary_reference_id,'gender':gender}
                     data.append(temp)
                     if vaccination_status == 'Partially Vaccinated':
                         partial_vaccinated =+ 1
@@ -255,11 +260,6 @@ def dashboard2(request):
                         fully_vaccinated =+ 1
                     else:
                         not_vaccinated =+1 
-
-            exp_vals = [partial_vaccinated,fully_vaccinated,not_vaccinated]
-            # exp_labels = ['partial vaccinated','fully vaccinated','not vaccinated']
-            plt.pie(exp_vals)
-            plt.savefig('media/cowin_status_pie.png')
         context ={'emp':data,'partial_vaccinated':partial_vaccinated,'fully_vaccinated':fully_vaccinated,'not_vaccinated':not_vaccinated,'total':total}
         print(context)
         return render(request,'dashboard.html',context)
@@ -278,12 +278,12 @@ def exportcsv(request):
             print(data) 
             csvfile = StringIO()
             csvwriter = csv.writer(csvfile)
-            
+            csvwriter.writerow(['Name','Emp Code','Branch','Gender','Department','Status','Dose1 Date','Does2 Date','Birth Year','Beneficiary Id','vaccine','Difference between Dose 1 to today(in Days)','Difference between Dose 1 to today(in Days)'])
             for i in data:
                 print(i.split(','))
                 list_data = i.split(',')
                 print(list_data)
-                csvwriter.writerow([list_data[0],list_data[1],list_data[2],list_data[3],list_data[4]])            
+                csvwriter.writerow([list_data[0],list_data[1],list_data[2],list_data[3],list_data[4],list_data[5],list_data[6],list_data[7],list_data[8],list_data[9],list_data[10],list_data[11],list_data[12]])            
             mail_subject = "Hi! CoWin Status CSV"
             message = "This is csv file where all details about cowin status"
             email = EmailMessage(
@@ -297,3 +297,41 @@ def exportcsv(request):
             return HttpResponse('Email send successfully')
     except Exception as e:
         print(e,'line number of error {}'.format(sys.exc_info()[-1].tb_lineno))
+
+
+@csrf_exempt
+def download_certificate(request):
+    try:
+        if request.method == 'POST':
+            print(request.POST)
+            beneficiary_reference_id = request.POST.get('data')
+            token = request.session.get('token')
+            url = "https://cdn-api.co-vin.in/api/v2/registration/certificate/download?beneficiary_reference_id=[beneficiary_reference_id]"
+            params = {
+                "beneficiary_reference_id":beneficiary_reference_id,
+            }
+            headers ={
+                "accept": "application/pdf"
+            }
+            res = json.dumps(params)
+            print(type(params))
+            print(type(res))
+            print(res)
+            print(beneficiary_reference_id)
+            resp = requests.get("https://cdn-api.co-vin.in/api/v2/registration/certificate/download?beneficiary_reference_id={}".format(beneficiary_reference_id),headers=headers, auth=BearerAuth(token))
+            print(resp)
+            if resp.status_code == 200:
+                re = resp.text
+                chunk_size = 2000
+                with open('/tmp/download_certificate.pdf', 'wb') as fd:
+                    for chunk in resp.iter_content(chunk_size):
+                        fd.write(chunk)
+            # re = json.loads(resp.text)
+            # print(re)
+
+            return HttpResponse('File download in tmp folder')
+
+
+    except Exception as e:
+        print(e,'line number of error {}'.format(sys.exc_info()[-1].tb_lineno))
+    

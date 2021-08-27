@@ -41,7 +41,7 @@ body{
 .data{
   height: 940px !important;
   background-image: linear-gradient(#00bbff, #035397);
-  display: flex;
+  /* display: flex; */
   max-height: 100%;
     flex-direction: column;
     justify-content: space-between;
@@ -53,12 +53,18 @@ table>tbody>tr>td{
   padding-bottom: 20px !important;
   padding-top:10px !important;
 }
+.centerimg {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
 </style>
 {% endblock content_css %}
 
 {% block search_bar %} 
 <div class='row ms-4 bar'>
-          <div class='col-lg-4 filter'>
+          <div class='col-lg-3 filter'>
               <select class='form-select' name="location" id="department" >
                 <option>Department</option>
                 <option>Biz Apps</option>
@@ -68,25 +74,32 @@ table>tbody>tr>td{
                 {% endfor %}
               </select>
           </div>
-          <div class='col-lg-4 filter'>
+          <div class='col-lg-3 filter'>
               <select class='form-select' name='branch' id='branch'>
                 <option>Branch</option>
-                <option>Mumabai Ho</option>
+                <option>Mumbai Ho</option>
                 <option>Bengaluru</option>
                   {% for i in demp %}
                   <option value='{{i.id}}'>{{i.name}}</option>
                   {% endfor %}
               </select>
           </div>
-          <div class="col-lg-4 filter">
+          <div class="col-lg-3 filter">
               <select class='form-select' id="status" name="status">
                 <option>Status</option>
-                <option>Fully Vaccinated</option>
+                <option>Vaccinated</option>
                 <option>Partially Vaccinated</option>
                 <option>Not Vaccinated</option>
                  
               </select>
-          </div>       
+          </div>
+          <div class="col-lg-3 filter">
+            <select class='form-select' id="gender" name="gender">
+              <option>Gender</option>
+              <option>Male</option>
+              <option>Female</option>               
+            </select>
+        </div>
 </div>
 {% endblock search_bar %}
 {% block content %}
@@ -123,21 +136,27 @@ table>tbody>tr>td{
             <div class="card ">
                 <div class='topnav p-4'>
                     <div class='row'>
-                        <div class='col-lg-3'>
+                        <div class='col-lg-2'>
                             <labe class='text-center text-light ms-4'>Emp</labe>
                         </div>
-                        <div class='col-lg-2'>
+                        <div class='col-lg-1'>
                             <labe class='text-center text-light '>Emp Code</labe>
                         </div>
-                        <div class='col-lg-2'>
+                        <div class='col-lg-2 ps-5'>
                             <labe class='text-center text-light '>Branch</labe>
                         </div>
-                        <div class='col-lg-3'>
+                        <div class='col-lg-1'>
+                          <labe class='text-center text-light '>Gender</labe>
+                        </div>
+                        <div class='col-lg-2 ps-5'>
                             <labe class='text-center text-light '>Department</labe>
                         </div>
-                        <div class='col-lg-2'>
+                        <div class='col-lg-2 ps-4'>
                           <labe class='text-center text-light '>Status</labe>
-                      </div>
+                        </div>
+                        <div class='col-lg-2'>
+                          <labe class='text-center text-light '>Download Certificate</labe>
+                        </div>
                     </div>
                 </div>
                 <div class='p-4 pt-2'>
@@ -145,11 +164,18 @@ table>tbody>tr>td{
                     <tbody>
                       {% for emps in emp %}
                       <tr class='border-bottom' >
-                        <td style="width: 19em !important" class='ms-4'>{{emps.name}}</td>
-                        <td style="width: 13em !important ">{{emps.emp_code}}</td>
-                        <td style="width: 13em !important ">{{emps.branch}}</td>
-                        <td style="width: 18.62em !important ">{{emps.department}}</td>
-                        <td>{{emps.vaccination_status}}</td>
+                        <td style="width: 13em !important" class='ms-4'>{{emps.name}}</td>
+                        <td style="width: 8em !important ">{{emps.emp_code}}</td>
+                        <td style="width: 11.73em !important ">{{emps.branch}}</td>
+                        <td style="width: 8em !important ">{{emps.gender}}</td>
+                        <td style="width: 11.60em !important ">{{emps.department}}</td>
+                        <td  style="width: 12em !important ">{{emps.vaccination_status}}</td>
+                        <td style="width: 12em !important "><a class="use-address">Download Certificate</a></td>
+                        <td style="display:none">{{emps.dose1_date}}</td>
+                        <td style="display:none">{{emps.dose2_date}}</td>
+                        <td style="display:none">{{emps.birth_year}}</td>
+                        <td style="display:none">{{emps.beneficiary_reference_id}}</td>
+                        <td style="display:none">{{emps.vaccine}}</td>
                       </tr>
                       {% endfor %}
                     </tbody>
@@ -160,8 +186,11 @@ table>tbody>tr>td{
     </div>
     </div>
     <div class='col-lg-3'> 
-      <div class='container-fluid data'  style=" width: 100%;height: 100%;max-height: 100%;background-size: cover;">
-        <img src="/media/cowin_status_pie.png" style="margin-top: 20px;"> 
+      <div class='data'>
+        <div id="container"  style="width: 100%;">
+          <canvas id="pie-chart" class='centerimg' height='150px'></canvas>
+       </div>
+        <!-- <img src="/media/cowin_status_pie.png" style="margin-top: 20px;">  -->
         <div class='row m-4'>
           <div class='card '>
             <div class='rows'>
@@ -217,6 +246,8 @@ table>tbody>tr>td{
 
 
 {% block content_js %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <script>
       $('#department').click(function(){
         var input, filter , table , tr , td , i, txtvalue;
@@ -227,7 +258,7 @@ table>tbody>tr>td{
         // alert(tr.length)
         // alert(filter)
         for(i = 0 ; i< tr.length; i++){
-          td = tr[i].getElementsByTagName("td")[3];
+          td = tr[i].getElementsByTagName("td")[4];
           if(td){
             txtvalue = td.textContent || td.innerText;
             // alert(txtvalue.toUpperCase())
@@ -279,13 +310,13 @@ table>tbody>tr>td{
         // alert(tr.length)
         // alert(filter)
         for(i = 0 ; i< tr.length; i++){
-          td = tr[i].getElementsByTagName("td")[4];
+          td = tr[i].getElementsByTagName("td")[5];
           if(td){
             txtvalue = td.textContent || td.innerText;
             // alert(txtvalue.toUpperCase())
             // alert(filter)
             // alert(txtvalue)
-            if(txtvalue.toUpperCase().indexOf(filter) > -1){
+            if(txtvalue.toUpperCase() == filter ){
               tr[i].style.display = '';
               console.log(txtvalue)
               console.log(tr[i].innerText)
@@ -297,6 +328,47 @@ table>tbody>tr>td{
         }
       
       })
+
+      $('#gender').click(function(){
+        var input, filter , table , tr , td,i,txtvalue;
+        input = $('#gender').val();
+        filter = input.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        // alert(tr.length)
+        // alert(filter)
+        for(i = 0 ; i< tr.length; i++){
+          td = tr[i].getElementsByTagName("td")[3];
+          if(td){
+            txtvalue = td.textContent || td.innerText;
+            // alert(txtvalue.toUpperCase())
+            // alert(filter)
+            // alert(txtvalue)
+            if(txtvalue.toUpperCase() == filter ){
+              tr[i].style.display = '';
+              console.log(txtvalue)
+              console.log(tr[i].innerText)
+            }else{
+              tr[i].style.display = 'none';
+            }
+
+          }
+        }
+      
+      })
+
+      function parseDate(str) {
+      var mdy = str.split('-');
+      // alert(mdy)
+      // alert(new Date(mdy[2], mdy[0]-1, mdy[1]))
+      return new Date(mdy[2], mdy[0]-1, mdy[1]);  
+      }
+
+      function datediff(first, second) {
+          // Take the difference between the dates and divide by milliseconds per day.
+          // Round to nearest whole number to deal with DST.
+          return Math.round((second-first)/(1000*60*60*24));
+      }
 
       $('#export').click(function(){
         var arrData=[];
@@ -312,10 +384,37 @@ table>tbody>tr>td{
                   var col3_value=currentRow.find("td:eq(2)").text();
                   var col4_value=currentRow.find("td:eq(3)").text();
                   var col5_value=currentRow.find("td:eq(4)").text();
+                  var col6_value=currentRow.find("td:eq(5)").text();
+                  // var col7_value=currentRow.find("td:eq(6)").text();
+                  var col8_value=currentRow.find("td:eq(7)").text();
+                  var col9_value=currentRow.find("td:eq(8)").text();
+                  var col10_value=currentRow.find("td:eq(9)").text();
+                  var col11_value=currentRow.find("td:eq(10)").text();
+                  var col12_value=currentRow.find("td:eq(11)").text();
+
+                  var datearray = col8_value.split("-");
+                  var newdate = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
+                  var date1 = new Date(newdate)
+
+
+
+                  var currentDate = new Date()
+                  var Difference_In_Time = currentDate.getTime() - date1.getTime();
+                  var Difference_In_Days =parseInt(Difference_In_Time / (1000 * 60 * 60 * 24));
+                  
+                  Difference_In_Days2 =''
+                  if(col9_value != ''){
+                    var datearray1 = col9_value.split("-");
+                    var newdate1 = datearray1[1] + '/' + datearray1[0] + '/' + datearray1[2];
+                    var date3 = new Date(newdate1)
+                    var Difference_In_Time1 = currentDate.getTime() - date3.getTime()
+                    var Difference_In_Days2 = parseInt(Difference_In_Time1 / (1000 * 60 * 60 * 24));
+                  
+                    
+                  }
                   var row = []
-                  // row.push('Name','Emp Code','Branch','Department','Status')
-                 row.push(col1_value,col2_value,col3_value,col4_value,col5_value)
-                  arrData.push(row.join(","))
+                  row.push(col1_value,col2_value,col3_value,col4_value,col5_value,col6_value,col8_value,col9_value,col10_value,col11_value,col12_value,Difference_In_Days, Difference_In_Days2)
+                  arrData.push(['Name','Emp Code','Branch','Gender','Department','Status','Dose1 Date','Does2 Date','Birth Year','Beneficiary Id','vaccine','Difference between Dose 1 to today(in Days)','Difference between Dose 1 to today(in Days)'],row.join(","))
                   console.log('rows',row)
                   var obj={};
                   obj.col1=col1_value;
@@ -375,14 +474,41 @@ table>tbody>tr>td{
                  console.log('working')
                 }else{
                     // console.log(currentRow.length)
-                  var col1_value=currentRow.find("td:eq(0)").text();
+                    var col1_value=currentRow.find("td:eq(0)").text();
                   var col2_value=currentRow.find("td:eq(1)").text();
                   var col3_value=currentRow.find("td:eq(2)").text();
                   var col4_value=currentRow.find("td:eq(3)").text();
                   var col5_value=currentRow.find("td:eq(4)").text();
+                  var col6_value=currentRow.find("td:eq(5)").text();
+                  // var col7_value=currentRow.find("td:eq(6)").text();
+                  var col8_value=currentRow.find("td:eq(7)").text();
+                  var col9_value=currentRow.find("td:eq(8)").text();
+                  var col10_value=currentRow.find("td:eq(9)").text();
+                  var col11_value=currentRow.find("td:eq(10)").text();
+                  var col12_value=currentRow.find("td:eq(11)").text();
+
+                  var datearray = col8_value.split("-");
+                  var newdate = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
+                  var date1 = new Date(newdate)
+
+
+
+                  var currentDate = new Date()
+                  var Difference_In_Time = currentDate.getTime() - date1.getTime();
+                  var Difference_In_Days =parseInt(Difference_In_Time / (1000 * 60 * 60 * 24));
+                  
+                  Difference_In_Days2 =''
+                  if(col9_value != ''){
+                    var datearray1 = col9_value.split("-");
+                    var newdate1 = datearray1[1] + '/' + datearray1[0] + '/' + datearray1[2];
+                    var date3 = new Date(newdate1)
+                    var Difference_In_Time1 = currentDate.getTime() - date3.getTime()
+                    var Difference_In_Days2 = parseInt(Difference_In_Time1 / (1000 * 60 * 60 * 24));
+                  
+                    
+                  }
                   var row = []
-                  // row.push('Name','Emp Code','Branch','Department','Status')
-                 row.push(col1_value,col2_value,col3_value,col4_value,col5_value)
+                  row.push(col1_value,col2_value,col3_value,col4_value,col5_value,col6_value,col8_value,col9_value,col10_value,col11_value,col12_value,Difference_In_Days, Difference_In_Days2)
                   arrData.push(row.join(","))
                   console.log('rows',row)
                   var obj={};
@@ -416,5 +542,44 @@ table>tbody>tr>td{
             $(function() {
               $("#table_id").dataTable();
             });
+
+
+            var config = {
+                type: 'pie',
+                data: {
+                  datasets: [{
+                    data: [{{fully_vaccinated}}, {{partial_vaccinated}}, {{not_vaccinated}},],
+                    backgroundColor: [
+                      '#00ff00','#ffa500','#ff0000'
+                    ],
+          //           label: 'Population'
+                  }],
+          //         labels: ['Manila City', 'Davao City', 'Makati', 'Pasay City', 'Angeles City', 'Tarlac City', 'Malolos', 'San Fernando', 'Olongapo City']
+                },
+                options: {
+                  responsive: true
+                }
+              };
+           
+              window.onload = function() {
+                var ctx = document.getElementById('pie-chart').getContext('2d');
+                window.myPie = new Chart(ctx, config);
+              };
+          $('.use-address').click(function () {
+              var id = $(this).closest("tr").find('td:eq(10)').text();
+              // alert(id);
+              $.ajax({
+                  type : 'POST',
+                  url :  "{% url 'download_certificate' %}",
+                  data : {'data':id},
+                  success : function(response){
+                  //reset the form after successful submit
+                    alert(response) 
+                  },
+                  error : function(response){
+                      console.log(response)
+                  }
+              });
+          });
     </script> 
 {% endblock content_js %}
