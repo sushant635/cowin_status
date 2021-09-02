@@ -18,3 +18,15 @@
     </div>
 </div>    
 {% endblock content %}
+
+
+
+    {% block content_js %}
+    {% for message in messages %}
+    <script>
+      window.onload = function(){
+        alert('{{message}}')
+      }
+    </script>
+    {% endfor %}
+    {% endblock content_js %}

@@ -25,5 +25,7 @@ urlpatterns = [
     path('confirmotp/',views.confirmOTP,name='confirmotp'),
     path('dashboard2/',views.dashboard2,name='dashboard2'),
     path('exportfile/',views.exportcsv,name='exportfile'),
-    path('download_certificate',views.download_certificate,name='download_certificate')
+    path('download_certificate',views.download_certificate,name='download_certificate'),
+    path('profile/',views.admin_profile,name='profile'),
+    path('change_password/',views.change_password,name='change_password')
 ] + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT) +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

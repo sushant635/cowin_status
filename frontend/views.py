@@ -17,7 +17,11 @@ from django.core.mail import EmailMessage
 from cowin_status_app import settings
 from io import StringIO
 import csv
-
+from django.contrib import messages
+from frontend.models import User
+from frontend import models
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 # Create your views here.
 @login_required
@@ -184,6 +188,10 @@ def confirmOTP(request):
                 request.session['token'] = token
 
                 return redirect('dashboard2')
+            else:
+                messages.error(request,"OTP Doest not match please try again")
+                return redirect('confirmotp')
+                
         else:
             return render(request,'confirmotp.html')
     except Exception as e:
@@ -278,7 +286,7 @@ def exportcsv(request):
             print(data) 
             csvfile = StringIO()
             csvwriter = csv.writer(csvfile)
-            csvwriter.writerow(['Name','Emp Code','Branch','Gender','Department','Status','Dose1 Date','Does2 Date','Birth Year','Beneficiary Id','vaccine','Difference between Dose 1 to today(in Days)','Difference between Dose 1 to today(in Days)'])
+            csvwriter.writerow(['Name','Emp Code','Branch','Gender','Department','Status','Dose1 Date','Does2 Date','Birth Year','Beneficiary Id','vaccine','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'])
             for i in data:
                 print(i.split(','))
                 list_data = i.split(',')
@@ -334,4 +342,68 @@ def download_certificate(request):
 
     except Exception as e:
         print(e,'line number of error {}'.format(sys.exc_info()[-1].tb_lineno))
+
+
+
+# import urllib.request
+# pdf_path = ""
+# def download_file(download_url, filename):
+#     response = urllib.request.urlopen(download_url)    
+#     file = open(filename + ".pdf", 'wb')
+#     file.write(response.read())
+#     file.close()
+ 
+# download_file(pdf_path, "Test")
+
+
+def admin_profile(request):
+    try:
+        current_user = request.user
+        print(current_user)
+        user_id = current_user.id
+        user = User.objects.get(id=user_id)
+        print(user.password)
+        company = models.Company_HR.objects.get(user=user).company
+        print(company)
+        company_obj = models.Company.objects.get(name=company)
+        print(company_obj)
+        available = models.Available.objects.get(company=company_obj)
+        print(available.availabel,available.created)
+        consumed = models.Consumed.objects.get(company=company_obj)
+        purchase = models.Purchase.objects.get(company=company_obj)
+        print(consumed,purchase)
+        password = user.password
+        context = {'company':company,'available':available,'consumed':consumed,'purchase':purchase,'user':user,'password':password}
+        
+        return render(request,'user_profile.html',context)
+    except Exception as e:
+        print(e,'line numberof error {}'.format(sys.exc_info()[-1].tb_lineno))
+
+
+
+def change_password(request):
+    try:
+        if request.method == 'POST':
+            print(request.POST)
+            print(request.user)
+            form = PasswordChangeForm(request.user,request.POST)
+            print(form)
+            if form.is_valid():
+                user= form.save()
+                update_session_auth_hash(request,user)
+                print(user)
+                messages.success(request,'Your Password was successfully updated !')
+                return redirect('change_password')
+            else:
+                messages.error(request,'Please correct the error below')
+                return redirect('change_password')
+        else:
+            form = PasswordChangeForm(request.user)
+            return render (request,'change_password.html',{'form':form})
+    except Exception as e:
+        print(e,'line numberof error {}'.format(sys.exc_info()[-1].tb_lineno))
+
+
+
+
     

@@ -64,7 +64,7 @@ table>tbody>tr>td{
 
 {% block search_bar %} 
 <div class='row ms-4 bar'>
-          <div class='col-lg-3 filter'>
+          <div class='col-lg-3 col-md-3 col-sm-3 filter'>
               <select class='form-select' name="location" id="department" >
                 <option>Department</option>
                 <option>Biz Apps</option>
@@ -74,7 +74,7 @@ table>tbody>tr>td{
                 {% endfor %}
               </select>
           </div>
-          <div class='col-lg-3 filter'>
+          <div class='col-lg-3 col-md-3 col-sm-3 filter'>
               <select class='form-select' name='branch' id='branch'>
                 <option>Branch</option>
                 <option>Mumbai Ho</option>
@@ -84,7 +84,7 @@ table>tbody>tr>td{
                   {% endfor %}
               </select>
           </div>
-          <div class="col-lg-3 filter">
+          <div class="col-lg-3 col-md-3 col-sm-3 filter">
               <select class='form-select' id="status" name="status">
                 <option>Status</option>
                 <option>Vaccinated</option>
@@ -93,7 +93,7 @@ table>tbody>tr>td{
                  
               </select>
           </div>
-          <div class="col-lg-3 filter">
+            <div class="col-lg-3 col-md-3 col-sm-3 filter">
             <select class='form-select' id="gender" name="gender">
               <option>Gender</option>
               <option>Male</option>
@@ -104,25 +104,25 @@ table>tbody>tr>td{
 {% endblock search_bar %}
 {% block content %}
 <div class='row'>
-    <div class='col-lg-9'>
+    <div class='col-lg-9 col-md-9 col-sm-9'>
         <div class='container mt-5'>
           <div class='container mt-5 justify-content-center'>
             <div class='row'>
-              <div class='col-lg-2'>
+              <div class='col-lg-2 col-md-2 col-sm-2'>
                   <!-- <button>Data</button> -->
                   <a href="/static/sampletemplate/template.csv" download  class='btn btn-primary ' style="color:black ;background-color:#ffffff; width:150px;height: 40px; " id='site_csvsample'><img src="/static/img/download.png" height='20px'> Template</a>
               </div>
-              <div class='col-lg-2'>
+              <div class='col-lg-2 col-md-2 col-sm-2'>
                   <form action="/dashboard/" method="POST" enctype="multipart/form-data" id='upload_csv'> 
                       {% csrf_token %}
                       <label for="upload" class='upload-input' style="width:150px;height: 40px;   background-image: linear-gradient(#00bbff, #848ccf);" ><img src="/static/img/plus.png" height='20px'> Upload File</label>                    
                       <input type="file" id="upload" name="upload" hidden/>
                   </form>
               </div>
-              <div class='col-lg-6'>
+              <div class='col-lg-6 col-md-6 col-sm-6'>
 
               </div>
-              <div class='col-lg-2'>
+              <div class='col-lg-2 col-md-2 col-sm-2'>
                 <button id="export" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #848ccf);"><img src="/static/img/export.png" height='30px'></button>
               <!-- </div>
               <div class='col-lg-1'> -->
@@ -136,25 +136,25 @@ table>tbody>tr>td{
             <div class="card ">
                 <div class='topnav p-4'>
                     <div class='row'>
-                        <div class='col-lg-2'>
+                        <div class='col-lg-2 col-md-2 col-sm-2'>
                             <labe class='text-center text-light ms-4'>Emp</labe>
                         </div>
-                        <div class='col-lg-1'>
+                        <div class='col-lg-1 col-md-1 col-sm-1'>
                             <labe class='text-center text-light '>Emp Code</labe>
                         </div>
-                        <div class='col-lg-2 ps-5'>
+                        <div class='col-lg-2 col-md-2 col-sm-2 ps-5'>
                             <labe class='text-center text-light '>Branch</labe>
                         </div>
-                        <div class='col-lg-1'>
+                        <div class='col-lg-1 col-md-1 col-sm-1'>
                           <labe class='text-center text-light '>Gender</labe>
                         </div>
-                        <div class='col-lg-2 ps-5'>
+                        <div class='col-lg-2 col-md-2 col-sm-2 ps-5'>
                             <labe class='text-center text-light '>Department</labe>
                         </div>
-                        <div class='col-lg-2 ps-4'>
+                        <div class='col-lg-2 col-md-2 col-sm-2 ps-4'>
                           <labe class='text-center text-light '>Status</labe>
                         </div>
-                        <div class='col-lg-2'>
+                        <div class='col-lg-2 col-md-2 col-sm-2'>
                           <labe class='text-center text-light '>Download Certificate</labe>
                         </div>
                     </div>
@@ -185,7 +185,7 @@ table>tbody>tr>td{
       </div>
     </div>
     </div>
-    <div class='col-lg-3'> 
+    <div class='col-lg-3 col-md-3 col-sm-3'> 
       <div class='data'>
         <div id="container"  style="width: 100%;">
           <canvas id="pie-chart" class='centerimg' height='150px'></canvas>
@@ -414,7 +414,7 @@ table>tbody>tr>td{
                   }
                   var row = []
                   row.push(col1_value,col2_value,col3_value,col4_value,col5_value,col6_value,col8_value,col9_value,col10_value,col11_value,col12_value,Difference_In_Days, Difference_In_Days2)
-                  arrData.push(['Name','Emp Code','Branch','Gender','Department','Status','Dose1 Date','Does2 Date','Birth Year','Beneficiary Id','vaccine','Difference between Dose 1 to today(in Days)','Difference between Dose 1 to today(in Days)'],row.join(","))
+                  arrData.push(['Name','Emp Code','Branch','Gender','Department','Status','Dose1 Date','Does2 Date','Birth Year','Beneficiary Id','vaccine','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'],row.join(","))
                   console.log('rows',row)
                   var obj={};
                   obj.col1=col1_value;
