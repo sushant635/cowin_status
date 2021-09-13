@@ -27,5 +27,11 @@ urlpatterns = [
     path('exportfile/',views.exportcsv,name='exportfile'),
     path('download_certificate',views.download_certificate,name='download_certificate'),
     path('profile/',views.admin_profile,name='profile'),
-    path('change_password/',views.change_password,name='change_password')
+    path('change_password/',views.change_password,name='change_password'),
+    path('change_username_company/',views.change_username_company,name='change_username_company'),
+    path('logout/', views.user_logout, name='logout'),
+    path('user_profile/',views.user_profile,name='user_profile'),
+    path('request/',views.test),
+    path('send_email/',views.send_user_email,name='send_email')
+
 ] + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT) +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

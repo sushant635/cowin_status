@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'frontend',
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
@@ -78,8 +79,14 @@ WSGI_APPLICATION = 'cowin_status_app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),    }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'cowin_status',
+        'USER': 'odoo11',
+        'PASSWORD': 'asdfgh',
+        'HOST': 'localhost',
+        'PORT': '5432',  
+        
+        }
 }
 
 
@@ -154,3 +161,22 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'sushantshinde549@gmail.com'
 EMAIL_HOST_PASSWORD = "oovllsniavlhtvio"
 DEFAULT_FROM_EMAIL = 'Celery <sushantshinde549@gmail.com>'
+
+# SESSION_COOKIE_AGE = 1209600
+# SESSION_EXPIRE_SECONDS = 3600  # 1 hour
+# SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+# SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 600 # group by minute
+# SESSION_TIMEOUT_REDIRECT = '/'
+
+
+# Celery settings
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+
+# CELERY_RESULT_BACKEND = 'django-db'
+
+
+#CELERY BEAT 
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

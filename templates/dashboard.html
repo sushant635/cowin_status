@@ -39,7 +39,7 @@ body{
   height: 65px;
 }
 .data{
-  height: 940px !important;
+  height: 1000px !important;
   background-image: linear-gradient(#00bbff, #035397);
   /* display: flex; */
   max-height: 100%;
@@ -59,74 +59,96 @@ table>tbody>tr>td{
   margin-right: auto;
   width: 50%;
 }
+@media only screen and (max-width: 900px) {
+        #myTable{
+            display: none;
+        }
+        #site_csvsample{
+          display: none; 
+        }
+        #upload_csv{
+          display: none; 
+        }
+        .profile{
+          display: none;
+        }
+
+    }
 </style>
 {% endblock content_css %}
 
-{% block search_bar %} 
-<div class='row ms-4 bar'>
-          <div class='col-lg-3 col-md-3 col-sm-3 filter'>
-              <select class='form-select' name="location" id="department" >
-                <option>Department</option>
-                <option>Biz Apps</option>
-                <option>Software Developer</option>
-                {% for i in site%}
-                  <option value="{{i.id}}">{{i.name}}</option>
-                {% endfor %}
-              </select>
-          </div>
-          <div class='col-lg-3 col-md-3 col-sm-3 filter'>
-              <select class='form-select' name='branch' id='branch'>
-                <option>Branch</option>
-                <option>Mumbai Ho</option>
-                <option>Bengaluru</option>
-                  {% for i in demp %}
-                  <option value='{{i.id}}'>{{i.name}}</option>
-                  {% endfor %}
-              </select>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-3 filter">
-              <select class='form-select' id="status" name="status">
-                <option>Status</option>
-                <option>Vaccinated</option>
-                <option>Partially Vaccinated</option>
-                <option>Not Vaccinated</option>
-                 
-              </select>
-          </div>
-            <div class="col-lg-3 col-md-3 col-sm-3 filter">
-            <select class='form-select' id="gender" name="gender">
-              <option>Gender</option>
-              <option>Male</option>
-              <option>Female</option>               
-            </select>
+{% block Department %} 
+<select class='form-select' name="location" id="department1" >
+  <option>Department</option>
+  <option>Biz App</option>
+  <option>Software Developer</option>
+  {% for i in site%}
+    <option value="{{i.id}}">{{i.name}}</option>
+  {% endfor %}
+</select>
+{% endblock Department %}
+
+{% block Branch %} 
+<select class='form-select' name='branch' id='branch'>
+  <option>Branch</option>
+  <option>Mumbai Ho</option>
+  <option>Bengaluru</option>
+    {% for i in demp %}
+    <option value='{{i.id}}'>{{i.name}}</option>
+    {% endfor %}
+</select>
+{% endblock Branch %}
+{% block Status %} 
+<select class='form-select' id="status" name="status">
+  <option>Status</option>
+  <option>Fully Vaccinated</option>
+  <option>Partially Vaccinated</option>
+  <option>Not Vaccinated</option>
+  <option>Not Checked</option>
+   
+</select>
+{% endblock Status %}
+
+{% block Gender %} 
+<select class='form-select' id="gender" name="gender">
+  <option>Gender</option>
+  <option>Male</option>
+  <option>Female</option>               
+</select>
+{% endblock Gender %}
+          
+            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-8">
+            
         </div>
-</div>
-{% endblock search_bar %}
+
+{% block image_header %} 
+<a href="{% url 'profile' %}" class="profile"><img src="/static/img/user (3).png" height='40px'></a>
+{% endblock image_header %}
 {% block content %}
 <div class='row'>
-    <div class='col-lg-9 col-md-9 col-sm-9'>
+    <div class='col-lg-9 col-md-9 col-sm-9 col-xs-12'>
         <div class='container mt-5'>
           <div class='container mt-5 justify-content-center'>
             <div class='row'>
-              <div class='col-lg-2 col-md-2 col-sm-2'>
+              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2'>
                   <!-- <button>Data</button> -->
-                  <a href="/static/sampletemplate/template.csv" download  class='btn btn-primary ' style="color:black ;background-color:#ffffff; width:150px;height: 40px; " id='site_csvsample'><img src="/static/img/download.png" height='20px'> Template</a>
+                  <a href="/static/sampletemplate/new_template.csv" download  class='btn btn-primary' style="color:black ;background-color:#ffffff;" id='site_csvsample'><img src="/static/img/download.png" height='20px'> Template</a>
               </div>
-              <div class='col-lg-2 col-md-2 col-sm-2'>
+              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-4 col-xl-2'>
                   <form action="/dashboard/" method="POST" enctype="multipart/form-data" id='upload_csv'> 
                       {% csrf_token %}
-                      <label for="upload" class='upload-input' style="width:150px;height: 40px;   background-image: linear-gradient(#00bbff, #848ccf);" ><img src="/static/img/plus.png" height='20px'> Upload File</label>                    
+                      <label for="upload" class='btn ' style="background-image: linear-gradient(#00bbff, #035397); color:#ffffff" ><img src="/static/img/plus.png" height='20px'> Upload File</label>                    
                       <input type="file" id="upload" name="upload" hidden/>
                   </form>
               </div>
-              <div class='col-lg-6 col-md-6 col-sm-6'>
+              <div class='col-lg-3 col-sm-1 col-xs-1 col-xl-6'>
 
               </div>
-              <div class='col-lg-2 col-md-2 col-sm-2'>
-                <button id="export" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #848ccf);"><img src="/static/img/export.png" height='30px'></button>
+              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2'>
+                <button id="export" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);"><img src="/static/img/export.png" height='30px'></button>
               <!-- </div>
               <div class='col-lg-1'> -->
-                <button id="exportemail" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #848ccf);"><img src="/static/img/send-mail.png" height='30px'></button>
+                <button id="exportemail" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);"><img src="/static/img/send-mail.png" height='30px'></button>
               </div>
           </div>
           </div> 
@@ -134,9 +156,49 @@ table>tbody>tr>td{
         <div class='container-fluid	'>
           <div class="container mt-5 justify-content-center">
             <div class="card ">
-                <div class='topnav p-4'>
+              <div style="overflow-x:auto;" class="table-responsive">
+                <table class="table " id="myTable">
+                  <thead style="background-color: #035397;" class='topnav'>
+                    <tr class='text-light'>
+                      <th scope="col" class='p-4'>Emp</th>
+                      <th scope="col" class='p-4'>Last checked</th>
+                      <th scope="col" class='p-4'>Branch</th>
+                      <th scope="col" class='p-4'>Department</th>
+                      <th scope="col" class='p-4'>Status</th>
+                      <th scope="col" class='p-4'>Download Certificate</th>
+                      <th scope="col" class='p-4'>not checked</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for emps in emp %}
+                        <tr class='border-bottom' >
+                          <td scope="row" class='p-4'>{{emps.name}}</td>
+                          <td class='p-4'>{{emps.last_checked}}</td>
+                          <td class='p-4'>{{emps.branch}}</td>
+                          <td class='p-4'>{{emps.department}}</td>
+                          <td  class='p-4'>{{emps.status}}</td>
+                          <td class='p-4'><a class="use-address" download style="cursor: pointer;">Download Certificate</a></td>
+                          {% if emps.status == 'Not Checked'%}
+                          <td class='p-4'><button type="button" class="user-email btn btn-info">send email</button></td>
+                          {% else %}
+                          <td class='p-4'style="display:none"><button type="button" class="user-email btn btn-info">send email</button></td>
+                          {% endif %}
+                          <td class='p-4' style="display:none">{{emps.emp_code}}</td>
+                          <td class='p-4' style="display:none">{{emps.gender}}</td>
+                          <td style="display:none">{{emps.birth_year}}</td>
+                          <td style="display:none">{{emps.beneficialy_id}}</td>
+                          <td style="display:none">{{emps.vaccine}}</td>
+                          <td style="display:none">{{emps.does1_date}}</td>
+                          <td style="display:none">{{emps.does2_date}}</td>
+                        </tr>
+                      {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              
+                <!-- <div class='topnav p-4'>
                     <div class='row'>
-                        <div class='col-lg-2 col-md-2 col-sm-2'>
+                        <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'>
                             <labe class='text-center text-light ms-4'>Emp</labe>
                         </div>
                         <div class='col-lg-1 col-md-1 col-sm-1'>
@@ -158,8 +220,8 @@ table>tbody>tr>td{
                           <labe class='text-center text-light '>Download Certificate</labe>
                         </div>
                     </div>
-                </div>
-                <div class='p-4 pt-2'>
+                </div> -->
+                <!-- <div class='p-4 pt-2'>
                   <table id="myTable">
                     <tbody>
                       {% for emps in emp %}
@@ -170,7 +232,7 @@ table>tbody>tr>td{
                         <td style="width: 8em !important ">{{emps.gender}}</td>
                         <td style="width: 11.60em !important ">{{emps.department}}</td>
                         <td  style="width: 12em !important ">{{emps.vaccination_status}}</td>
-                        <td style="width: 12em !important "><a class="use-address">Download Certificate</a></td>
+                        <td style="width: 12em !important ;cursor: pointer;"><a class="use-address" href='#'>Download Certificate</a></td>
                         <td style="display:none">{{emps.dose1_date}}</td>
                         <td style="display:none">{{emps.dose2_date}}</td>
                         <td style="display:none">{{emps.birth_year}}</td>
@@ -180,19 +242,19 @@ table>tbody>tr>td{
                       {% endfor %}
                     </tbody>
                   </table>
-                </div>
+                </div> -->
             </div>
       </div>
     </div>
     </div>
-    <div class='col-lg-3 col-md-3 col-sm-3'> 
+    <div class='col-lg-3 col-md-3 col-sm-3 col-xs-12'> 
       <div class='data'>
         <div id="container"  style="width: 100%;">
           <canvas id="pie-chart" class='centerimg' height='150px'></canvas>
        </div>
         <!-- <img src="/media/cowin_status_pie.png" style="margin-top: 20px;">  -->
         <div class='row m-4'>
-          <div class='card '>
+          <div class='card ' style="    box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
               <div class='col-lg-3'>
                 <h1 style="color: #035397; font-weight:500px !important;">{{total}}</h1>
@@ -204,41 +266,53 @@ table>tbody>tr>td{
           </div>
         </div>
         <div class='row m-4 '>
-          <div class='card'>
+          <div class='card' style="    box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
-              <div class='col-lg-3'>
+              <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
                 <h1 style="color:lightgreen">{{fully_vaccinated}}</h1>
               </div>
-              <div class='col-lg-4'>
+              <div class='col-lg-5 col-md-5 col-sm-6 col-xl-4 col-xs-8'>
                 <h5 class="card-title">Fully Vaccinated</h5>
               </div>
           </div>
         </div>
         </div>
         <div class='row m-4'>
-          <div class='card'>
+          <div class='card' style="    box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
-              <div class='col-lg-3'>
+              <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
                 <h1 style="color:orange">{{partial_vaccinated}}</h1>
               </div>
-              <div class='col-lg-4'>
+              <div class='col-lg-5 col-md-5 col-sm-6 col-xl-4 col-xs-8'>
                 <h5 class="card-title">Partially Vaccinated</h5>
               </div>
           </div>
         </div>
         </div>
         <div class='row m-4'>
-          <div class='card'>
+          <div class='card' style="    box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
-              <div class='col-lg-3'>
+              <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
                 <h1 style="color: red;">{{not_vaccinated}}</h1>
               </div>
-              <div class='col-lg-4'>
+              <div class='col-lg-5 col-md-5 col-sm-6 col-xl-4 col-xs-8'>
                 <h5 class="card-title">Not Vaccinated</h5>
               </div>
           </div>
         </div>
       </div>
+      <div class='row m-4'>
+        <div class='card' style="    box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
+          <div class='rows'>
+            <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
+              <h1 style="color:brown">{{not_checked}}</h1>
+            </div>
+            <div class='col-lg-5 col-md-5 col-sm-6 col-xl-4 col-xs-8'>
+              <h5 class="card-title">Not Checked</h5>
+            </div>
+        </div>
+      </div>
+    </div>
     </div>
 </div>
 
@@ -246,19 +320,47 @@ table>tbody>tr>td{
 
 
 {% block content_js %}
-
+{% for message in messages %}
+    <script>
+      window.onload = function(){
+        alert('{{message}}')
+      }
+    </script>
+{% endfor %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <script>
-      $('#department').click(function(){
+
+      $('.user-email').click(function(){
+        // alert('working')
+        var name = $(this).closest("tr").find('td:eq(0)').text();
+        var emp_code = $(this).closest("tr").find('td:eq(7)').text();
+        $.ajax({
+                  type : 'POST',
+                  url :  "{% url 'send_email' %}",
+                  data : {'name':name,'emp_code':emp_code},
+                  success : function(response){
+                  //reset the form after successful submit
+                    alert(response) 
+                  },
+                  error : function(response){
+                      console.log(response)
+                  }
+              });
+
+      
+      })
+
+      $('#department1').click(function(){
         var input, filter , table , tr , td , i, txtvalue;
-        input =  $('#department').val();
+        input =  $('#department1').val();
+        // alert(input)
         filter = input.toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         // alert(tr.length)
         // alert(filter)
         for(i = 0 ; i< tr.length; i++){
-          td = tr[i].getElementsByTagName("td")[4];
+          td = tr[i].getElementsByTagName("td")[3];
           if(td){
             txtvalue = td.textContent || td.innerText;
             // alert(txtvalue.toUpperCase())
@@ -278,6 +380,7 @@ table>tbody>tr>td{
       $('#branch').click(function(){
         var input , filter, table, tr, td,i,txtvalue;
         input = $('#branch').val();
+        // alert(input)
         filter = input.toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
@@ -310,7 +413,7 @@ table>tbody>tr>td{
         // alert(tr.length)
         // alert(filter)
         for(i = 0 ; i< tr.length; i++){
-          td = tr[i].getElementsByTagName("td")[5];
+          td = tr[i].getElementsByTagName("td")[4];
           if(td){
             txtvalue = td.textContent || td.innerText;
             // alert(txtvalue.toUpperCase())
@@ -338,7 +441,7 @@ table>tbody>tr>td{
         // alert(tr.length)
         // alert(filter)
         for(i = 0 ; i< tr.length; i++){
-          td = tr[i].getElementsByTagName("td")[3];
+          td = tr[i].getElementsByTagName("td")[8];
           if(td){
             txtvalue = td.textContent || td.innerText;
             // alert(txtvalue.toUpperCase())
@@ -356,6 +459,30 @@ table>tbody>tr>td{
         }
       
       })
+      function export2csv() {
+        let data = "";
+        const tableData = [];
+        const rows = document.querySelectorAll("table tr");
+        for (const row of rows) {
+          const rowData = [];
+          for (const [index, column] of row.querySelectorAll("th, td").entries()) {
+            // To retain the commas in the "Description" column, we can enclose those fields in quotation marks.
+            if ((index + 1) % 3 === 0) {
+              rowData.push('"' + column.innerText + '"');
+            } else {
+              rowData.push(column.innerText);
+            }
+          }
+          tableData.push(rowData.join(","));
+        }
+        data += tableData.join("\n");
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
+        a.setAttribute("download", "data.csv");
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
 
       function parseDate(str) {
       var mdy = str.split('-');
@@ -379,20 +506,21 @@ table>tbody>tr>td{
                  console.log('working')
                 }else{
                     // console.log(currentRow.length)
-                  var col1_value=currentRow.find("td:eq(0)").text();
+                    var col1_value=currentRow.find("td:eq(0)").text();
                   var col2_value=currentRow.find("td:eq(1)").text();
                   var col3_value=currentRow.find("td:eq(2)").text();
                   var col4_value=currentRow.find("td:eq(3)").text();
                   var col5_value=currentRow.find("td:eq(4)").text();
-                  var col6_value=currentRow.find("td:eq(5)").text();
+                  var col6_value=currentRow.find("td:eq(7)").text();
                   // var col7_value=currentRow.find("td:eq(6)").text();
-                  var col8_value=currentRow.find("td:eq(7)").text();
-                  var col9_value=currentRow.find("td:eq(8)").text();
-                  var col10_value=currentRow.find("td:eq(9)").text();
-                  var col11_value=currentRow.find("td:eq(10)").text();
-                  var col12_value=currentRow.find("td:eq(11)").text();
+                  var col8_value=currentRow.find("td:eq(8)").text();
+                  var col9_value=currentRow.find("td:eq(9)").text();
+                  var col10_value=currentRow.find("td:eq(10)").text();
+                  var col11_value=currentRow.find("td:eq(11)").text();
+                  var col12_value=currentRow.find("td:eq(12)").text();
+                  var col13_value=currentRow.find("td:eq(13)").text();
 
-                  var datearray = col8_value.split("-");
+                  var datearray = col12_value.split("-");
                   var newdate = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
                   var date1 = new Date(newdate)
 
@@ -401,10 +529,11 @@ table>tbody>tr>td{
                   var currentDate = new Date()
                   var Difference_In_Time = currentDate.getTime() - date1.getTime();
                   var Difference_In_Days =parseInt(Difference_In_Time / (1000 * 60 * 60 * 24));
+                  console.log(Difference_In_Time / (1000 * 60 * 60 * 24))
                   
                   Difference_In_Days2 =''
                   if(col9_value != ''){
-                    var datearray1 = col9_value.split("-");
+                    var datearray1 = col13_value.split("-");
                     var newdate1 = datearray1[1] + '/' + datearray1[0] + '/' + datearray1[2];
                     var date3 = new Date(newdate1)
                     var Difference_In_Time1 = currentDate.getTime() - date3.getTime()
@@ -413,8 +542,8 @@ table>tbody>tr>td{
                     
                   }
                   var row = []
-                  row.push(col1_value,col2_value,col3_value,col4_value,col5_value,col6_value,col8_value,col9_value,col10_value,col11_value,col12_value,Difference_In_Days, Difference_In_Days2)
-                  arrData.push(['Name','Emp Code','Branch','Gender','Department','Status','Dose1 Date','Does2 Date','Birth Year','Beneficiary Id','vaccine','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'],row.join(","))
+                  row.push(col1_value,col2_value,col3_value,col4_value,col5_value,col6_value,col8_value,col9_value,col10_value,col11_value,col12_value,col13_value,Difference_In_Days, Difference_In_Days2)
+                  arrData.push(['Name','Last Checked','Branch','Department','Status','Emp Code','Gender','Birth Year','Beneficiary Id','vaccine','Dose1 Date','Does2 Date','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'],row.join(","))
                   console.log('rows',row)
                   var obj={};
                   obj.col1=col1_value;
@@ -422,6 +551,7 @@ table>tbody>tr>td{
                   obj.col3=col3_value;
                   obj.col4=col4_value;
                   obj.col5=col5_value;
+                  // alert(arrData)
                   console.log('array data',arrData);
                   downloadCSVFile(arrData.join("\n"), "status.csv");
                   // htmlToCSV(arrData, "status.csv");
@@ -479,15 +609,17 @@ table>tbody>tr>td{
                   var col3_value=currentRow.find("td:eq(2)").text();
                   var col4_value=currentRow.find("td:eq(3)").text();
                   var col5_value=currentRow.find("td:eq(4)").text();
-                  var col6_value=currentRow.find("td:eq(5)").text();
+                  var col6_value=currentRow.find("td:eq(7)").text();
                   // var col7_value=currentRow.find("td:eq(6)").text();
-                  var col8_value=currentRow.find("td:eq(7)").text();
-                  var col9_value=currentRow.find("td:eq(8)").text();
-                  var col10_value=currentRow.find("td:eq(9)").text();
-                  var col11_value=currentRow.find("td:eq(10)").text();
-                  var col12_value=currentRow.find("td:eq(11)").text();
+                  var col8_value=currentRow.find("td:eq(8)").text();
+                  var col9_value=currentRow.find("td:eq(9)").text();
+                  var col10_value=currentRow.find("td:eq(10)").text();
+                  var col11_value=currentRow.find("td:eq(11)").text();
+                  var col12_value=currentRow.find("td:eq(12)").text();
+                  var col13_value=currentRow.find("td:eq(13)").text();
 
-                  var datearray = col8_value.split("-");
+
+                  var datearray = col12_value.split("-");
                   var newdate = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
                   var date1 = new Date(newdate)
 
@@ -499,7 +631,7 @@ table>tbody>tr>td{
                   
                   Difference_In_Days2 =''
                   if(col9_value != ''){
-                    var datearray1 = col9_value.split("-");
+                    var datearray1 = col13_value.split("-");
                     var newdate1 = datearray1[1] + '/' + datearray1[0] + '/' + datearray1[2];
                     var date3 = new Date(newdate1)
                     var Difference_In_Time1 = currentDate.getTime() - date3.getTime()
@@ -508,7 +640,7 @@ table>tbody>tr>td{
                     
                   }
                   var row = []
-                  row.push(col1_value,col2_value,col3_value,col4_value,col5_value,col6_value,col8_value,col9_value,col10_value,col11_value,col12_value,Difference_In_Days, Difference_In_Days2)
+                  row.push(col1_value,col2_value,col3_value,col4_value,col5_value,col6_value,col8_value,col9_value,col10_value,col11_value,col12_value,col13_value,Difference_In_Days, Difference_In_Days2)
                   arrData.push(row.join(","))
                   console.log('rows',row)
                   var obj={};
@@ -545,12 +677,12 @@ table>tbody>tr>td{
 
 
             var config = {
-                type: 'pie',
+              type: 'doughnut',
                 data: {
                   datasets: [{
-                    data: [{{fully_vaccinated}}, {{partial_vaccinated}}, {{not_vaccinated}},],
+                    data: [{{fully_vaccinated}}, {{partial_vaccinated}}, {{not_vaccinated}},{{not_checked}}],
                     backgroundColor: [
-                      '#00ff00','#ffa500','#ff0000'
+                      '#00ff00','#ffa500','#ff0000','#A52A2A'
                     ],
           //           label: 'Population'
                   }],
@@ -566,12 +698,14 @@ table>tbody>tr>td{
                 window.myPie = new Chart(ctx, config);
               };
           $('.use-address').click(function () {
-              var id = $(this).closest("tr").find('td:eq(10)').text();
-              // alert(id);
+            // alert('working')
+            var name = $(this).closest("tr").find('td:eq(0)').text();
+            var emp_code = $(this).closest("tr").find('td:eq(7)').text();              
+            // alert(id);
               $.ajax({
                   type : 'POST',
                   url :  "{% url 'download_certificate' %}",
-                  data : {'data':id},
+                  data : {'name':name,'emp_code':emp_code},
                   success : function(response){
                   //reset the form after successful submit
                     alert(response) 
