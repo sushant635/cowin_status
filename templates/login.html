@@ -113,4 +113,11 @@ body{
         </div>
       </div>  
 </body>
+{% for message in messages %}
+<script>
+  window.onload = function(){
+    alert('{{message}}')
+  }
+</script>
+{% endfor %}
 </html>

@@ -56,6 +56,18 @@ figure img{
    height: auto;
    margin-top: 15px;
 }
+.css{
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(59%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.65))), url('/static/img/corona.png') no-repeat;
+
+
+}
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  /* min-height: 100vh; These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
 @media only screen and (max-width: 900px) {
         #history{
           margin-top: 20px;
@@ -65,13 +77,14 @@ figure img{
         }
 
     }
+
     </style>
 {% endblock content_css %}
 
 
 
 {% block image_header %} 
-<a href="{% url 'dashboard' %}" class="dashboard"><img src="/static/img/Group 1615.png" height='40px'></a>
+<a  class="dashboard"><img src="/static/img/Group 1615.png" height='40px'></a>
 {% endblock image_header %}
 
 
@@ -82,19 +95,19 @@ figure img{
             <div class=''>
                 <div class='container mt-5 justify-content-center'>
                     <div class='card p-2 ms-3' style="box-shadow: 5px 6px 6px 2px #e9ecef;border-radius: 10px;">
-                        <div class='row'>
+                        <div class='row '>
                             <div class='col-lg-5 col-sm-5 col-md-5 col-xs-12 col-xl-5 '>
-                                <h3 class='ms-5'>You Status is</h3>
+                                <h3 class='ms-5 vertical-center'>You Status is</h3>
                             </div>
                             <div class='col-lg-7 col-sm-7 col-md-7 col-xs-12 col-xl-7'>
                                 {% if status == "Not Checked" %}
-                                <h2 class='' style="color: brown;" >{{status}}</h2>
+                                <h2 class='vertical-center' style="color: brown;" >{{status}}</h2>
                                 {% elif status == 'Partially Vaccinated' %}
-                                <h2 class='' style="color: orange;">{{status}}</h2>
+                                <h2 class='vertical-center' style="color: orange;">{{status}}</h2>
                                 {% elif status == 'Fully Vaccinated' %}
-                                <h2 class='' style="color: greenyellow;">{{status}}</h2>
+                                <h2 class='vertical-center' style="color: greenyellow;">{{status}}</h2>
                                 {% else %}
-                                <h2 class='' style="color: red;">{{status}}</h2>
+                                <h2 class='vertical-center' style="color: red;">{{status}}</h2>
                                 {% endif %}
                             </div>
                         </div>
@@ -174,8 +187,8 @@ figure img{
     </div>
     <div class='col-lg-3 col-md-3 col-sm-3 col-xs-3' id='history'>
         <div class='data' >
-            <div class='container'>
-                <div class='row'>
+            <div class='container css'>
+                <div class='row '>
                     <div class='col-md-4 col-lg-3 col-sm-5 col-xs-4 mt-5' >
                         <figure>
                             <img src="/static/img/form 1.png" alt="image">
@@ -217,7 +230,7 @@ figure img{
                     </div>
                 </div>
                 <div class=' mt-5 '>
-                    <div class='card p-2 ' style="background-color: #035397;box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
+                    <div class='card p-2 css' style="background-color: #035397;box-shadow: 5px 6px 6px 2px;border-radius: 10px;">
                         <form method="post" action="{% url 'confirmotp'%}">
                             {% csrf_token %}
                             <div class='row'>

@@ -25,7 +25,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 import mimetypes
 import os
 from frontend.decorators import unauthenticated_user,type_user
-from datetime import datetime
+from datetime import datetime,date,time
 from dateutil import tz
 from django.http import FileResponse
 import io,csv
@@ -83,7 +83,9 @@ def user_login(request):
             else:
                 print("someone tried to login and failed")
                 print("They used username:{} and {}".format(username,password))
-                return HttpResponse("Invalid login details given")
+                messages.error(request,"Invalid login details given")
+                # return HttpResponse("Invalid login details given")
+                return redirect('/')
         else:
             if request.COOKIES.get('username'):
                 print('working')
@@ -197,6 +199,7 @@ def dashboard(request):
             lines = file_data.split("\n")
             # print(lines)
             first = 0
+            emp_details = []
             for line in lines:
                 if line != '':
                     if first != 0:
@@ -211,70 +214,87 @@ def dashboard(request):
                         beneficialy_id = fields[5]
                         mobile_number = fields[6]
                         print(fields)
-                        if username1 != '' and password1 != '':
-                            try:
-                                user = User.objects.create_user(username=username1,password=password1)
-                                group = Group.objects.get(name='employee')
-                                user.groups.add(group)
-                                user.save()
-                                register = models.RegisterModel.objects.create(user=user,company=company)
-                                # print(user)
-                            except Exception as e:
-                                print(e,'error of line number {}'.format(sys.exc_info()[-1].tb_lineno))
-                                messages.error(request,e,username1)
-                                return redirect('dashboard')
-                            
-                            try:
-                                employee = models.Employeeprofile.objects.create(company=company_name,company_HR=company,employee=user,\
-                                    employee_name = emp_name, employee_code = emp_code , employee_branch = branch,employee_department=department,\
-                                    Beneficiary_Id = beneficialy_id ,phoneNumber = mobile_number)
-
-                                email = username1
-                                messages1 = 'This is your Username' + username1 + ' and this password ' +password1
-                                send_mail_func(email,messages1)
-
-                            except  Exception as e:
-                                print(e,'error of line number {}'.format(sys.exc_info()[-1].tb_lineno))
-                                messages.error(request,e,username1)
-                                return redirect('dashboard')               
+                        if User.objects.filter(username=username1).exists() and models.Employeeprofile.objects.filter(employee_code=emp_code).exists():
+                            print(emp_name)
+                            emp_details.append(emp_name)
+                            pass
                         else:
-                            messages.error(request,'Please enter the Email name and Emp code in csv file')
-                            return redirect('dashboard')
-                            
+                            if username1 != '' and password1 != '':
+                                try:
+                                    user = User.objects.create_user(username=username1,password=password1)
+                                    group = Group.objects.get(name='employee')
+                                    user.groups.add(group)
+                                    user.save()
+                                    register = models.RegisterModel.objects.create(user=user,company=company_name)
+                                    # print(user)
+                                except Exception as e:
+                                    print(e,'error of line number {}'.format(sys.exc_info()[-1].tb_lineno))
+                                    messages.error(request,e,username1)
+                                    return redirect('dashboard')
+                                
+                                try:
+                                    employee = models.Employeeprofile.objects.create(company=company_name,company_HR=company,employee=user,\
+                                        employee_name = emp_name, employee_code = emp_code , employee_branch = branch,employee_department=department,\
+                                        Beneficiary_Id = beneficialy_id ,phoneNumber = mobile_number)
+
+                                    email = username1
+                                    url = 'http://35.154.107.216/'
+                                    # message1 = get_template("emails/alert_login.html").render(({'name':emp_name,'url':url,'username':email,'password':password1}))
+                                    messages1 = 'Hello ' + emp_name + '\n You are requested to please log in to the system \n '+url+'  and check your vaccinations status \n' + '\n Your Original login credtails were: \n' + 'Username   : ' + username1 + '\n password : ' +password1
+                                    send_mail_func(email,messages1)
+
+                                except  Exception as e:
+                                    print(e,'error of line number {}'.format(sys.exc_info()[-1].tb_lineno))
+                                    messages.error(request,e,username1)
+                                    return redirect('dashboard')               
+                            else:
+                                messages.error(request,'Please enter the Email name and Emp code in csv file')
+                                return redirect('dashboard')
+                                
 
 
-                first+=1
-                        # user_form = UserForm(username=username1,password=password1)
-                        # if user_form.is_valid():
-                        #     user = user_form.save()
-                        #     group = Group.objects.get(name='employee')
-                        #     user.groups.add(group)
+                    first+=1
+                            # user_form = UserForm(username=username1,password=password1)
+                            # if user_form.is_valid():
+                            #     user = user_form.save()
+                            #     group = Group.objects.get(name='employee')
+                            #     user.groups.add(group)
 
-                        #     user.set_password(user.password)
-                        #     user.save()
-                        # else:
-                        #     messages(request,user_form.errors,profile_form.errors)
-                        #     return redirect('dashboard')
-            # obj = [
-            #     models.Employeeprofile(
-            #        company = company,
-            #        company_HR = company,
-            #        employee = User.objects.get(username=row['Email'])
-            #        employee_name = row[''] 
-            #     )
-            #     for row in list_of_dict
-            # ]
-            # print(obj)
-            # print(username,password)
+                            #     user.set_password(user.password)
+                            #     user.save()
+                            # else:
+                            #     messages(request,user_form.errors,profile_form.errors)
+                            #     return redirect('dashboard')
+                # obj = [
+                #     models.Employeeprofile(
+                #        company = company,
+                #        company_HR = company,
+                #        employee = User.objects.get(username=row['Email'])
+                #        employee_name = row[''] 
+                #     )
+                #     for row in list_of_dict
+                # ]
+                # print(obj)
+                # print(username,password)
 
-            # print(list_of_dict)
-            # if not csv_file.name.endswith('.csv'):
-            #     messages.error(request,'File is not CSV type')
-            #     return HttpResponseRedirect(reverse('dashboard'))
-            # if csv_file.multiple_chunks():
-            #     messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(5000*5000),))
-            #     return HttpResponseRedirect(reverse("dashboard"))
-            return render(request,'dashboard.html')
+                # print(list_of_dict)
+                # if not csv_file.name.endswith('.csv'):
+                #     messages.error(request,'File is not CSV type')
+                #     return HttpResponseRedirect(reverse('dashboard'))
+                # if csv_file.multiple_chunks():
+                #     messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(5000*5000),))
+                #     return HttpResponseRedirect(reverse("dashboard"))
+            print(emp_details)
+            if emp_details != '':
+                print('working')
+                listToStr = ','.join([str(elem) for elem in emp_details])
+                messages.error(request,'This employee are already exists ' + listToStr)
+
+                print(listToStr)
+                return redirect('dashboard')
+            else:
+                return redirect('dashboard')
+            
         else:
             current_user = request.user
             print(current_user)
@@ -301,25 +321,31 @@ def dashboard(request):
                 department = i['employee_department']
                 status = i['cowin_status']
                 last_checked = i['last_checked']
-                last_checked1 =last_checked.strftime('%d-%m-%Y')
+                last_checked1 = None
+                if last_checked != None:
+                    last_checked1 =last_checked.strftime('%d-%m-%Y')
                 beneficialy_id = i['Beneficiary_Id']
                 gender = i['gender']
                 birth_year = i['birth_year']
                 does1_date = i['does1_date']
-                does1_date1 = does1_date.strftime('%d-%m-%Y')
+                does1_date1 = None
+                if does1_date != None:
+                    does1_date1 = does1_date.strftime('%d-%m-%Y')
                 print(does1_date1)
                 does2_date = i['does2_date']
-                does2_date1 = does2_date.strftime('%d-%m-%Y')
+                does2_date1 = None
+                if does2_date != None:
+                    does2_date1 = does2_date.strftime('%d-%m-%Y')
                 vaccine = i['vaccine']
                 total += 1
                 if status == 'Partially Vaccinated':
-                    partial_vaccinated =+ 1
+                    partial_vaccinated += 1
                 elif status == 'Fully Vaccinated':
-                    fully_vaccinated =+ 1
+                    fully_vaccinated += 1
                 elif status == 'Not Checked':
-                    not_checked =+1
+                    not_checked += 1
                 else:
-                    not_vaccinated =+1 
+                    not_vaccinated += 1 
                 emp_list.append({'name':name,'emp_code':emp_code,'branch':branch,'department':department,'status':status,'last_checked':last_checked1,'beneficialy_id':beneficialy_id,'gender':gender,'birth_year':birth_year,'does1_date':does1_date1,'does2_date':does2_date1,'vaccine':vaccine})
             print(emp_list)
             context = {'emp':emp_list,'partial_vaccinated':partial_vaccinated,'fully_vaccinated':fully_vaccinated,'not_vaccinated':not_vaccinated,'not_checked':not_checked,'total':total}
@@ -349,6 +375,8 @@ def confirmOTP(request):
             current_user = request.user
             print(current_user)
             user_id = current_user.id
+            company = models.Employeeprofile.objects.get(employee=user_id).company
+            print(company)
             print(user_id)
             print(request.POST)
             otp = request.POST.get('otp')
@@ -371,7 +399,31 @@ def confirmOTP(request):
             res = requests.post(url,headers=headers,data=res)
             print(res.text)
             print(res)
+            today = date.today()
             if res.status_code == 200:
+                consumed = models.Consumed.objects.filter(company=company).values('Consumed').last()
+                today_min = datetime.combine(date.today(), time.min)
+                today_max = datetime.combine(date.today(), time.max)
+                today_cosumed = models.Consumed.objects.filter(company=company,created__range=(today_min, today_max)).values('today_consumed').last()               
+                available = models.Available.objects.filter(company=company).values('availabel').last()
+                hr = models.Company_HR.objects.get(company=company)
+                y = today_cosumed['today_consumed']
+                available1 = available['availabel']
+                available2 = int(available1)
+                available3 = 1
+                sub = available2 - available3
+                p = int(y)
+                q = 1
+                add = p +q 
+                x = consumed['Consumed']
+                a = int(x)
+                b = 1 
+                c = a + b
+                consumed = models.Consumed.objects.create(company=company,Consumed=c,company_hr=hr,today_consumed=add)
+                available = models.Available.objects.create(company=company,company_hr=hr,availabel=sub)
+                # for i in consumed:
+                #      x = i['Consumed']
+                
                 re = json.loads(res.text)
                 del request.session['txnId']
                 token = re['token']
@@ -385,7 +437,8 @@ def confirmOTP(request):
                 for i in data:
                     emp_name = i['employee_name']
                     Beneficiary_Id = i['Beneficiary_Id']
-
+                emp_first_name = emp_name.split(' ')[0]
+                print(emp_first_name)
                 print(resp.status_code)
                 if resp.status_code == 200:
                     re = json.loads(resp.text)
@@ -394,7 +447,9 @@ def confirmOTP(request):
                     for i in beneficiaries:
                         beneficiary_reference_id = i['beneficiary_reference_id']
                         name = i['name']
-                        if emp_name == name:
+                        first_name = name.split(' ')[0]
+                        print(first_name)
+                        if emp_first_name == first_name:
                             print('working')
                             if beneficiary_reference_id == Beneficiary_Id:
                                 print('working')
@@ -458,7 +513,7 @@ def confirmOTP(request):
                         # print(chunk)
                         # binary.append(chunk)
                         # print(chunk)
-                        print('working')
+                        #print('working')
                     # file = download_certificate.pdf
                     with open("download_certificate.pdf", "rb") as pdf_file:
                         encoded_string = base64.b64encode(pdf_file.read())
@@ -740,10 +795,15 @@ def admin_profile(request):
         company = models.Company_HR.objects.get(user=user).company
         print(company)
         company_obj = models.Company.objects.get(name=company)
-        print(company_obj)
-        available_obj = models.Available.objects.get(company=company_obj)
-        available = available_obj.availabel
-        consumed = models.Consumed.objects.get(company=company_obj)
+        # print(company_obj)
+        available_obj = models.Available.objects.filter(company=company_obj).values('availabel').last()
+        print(available_obj)
+        # available_obj = models.Available.objects.get(company=company_obj)
+        available = available_obj['availabel']
+        print(available)
+        # consumed = models.Consumed.objects.get(company=company_obj)
+        consumed1 = models.Consumed.objects.filter(company=company).values('Consumed').last()
+        consumed = consumed1['Consumed']
         purchase = models.Purchase.objects.get(company=company_obj)
         purchase_date1 = purchase.created
         date_purchase = purchase_date1.strftime("%d/%m/%Y %H:%M:%S")
@@ -808,6 +868,7 @@ def change_username_company(request):
 
 
 # @type_user
+@login_required
 def user_profile(request):
     try:
         if request.method=='POST':
@@ -882,6 +943,9 @@ def user_profile(request):
         print(e,'line number of error {}'.format(sys.exc_info()[-1].tb_lineno))
 
 
+from django.template.loader import get_template
+from django.template import Context
+
 
 @csrf_exempt
 def send_user_email(request):
@@ -903,15 +967,18 @@ def send_user_email(request):
             email = None
             for i in username:
                 email = i['username']
-
+            url = 'http://35.154.107.216/'
             mail_subject = "Hi! Login Alert"
-            message = "please Login and check cowin status here is you username  " + email + '  This is your password  ' + emp_code
+            message = get_template("emails/alert_login.html").render(({'name':name,'url':url,'username':email,'password':emp_code}))
+            
+            "please Login and check cowin status here is you username  " + email + '  This is your password  ' + emp_code
             email = EmailMessage(
                 mail_subject,
                 message,
                 settings.EMAIL_HOST_USER,
                 [email],
             )
+            email.content_subtype = "html"
             email.send()
 
             return HttpResponse('Email send to user' + name)

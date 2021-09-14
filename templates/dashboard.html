@@ -12,6 +12,7 @@
   .form-select{
   background-color:#f0f2fa !important;
   border: none !important;
+  width:180px !important;
 }
 .upload-input{
   display: inline-block;
@@ -165,8 +166,8 @@ table>tbody>tr>td{
                       <th scope="col" class='p-4'>Branch</th>
                       <th scope="col" class='p-4'>Department</th>
                       <th scope="col" class='p-4'>Status</th>
-                      <th scope="col" class='p-4'>Download Certificate</th>
-                      <th scope="col" class='p-4'>not checked</th>
+                      <th scope="col" class='p-4' style="display:none">Download Certificate</th>
+                      <th scope="col" class='p-4'>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -177,7 +178,7 @@ table>tbody>tr>td{
                           <td class='p-4'>{{emps.branch}}</td>
                           <td class='p-4'>{{emps.department}}</td>
                           <td  class='p-4'>{{emps.status}}</td>
-                          <td class='p-4'><a class="use-address" download style="cursor: pointer;">Download Certificate</a></td>
+                          <td class='p-4'style="display:none"><a class="use-address" download style="cursor: pointer;">Download Certificate</a></td>
                           {% if emps.status == 'Not Checked'%}
                           <td class='p-4'><button type="button" class="user-email btn btn-info">send email</button></td>
                           {% else %}
@@ -250,8 +251,8 @@ table>tbody>tr>td{
     <div class='col-lg-3 col-md-3 col-sm-3 col-xs-12'> 
       <div class='data'>
         <div id="container"  style="width: 100%;">
-          <canvas id="pie-chart" class='centerimg' height='150px'></canvas>
-       </div>
+          <canvas id="pie-chart" class='centerimg pt-4' height='140px;'></canvas>
+        </div>
         <!-- <img src="/media/cowin_status_pie.png" style="margin-top: 20px;">  -->
         <div class='row m-4'>
           <div class='card ' style="    box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
@@ -320,16 +321,18 @@ table>tbody>tr>td{
 
 
 {% block content_js %}
-{% for message in messages %}
-    <script>
-      window.onload = function(){
-        alert('{{message}}')
-      }
-    </script>
-{% endfor %}
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <script>
+      {% for message in messages %}
+      // window.onload = function(){
+      //   alert('{{message}}') 
+      //   alert('working') 
 
+      // }
+      alert('{{message}}')
+      // alert(window.onload)
+    {% endfor %}
       $('.user-email').click(function(){
         // alert('working')
         var name = $(this).closest("tr").find('td:eq(0)').text();
@@ -679,6 +682,7 @@ table>tbody>tr>td{
             var config = {
               type: 'doughnut',
                 data: {
+                // labels:['Fully Vaccinated','Partial vaccinated','Not Vaccinated','Not Checked']
                   datasets: [{
                     data: [{{fully_vaccinated}}, {{partial_vaccinated}}, {{not_vaccinated}},{{not_checked}}],
                     backgroundColor: [
@@ -686,10 +690,17 @@ table>tbody>tr>td{
                     ],
           //           label: 'Population'
                   }],
-          //         labels: ['Manila City', 'Davao City', 'Makati', 'Pasay City', 'Angeles City', 'Tarlac City', 'Malolos', 'San Fernando', 'Olongapo City']
+                  labels: ['Fully Vaccinated','Partial vaccinated','Not Vaccinated','Not Checked']
                 },
                 options: {
-                  responsive: true
+                  responsive: true,
+                  legend: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: true,
+                }
+
                 }
               };
            

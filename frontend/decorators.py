@@ -12,8 +12,8 @@ def type_user(view_func):
         if group == 'employee':
             return redirect('user_profile')
         else:
-            # return redirect('dashboard')
-            return view_func(request,*args,**kwargs)
+            return redirect('dashboard')
+            # return view_func(request,*args,**kwargs)
 
         # if request.user.is_authenticated:
         #     return redirect('dashboard')
