@@ -6,7 +6,7 @@ import sys
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from requests.auth import HTTPBasicAuth
-import  json
+import json
 import hashlib
 from requests.structures import CaseInsensitiveDict
 from django.views.decorators.csrf import csrf_protect
@@ -32,6 +32,7 @@ import io,csv
 from frontend.forms import UserForm
 from django.contrib.auth.models import Group
 from .task import send_mail_func
+
 
 
 def test(request):
@@ -214,7 +215,7 @@ def dashboard(request):
                         beneficialy_id = fields[5]
                         mobile_number = fields[6]
                         print(fields)
-                        if User.objects.filter(username=username1).exists() and models.Employeeprofile.objects.filter(employee_code=emp_code).exists():
+                        if User.objects.filter(username=username1).exists() and models.Employeeprofile.objects.filter(employee_code=emp_code,company=company_name).exists():
                             print(emp_name)
                             emp_details.append(emp_name)
                             pass
@@ -355,10 +356,11 @@ def dashboard(request):
         print(e,'error of line number {}'.format(sys.exc_info()[-1].tb_lineno))
 
 
+import shutil
 
 def encrypt_string(hash_string):
     sha_signature = \
-        hashlib.sha256(hash_string.encode()).hexdigest()
+        hashlib.sha256(hash_string.employee_nameencode()).hexdigest()
     return sha_signature
 
 class BearerAuth(requests.auth.AuthBase):
@@ -404,10 +406,14 @@ def confirmOTP(request):
                 consumed = models.Consumed.objects.filter(company=company).values('Consumed').last()
                 today_min = datetime.combine(date.today(), time.min)
                 today_max = datetime.combine(date.today(), time.max)
-                today_cosumed = models.Consumed.objects.filter(company=company,created__range=(today_min, today_max)).values('today_consumed').last()               
+                today_cosumed = models.Consumed.objects.filter(company=company,created__range=(today_min, today_max)).values('today_consumed').last() 
+                print(today_cosumed)              
                 available = models.Available.objects.filter(company=company).values('availabel').last()
                 hr = models.Company_HR.objects.get(company=company)
-                y = today_cosumed['today_consumed']
+                if today_cosumed !=  None :
+                    y = today_cosumed['today_consumed']
+                else:
+                    y = 0
                 available1 = available['availabel']
                 available2 = int(available1)
                 available3 = 1
@@ -449,9 +455,9 @@ def confirmOTP(request):
                         name = i['name']
                         first_name = name.split(' ')[0]
                         print(first_name)
-                        if emp_first_name == first_name:
+                        if beneficiary_reference_id == Beneficiary_Id:
                             print('working')
-                            if beneficiary_reference_id == Beneficiary_Id:
+                            if emp_first_name == first_name:
                                 print('working')
                                 print(i['vaccination_status'])
                                 vaccination_status = i['vaccination_status']
@@ -467,18 +473,24 @@ def confirmOTP(request):
                                 beneficiary_reference_id = i['beneficiary_reference_id']
                                 gender = i['gender']
                                 # purchase_date = datetime.strptime(date_purchase, "%d/%m/%Y %H:%M:%S")
+                                if dose1_date == '':
+                                    data = models.Employeeprofile.objects.filter(employee=user_id).update(gender=gender,cowin_status=vaccination_status,vaccine=vaccine,birth_year=birth_year,last_checked=today)
+
                                 dose1_date1 = datetime.strptime(dose1_date, '%d-%m-%Y').strftime('%Y-%m-%d')
-                                dose2_date2 = datetime.strptime(dose2_date, '%d-%m-%Y').strftime('%Y-%m-%d')
-                                print(dose1_date1,dose2_date2)
                                 today = datetime.today().strftime('%Y-%m-%d')
-                                print(type(birth_year),birth_year,type(dose1_date),type(dose2_date))
-                                data = models.Employeeprofile.objects.filter(employee=user_id).update(gender=gender,cowin_status=vaccination_status,does1_date=dose1_date1,does2_date=dose2_date2,vaccine=vaccine,birth_year=birth_year,last_checked=today)
+                                if dose2_date != '':
+                                    dose2_date2 = datetime.strptime(dose2_date, '%d-%m-%Y').strftime('%Y-%m-%d')
+                                    data = models.Employeeprofile.objects.filter(employee=user_id).update(gender=gender,cowin_status=vaccination_status,does1_date=dose1_date1,does2_date=dose2_date2,vaccine=vaccine,birth_year=birth_year,last_checked=today)
+                                else:
+                                    data = models.Employeeprofile.objects.filter(employee=user_id).update(gender=gender,cowin_status=vaccination_status,does1_date=dose1_date1,vaccine=vaccine,birth_year=birth_year,last_checked=today)
+
+                                print(dose1_date1)
+                                print(type(birth_year),birth_year,type(dose1_date),)
                             else:
-                                messages.error(request,'beneficiary reference id not match ')
+                                messages.error(request,'employee name  and Cowin name are not same ')
                                 return redirect('user_profile')
                         else:
-                            messages.error(request,'employee name  and Cowin name are not same')
-                            return redirect('user_profile')
+                            pass
                 else:
                     messages.error(request,'getting error for'+resp.text)
                     return redirect('user_profile')
@@ -497,17 +509,30 @@ def confirmOTP(request):
                 resp = requests.get("https://cdn-api.co-vin.in/api/v2/registration/certificate/download?beneficiary_reference_id={}".format(beneficiary_reference_id),headers=headers, auth=BearerAuth(token))
                 print(resp)
                 if resp.status_code == 200:
-                    print(resp)
+                    # print(resp)
                     re = resp.text
                     print(type(re))
                     re = resp.text
+                    # print(re)
+                    # encoded = base64.b64encode(re)
+                    # print(encoded)
                     chunk_size = 2000
-                    my_data = resp.iter_content(chunk_size)
-                    print(my_data)
+                    # f = None
+                    # for chunk in resp:
+                    #     f.write(chunk)
+                    # resp.raw.decode_content = True
+                    # f = shutil.copyfileobj(resp.raw)
+                    # print('data',f)
+                    # my_data = resp.iter_content(chunk_size)
+                    # print(my_data)
                     # chunk = ''
-                    binary = []
-                    with open('download_certificate.pdf','wb') as fd:
+                    # binary = []
+                    # print(resp.text)
+                    # b = resp.json()
+
+                    with open(os.path.join(settings.MEDIA_ROOT,'download_certificate.pdf'),'wb') as fd:
                         for chunk in resp.iter_content(chunk_size):
+
                             print(type(chunk))
                             fd.write(chunk)
                         # print(chunk)
@@ -515,15 +540,19 @@ def confirmOTP(request):
                         # print(chunk)
                         #print('working')
                     # file = download_certificate.pdf
-                    with open("download_certificate.pdf", "rb") as pdf_file:
+                    with open(os.path.join(settings.MEDIA_ROOT,'download_certificate.pdf'), "rb") as pdf_file:
                         encoded_string = base64.b64encode(pdf_file.read())
+                    # b =  base64.b64decode(encoded_string)
+                    # datafile=open('download_certificate.text','rb')
+                    # pdfdatab=datafile.read()    #this is binary data
+                    # datafile.close()
                     # print(type(binary))
                     # print(encoded_string)
                     # binarystr  = ''.join(binary)
                     # print(binarystr)
                     # print(type(binarystr))
-                    data = models.Employeeprofile.objects.filter(employee=user_id).update(test=encoded_string,text=my_data)
-                    print(data)
+                    data = models.Employeeprofile.objects.filter(employee=user_id).update(test=encoded_string)
+                    # print(data)
                     print('data are saved is successfully')
 
                     # print(re)
@@ -662,7 +691,7 @@ def dashboard2(request):
 #                 print(re)
 #                 del request.session['txnId']
 #                 token = re['token']
-#                 request.session['token'] = token
+#                 request.session['token'] = tokenMEDIA_ROOT
 
 #                 return redirect('dashboard2')
 #             else:
@@ -712,6 +741,8 @@ def exportcsv(request):
     except Exception as e:
         print(e,'line number of error {}'.format(sys.exc_info()[-1].tb_lineno))
 
+import codecs
+import base64
 @login_required
 @csrf_exempt
 def download_certificate(request):
@@ -726,12 +757,34 @@ def download_certificate(request):
             company_name = company.company
             company_obj = models.Company.objects.get(name=company_name)
             data = models.Employeeprofile.objects.filter(employee_code=emp_code,company=company_obj).values('test')
+            print(data)
             test = None
+
             for i in data: 
                 test = i['test']
-            print(type(test))
-            my_str_as_bytes = str.encode(test)
-            print(type(my_str_as_bytes))
+            print(test)
+            if test != None:
+                f = list(test)
+                del f[-1]
+                del f[0]
+                del f[0]
+                my_str = ''.join(f)
+                print(my_str)
+                my_str_as_bytes = str.encode(my_str)
+                with open(os.path.join(settings.MEDIA_ROOT, 'certificate.pdf'), "wb") as f:
+                    f.write(codecs.decode(my_str_as_bytes, "base64"))
+                # with open(os.path.join(settings.MEDIA_ROOT, 'certificate.pdf'), 'rb') as fh:
+                #     response = HttpResponse(fh.read(), content_type="application/pdf")
+                #     response['Content-Disposition'] = 'attachment; filename=certificate.pdf '
+                #     # return response
+                #     # return HttpResponse('File download in tmp folder')
+                #     return 
+                return HttpResponse('http://localhost:8000/media/certificate.pdf')
+            else:
+                return HttpResponse('File data not present in database')
+            # print(type(test))
+            # my_str_as_bytes = str.encode(test)
+            # print(type(my_str_as_bytes))
             # b = list(test)
             # c = bytes(b)
             # print(type(c))

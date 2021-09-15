@@ -60,6 +60,75 @@ table>tbody>tr>td{
   margin-right: auto;
   width: 50%;
 }
+.pagination1 {
+  display: flex;
+  list-style: none;
+}
+.pagination1 li {
+  /* flex: 1; */
+  margin: 0px 5px;
+  padding:2px;
+  padding-left: 25px;
+  background: #dde1e7;
+  border-radius: 50%;
+  box-shadow: -3px -3px 7px #ffffff73, 3px 3px 5px rgba(94, 104, 121, 0.288);
+}
+.pagination1 li a {
+  font-size: 18px;
+  text-decoration: none;
+  color: #4d3252;
+  height: 35px;
+  width: 35px!important;
+  display: block;
+  line-height: 45px;
+}
+/* .pagination li:first-child a {
+  width: 120px;
+}
+.pagination li:last-child a {
+  width: 100px;
+} */
+.pagination1 li.active {
+  box-shadow: inset -3px -3px 7px #ffffff73,
+    inset 3px 3px 5px rgba(4, 86, 228, 0.288);
+    background:#035397;
+    color:#ffffff;
+}
+/* .current{
+  background:#035397;
+} */
+/* .pagination1 li.active  {
+  font-size: 17px;
+  color: #6f6cde;
+} */
+/* .pagination li:first-child {
+  margin: 0 15px 0 0;
+}
+.pagination li:last-child {
+  margin: 0 0 0 15px;
+} */
+
+/* #pagin {
+  display: inline-block;
+} */
+/* #pagin li {
+  display: inline-block;
+} */
+/* #pagin li {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+#pagin li.active {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+#pagin li:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+} */
 @media only screen and (max-width: 900px) {
         #myTable{
             display: none;
@@ -142,8 +211,10 @@ table>tbody>tr>td{
                       <input type="file" id="upload" name="upload" hidden/>
                   </form>
               </div>
-              <div class='col-lg-3 col-sm-1 col-xs-1 col-xl-6'>
-
+              <div class='col-lg-3 col-sm-3 col-xs-3 col-xl-6'>
+                <!-- <ul id="pagin" class="pagination1">
+         
+                </ul> -->
               </div>
               <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2'>
                 <button id="export" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);"><img src="/static/img/export.png" height='30px'></button>
@@ -166,7 +237,7 @@ table>tbody>tr>td{
                       <th scope="col" class='p-4'>Branch</th>
                       <th scope="col" class='p-4'>Department</th>
                       <th scope="col" class='p-4'>Status</th>
-                      <th scope="col" class='p-4' style="display:none">Download Certificate</th>
+                      <th scope="col" class='p-4' >Download Certificate</th>
                       <th scope="col" class='p-4'>Action</th>
                     </tr>
                   </thead>
@@ -178,7 +249,7 @@ table>tbody>tr>td{
                           <td class='p-4'>{{emps.branch}}</td>
                           <td class='p-4'>{{emps.department}}</td>
                           <td  class='p-4'>{{emps.status}}</td>
-                          <td class='p-4'style="display:none"><a class="use-address" download style="cursor: pointer;">Download Certificate</a></td>
+                          <td class='p-4'><a class="use-address" download style="cursor: pointer;">Download Certificate</a></td>
                           {% if emps.status == 'Not Checked'%}
                           <td class='p-4'><button type="button" class="user-email btn btn-info">send email</button></td>
                           {% else %}
@@ -255,7 +326,7 @@ table>tbody>tr>td{
         </div>
         <!-- <img src="/media/cowin_status_pie.png" style="margin-top: 20px;">  -->
         <div class='row m-4'>
-          <div class='card ' style="    box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
+          <div class='card ' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
               <div class='col-lg-3'>
                 <h1 style="color: #035397; font-weight:500px !important;">{{total}}</h1>
@@ -267,7 +338,7 @@ table>tbody>tr>td{
           </div>
         </div>
         <div class='row m-4 '>
-          <div class='card' style="    box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
+          <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
               <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
                 <h1 style="color:lightgreen">{{fully_vaccinated}}</h1>
@@ -279,7 +350,7 @@ table>tbody>tr>td{
         </div>
         </div>
         <div class='row m-4'>
-          <div class='card' style="    box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
+          <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
               <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
                 <h1 style="color:orange">{{partial_vaccinated}}</h1>
@@ -291,7 +362,7 @@ table>tbody>tr>td{
         </div>
         </div>
         <div class='row m-4'>
-          <div class='card' style="    box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
+          <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
               <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
                 <h1 style="color: red;">{{not_vaccinated}}</h1>
@@ -303,7 +374,7 @@ table>tbody>tr>td{
         </div>
       </div>
       <div class='row m-4'>
-        <div class='card' style="    box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
+        <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
           <div class='rows'>
             <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
               <h1 style="color:brown">{{not_checked}}</h1>
@@ -323,7 +394,7 @@ table>tbody>tr>td{
 {% block content_js %}
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-    <script>
+<script>
       {% for message in messages %}
       // window.onload = function(){
       //   alert('{{message}}') 
@@ -333,6 +404,37 @@ table>tbody>tr>td{
       alert('{{message}}')
       // alert(window.onload)
     {% endfor %}
+
+    pageSize = 7
+    var pageCount = $('#myTable tr').length/pageSize;
+    for(var i = 0 ; i<pageCount;i++){
+        
+        $("#pagin").append('<li><a href="#">'+(i+1)+'</a></li> ');
+      }
+
+      $("#pagin li").first().find("a").addClass("current")
+    showPage = function(page) {
+	    $(".border-bottom").hide();
+	    $(".border-bottom").each(function(n) {
+	        if (n >= pageSize * (page - 1) && n < pageSize * page)
+	            $(this).show();
+	    });        
+	}
+    // alert(pageCount)
+    // showPage(1);
+
+$("#pagin li a").click(function() {
+    $("#pagin li a").removeClass("current");
+    $(this).addClass("current");
+    showPage(parseInt($(this).text())) 
+});
+
+    // $(document).ready(function() {
+    //             $('#myTable').paging({limit:7});
+    //         });
+    $("li").click(function () {
+  $(this).addClass("active").siblings().removeClass("active");
+});
       $('.user-email').click(function(){
         // alert('working')
         var name = $(this).closest("tr").find('td:eq(0)').text();
@@ -387,6 +489,10 @@ table>tbody>tr>td{
         filter = input.toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
+        // if(tr.is(':hidden')){
+                //  alert('working')
+        // }
+        // showPage(1);
         // alert(tr.length)
         // alert(filter)
         for(i = 0 ; i< tr.length; i++){
@@ -441,6 +547,7 @@ table>tbody>tr>td{
         filter = input.toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
+        alert(tr)
         // alert(tr.length)
         // alert(filter)
         for(i = 0 ; i< tr.length; i++){
@@ -674,9 +781,9 @@ table>tbody>tr>td{
         $('#upload').change(function(){
             $('#upload_csv').submit();
             })
-            $(function() {
-              $("#table_id").dataTable();
-            });
+            // $(function() {
+            //   $("#table_id").dataTable();
+            // });
 
 
             var config = {
@@ -719,7 +826,15 @@ table>tbody>tr>td{
                   data : {'name':name,'emp_code':emp_code},
                   success : function(response){
                   //reset the form after successful submit
-                    alert(response) 
+                    // alert(response)
+                    if(response != 'File data not present in database'){
+                      var url = response
+                    // window.location = url; 
+                    window.open(url, '_blank').focus();
+                    }else{
+                      alert(response)
+                    }
+                    
                   },
                   error : function(response){
                       console.log(response)
