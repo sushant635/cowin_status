@@ -360,7 +360,7 @@ import shutil
 
 def encrypt_string(hash_string):
     sha_signature = \
-        hashlib.sha256(hash_string.employee_nameencode()).hexdigest()
+        hashlib.sha256(hash_string.encode()).hexdigest()
     return sha_signature
 
 class BearerAuth(requests.auth.AuthBase):
@@ -757,9 +757,8 @@ def download_certificate(request):
             company_name = company.company
             company_obj = models.Company.objects.get(name=company_name)
             data = models.Employeeprofile.objects.filter(employee_code=emp_code,company=company_obj).values('test')
-            print(data)
+            # print(data)
             test = None
-
             for i in data: 
                 test = i['test']
             print(test)
@@ -769,7 +768,7 @@ def download_certificate(request):
                 del f[0]
                 del f[0]
                 my_str = ''.join(f)
-                print(my_str)
+                # print(my_str)
                 my_str_as_bytes = str.encode(my_str)
                 with open(os.path.join(settings.MEDIA_ROOT, 'certificate.pdf'), "wb") as f:
                     f.write(codecs.decode(my_str_as_bytes, "base64"))

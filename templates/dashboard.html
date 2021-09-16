@@ -460,22 +460,106 @@ $("#pagin li a").click(function() {
         input =  $('#department1').val();
         // alert(input)
         filter = input.toUpperCase();
+        var branch = $('#branch').val().toUpperCase();
+        var status = $('#status').val().toUpperCase();
+        var gender = $('#gender').val().toUpperCase();
+        // alert(branch)
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         // alert(tr.length)
         // alert(filter)
         for(i = 0 ; i< tr.length; i++){
           td = tr[i].getElementsByTagName("td")[3];
+         var  td2 = tr[i].getElementsByTagName("td")[2]
+        var   tdstatus = tr[i].getElementsByTagName("td")[4]
+        var  tdgender = tr[i].getElementsByTagName("td")[8]
           if(td){
             txtvalue = td.textContent || td.innerText;
+           var  txtvalue2 = td2.textContent || td2.innerText;
+           var  txtvalue3 = tdstatus.textContent || tdstatus.innerText;
+           var  txtvalue4 = tdgender.textContent || tdgender.innerText;
+            console.log(txtvalue2)
             // alert(txtvalue.toUpperCase())
             // alert(filter)
             // alert(txtvalue)
-            if(txtvalue.toUpperCase().indexOf(filter) > -1){
-              tr[i].style.display = '';
-            }else{
-              tr[i].style.display = 'none';
+            // console.log(txtvalue2.toUpperCase())
+            if(txtvalue2.toUpperCase() == branch ){
+              // alert(tr[i])
+              console.log(tr[i])
+              // alert('working')
             }
+            // else{
+            //   // alert('not working')
+            //   cons
+            // }
+            
+            if(branch == "BRANCH" && status == 'STATUS' && gender == 'GENDER' && filter != 'DEPARTMENT'){
+                  if(txtvalue.toUpperCase().indexOf(filter) > -1){
+                  tr[i].style.display = '';
+                }else{
+                  tr[i].style.display = 'none';
+                }
+            }
+            else if(branch != "BRANCH" && status == 'STATUS' && gender == 'GENDER'){
+                if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == branch){
+                  console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
+            }else if(branch == "BRANCH" && status != 'STATUS' && gender == 'GENDER'){
+                if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(branch == "BRANCH" && status == 'STATUS' && gender != 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue4.toUpperCase() == gender){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+
+            }else if(branch != "BRANCH" && status != 'STATUS' && gender == 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == branch && txtvalue3.toUpperCase() == status){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(branch != "BRANCH" && status == 'STATUS' && gender != 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == branch && txtvalue4.toUpperCase() == gender){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(branch == "BRANCH" && status != 'STATUS' && gender != 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status && txtvalue4.toUpperCase() == gender){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(branch != "BRANCH" && status != 'STATUS' && gender != 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status && txtvalue4.toUpperCase() == gender && txtvalue2.toUpperCase() == branch){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }
+            else{
+              console.log('Working')
+            }
+
+            // if(txtvalue.toUpperCase().indexOf(filter) > -1){
+            //   tr[i].style.display = '';
+            // }else{
+            //   tr[i].style.display = 'none';
+            // }
 
           }
         }
@@ -487,25 +571,83 @@ $("#pagin li a").click(function() {
         input = $('#branch').val();
         // alert(input)
         filter = input.toUpperCase();
+        var department = $('#department1').val().toUpperCase();
+        var status = $('#status').val().toUpperCase();
+        var gender = $('#gender').val().toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
-        // if(tr.is(':hidden')){
-                //  alert('working')
-        // }
-        // showPage(1);
-        // alert(tr.length)
-        // alert(filter)
+        
         for(i = 0 ; i< tr.length; i++){
           td = tr[i].getElementsByTagName("td")[2];
+          var td2 = tr[i].getElementsByTagName("td")[3]
+          var tdstatus = tr[i].getElementsByTagName("td")[4]
+          var tdgender = tr[i].getElementsByTagName("td")[8]
           if(td){
             txtvalue = td.textContent || td.innerText;
-            // alert(txtvalue.toUpperCase())
-            // alert(filter)
-            // alert(txtvalue)
-            if(txtvalue.toUpperCase().indexOf(filter) > -1){
-              tr[i].style.display = '';
-            }else{
-              tr[i].style.display = 'none';
+            var txtvalue2 = td2.textContent || td2.innerText;
+            var txtvalue3 = tdstatus.textContent || tdstatus.innerText;
+            var txtvalue4 = tdgender.textContent || tdgender.innerText;
+
+            if(filter != "BRANCH" && status == 'STATUS' && gender == 'GENDER' && department == 'DEPARTMENT'){
+                  if(txtvalue.toUpperCase().indexOf(filter) > -1){
+                  tr[i].style.display = '';
+                }else{
+                  tr[i].style.display = 'none';
+                }
+            }
+            else if(department != 'DEPARTMENT' && status == 'STATUS' && gender == 'GENDER'){
+                if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department){
+                  console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
+            }else if(department == 'DEPARTMENT' && status != 'STATUS' && gender == 'GENDER'){
+                if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(department == 'DEPARTMENT' && status == 'STATUS' && gender != 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue4.toUpperCase() == gender){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+
+            }else if(department != 'DEPARTMENT' && status != 'STATUS' && gender == 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue3.toUpperCase() == status){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(department != 'DEPARTMENT' && status == 'STATUS' && gender != 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue4.toUpperCase() == gender){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(department == 'DEPARTMENT' && status != 'STATUS' && gender != 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status && txtvalue4.toUpperCase() == gender){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(department != 'DEPARTMENT' && status != 'STATUS' && gender != 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status && txtvalue4.toUpperCase() == gender && txtvalue2.toUpperCase() == department){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }
+            else{
+              console.log('Working')
             }
 
           }
@@ -517,24 +659,97 @@ $("#pagin li a").click(function() {
         var input, filter , table , tr , td,i,txtvalue;
         input = $('#status').val();
         filter = input.toUpperCase();
+        // alert(filter)
+        var department = $('#department1').val().toUpperCase();
+        var gender = $('#gender').val().toUpperCase();
+        var branch = $('#branch').val().toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         // alert(tr.length)
         // alert(filter)
         for(i = 0 ; i< tr.length; i++){
           td = tr[i].getElementsByTagName("td")[4];
+          var td2 = tr[i].getElementsByTagName("td")[3]
+          var td3 = tr[i].getElementsByTagName("td")[2];
+          var td4 = tr[i].getElementsByTagName("td")[8]
+
           if(td){
             txtvalue = td.textContent || td.innerText;
+            var txtvalue2 = td2.textContent || td2.innerText;
+            var txtvalue3 = td3.textContent || td3.innerText;
+            var txtvalue4 = td4.textContent || td4.innerText;
             // alert(txtvalue.toUpperCase())
             // alert(filter)
             // alert(txtvalue)
-            if(txtvalue.toUpperCase() == filter ){
-              tr[i].style.display = '';
-              console.log(txtvalue)
-              console.log(tr[i].innerText)
-            }else{
-              tr[i].style.display = 'none';
+            // if(txtvalue.toUpperCase() == filter ){
+            //   tr[i].style.display = '';
+            //   console.log(txtvalue)
+            //   console.log(tr[i].innerText)
+            // }else{BRANCH
+            //   tr[i].style.display = 'none';
+            // }
+            if(filter != "STATUS" && branch == 'BRANCH' && gender == 'GENDER' && department == 'DEPARTMENT'){
+                  if(txtvalue.toUpperCase().indexOf(filter) > -1){
+                  tr[i].style.display = '';
+                }else{
+                  tr[i].style.display = 'none';
+                }
             }
+            else if(department != 'DEPARTMENT' && branch == 'BRANCH' && gender == 'GENDER'){
+                if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department){
+                  console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
+            }else if(department == 'DEPARTMENT' && branch != 'BRANCH'  && gender == 'GENDER'){
+                if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(department == 'DEPARTMENT' && branch == 'BRANCH' && gender != 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue4.toUpperCase() == gender){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+
+            }else if(department != 'DEPARTMENT' && branch != 'BRANCH' && gender == 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue3.toUpperCase() == branch){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(department != 'DEPARTMENT' && branch == 'BRANCH' && gender != 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue4.toUpperCase() == gender){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(department == 'DEPARTMENT' && branch != 'BRANCH' && gender != 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch && txtvalue4.toUpperCase() == gender){
+                    console.log('working')
+                  tr[i].style.display = '';
+                   }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(department != 'DEPARTMENT' && branch != 'BRANCH' && gender != 'GENDER'){
+              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch && txtvalue4.toUpperCase() == gender && txtvalue2.toUpperCase() == department){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }
+            else{
+              console.log('Working')
+            }
+
 
           }
         }
@@ -547,24 +762,94 @@ $("#pagin li a").click(function() {
         filter = input.toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
-        alert(tr)
+        var department = $('#department1').val().toUpperCase();
+        var status = $('#status').val().toUpperCase();
+        var branch = $('#branch').val().toUpperCase();
+        // alert(tr)
         // alert(tr.length)
         // alert(filter)
-        for(i = 0 ; i< tr.length; i++){
+       for(i = 0 ; i< tr.length; i++){
+        console.log(tr[i])
           td = tr[i].getElementsByTagName("td")[8];
+          var td4 = tr[i].getElementsByTagName("td")[4];
+          var td2 = tr[i].getElementsByTagName("td")[3]
+          var td3 = tr[i].getElementsByTagName("td")[2];
           if(td){
             txtvalue = td.textContent || td.innerText;
+            var txtvalue2 = td2.textContent || td2.innerText;
+            var txtvalue3 = td3.textContent || td3.innerText;
+            var txtvalue4 = td4.textContent || td4.innerText;
             // alert(txtvalue.toUpperCase())
             // alert(filter)
             // alert(txtvalue)
-            if(txtvalue.toUpperCase() == filter ){
-              tr[i].style.display = '';
-              console.log(txtvalue)
-              console.log(tr[i].innerText)
-            }else{
-              tr[i].style.display = 'none';
+            // if(txtvalue.toUpperCase() == filter ){
+            //   tr[i].style.display = '';
+            //   console.log(txtvalue)
+            //   console.log(tr[i].innerText)
+            // }else{
+            //   tr[i].style.display = 'none';GENDER
+            // }
+            if(filter != "GENDER" && branch == 'BRANCH' && status == 'STATUS' && department == 'DEPARTMENT'){
+                  if(txtvalue.toUpperCase().indexOf(filter) > -1){
+                  tr[i].style.display = '';
+                }else{
+                  tr[i].style.display = 'none';
+                }
             }
+            else if(department != 'DEPARTMENT' && branch == 'BRANCH' && status == 'STATUS'){
+                if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department){
+                  console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
+            }else if(department == 'DEPARTMENT' && branch != 'BRANCH'  && status == 'STATUS'){
+                if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(department == 'DEPARTMENT' && branch == 'BRANCH' && status != 'STATUS'){
+              if(txtvalue.toUpperCase() == filter && txtvalue4.toUpperCase() == status){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
 
+            }else if(department != 'DEPARTMENT' && branch != 'BRANCH' && status == 'STATUS'){
+              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue3.toUpperCase() == branch){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(department != 'DEPARTMENT' && branch == 'BRANCH' && status != 'STATUS'){
+              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue4.toUpperCase() == status){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(department == 'DEPARTMENT' && branch != 'BRANCH' && status != 'STATUS'){
+              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch && txtvalue4.toUpperCase() == status){
+                    console.log('working')
+                  tr[i].style.display = '';
+                   }else{
+                      tr[i].style.display = 'none';
+                    }
+            }else if(department != 'DEPARTMENT' && branch != 'BRANCH' && status != 'STATUS'){
+              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch && txtvalue4.toUpperCase() == status && txtvalue2.toUpperCase() == department){
+                    console.log('working')
+                  tr[i].style.display = '';
+                    }else{
+                      tr[i].style.display = 'none';
+                    }
+            }
+            else{
+              console.log('Working')
+            }
           }
         }
       
@@ -653,8 +938,11 @@ $("#pagin li a").click(function() {
                   }
                   var row = []
                   row.push(col1_value,col2_value,col3_value,col4_value,col5_value,col6_value,col8_value,col9_value,col10_value,col11_value,col12_value,col13_value,Difference_In_Days, Difference_In_Days2)
-                  arrData.push(['Name','Last Checked','Branch','Department','Status','Emp Code','Gender','Birth Year','Beneficiary Id','vaccine','Dose1 Date','Does2 Date','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'],row.join(","))
+                  // alert(row.length)
+                  // ['Name','Last Checked','Branch','Department','Status','Emp Code','Gender','Birth Year','Beneficiary Id','vaccine','Dose1 Date','Does2 Date','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'],
+                  arrData.push(row.join(","))
                   console.log('rows',row)
+                  // alert(arrData.length)
                   var obj={};
                   obj.col1=col1_value;
                   obj.col2=col2_value;
@@ -662,11 +950,25 @@ $("#pagin li a").click(function() {
                   obj.col4=col4_value;
                   obj.col5=col5_value;
                   // alert(arrData)
-                  console.log('array data',arrData);
-                  downloadCSVFile(arrData.join("\n"), "status.csv");
-                  // htmlToCSV(arrData, "status.csv");
-                }    
+                  // console.log('array data',arrData);
+                  // );
+                  // 
+                }   
+                // 
           });   
+          // alert(arrData.length) 
+          len = arrData.length;
+          console.log(len)
+          var data = []
+          data.push(['Name','Last Checked','Branch','Department','Status','Emp Code','Gender','Birth Year','Beneficiary Id','vaccine','Dose1 Date','Does2 Date','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'])
+          for(var i =1 ; i<=len;i++){
+            console.log(i)
+            console.log(arrData[i])
+            data.push(arrData[i])
+          }
+          console.log(data)
+          downloadCSVFile(data.join("\n"), "status.csv")
+          // htmlToCSV(arrData, "status.csv");
         })
 
 
