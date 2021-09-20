@@ -213,10 +213,10 @@ table>tbody>tr>td{
                 </ul> -->
               </div>
               <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2'>
-                <button id="export" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);"><img src="/static/img/export.png" height='30px'></button>
+                <button id="export" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);"><img src="/static/img/export.png" height='24px'></button>
               <!-- </div>
               <div class='col-lg-1'> -->
-                <button id="exportemail" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);"><img src="/static/img/send-mail.png" height='30px'></button>
+                <button id="exportemail" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);"><img src="/static/img/send-mail.png" height='24px'></button>
               </div>
           </div>
           </div> 
@@ -226,7 +226,7 @@ table>tbody>tr>td{
             <div class="card ">
               <div style="overflow-x:auto;" class="table-responsive">
                 <table class="table " id="myTable">
-                  <thead style="background-color: #035397;" class='topnav'>
+                  <thead style="background-image: linear-gradient(#00bbff, #035397);border-radius: 25px !important" class='topnav'>
                     <tr class='text-light'>
                       <th scope="col" class='p-4'>Emp</th>
                       <th scope="col" class='p-4'>Last checked</th>
@@ -244,7 +244,15 @@ table>tbody>tr>td{
                           <td class='p-4'>{{emps.last_checked}}</td>
                           <td class='p-4'>{{emps.branch}}</td>
                           <td class='p-4'>{{emps.department}}</td>
-                          <td  class='p-4'>{{emps.status}}</td>
+                          {% if emps.status == "Not Checked" %}
+			  <td  class='p-4' style="color:#7d3ac1; "><b>{{emps.status}}</b></td>                                
+                          {% elif emps.status == 'Partially Vaccinated' %}
+                          <td  class='p-4' style="color:#ffb800"><b>{{emps.status}}</b></td>                                
+                          {% elif emps.status == 'Fully Vaccinated' %}
+                          <td  class='p-4' style="color:#20e074"><b>{{emps.status}}</b></td>                                
+                          {% else %}
+                          <td  class='p-4' style="color:#fd3636 ;"><b>{{emps.status}}</b></td>                                
+                          {% endif %} 
                           <td class='p-4'><a class="use-address" download style="cursor: pointer;">Download Certificate</a></td>
                           {% if emps.status == 'Not Checked'%}
                           <td class='p-4'><button type="button" class="user-email btn btn-info">send email</button></td>
