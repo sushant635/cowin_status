@@ -349,7 +349,27 @@ def dashboard(request):
                     not_vaccinated += 1 
                 emp_list.append({'name':name,'emp_code':emp_code,'branch':branch,'department':department,'status':status,'last_checked':last_checked1,'beneficialy_id':beneficialy_id,'gender':gender,'birth_year':birth_year,'does1_date':does1_date1,'does2_date':does2_date1,'vaccine':vaccine})
             print(emp_list)
-            context = {'emp':emp_list,'partial_vaccinated':partial_vaccinated,'fully_vaccinated':fully_vaccinated,'not_vaccinated':not_vaccinated,'not_checked':not_checked,'total':total}
+            branch_details = models.Employeeprofile.objects.all().values('employee_branch','employee_department')
+            branch_li = []
+            department_li = []
+            for i in branch_details:
+                branch_li.append(i['employee_branch'])
+                department_li.append(i['employee_department'])
+
+            branches = []
+            for i in branch_li:
+                if i not in branches:
+                    branches.append(i)
+
+            departments = []
+            for i in department_li:
+                if i not in departments:
+                    departments.append(i)
+
+            print(branches,departments)
+
+
+            context = {'emp':emp_list,'partial_vaccinated':partial_vaccinated,'fully_vaccinated':fully_vaccinated,'not_vaccinated':not_vaccinated,'not_checked':not_checked,'total':total,'branch':branches,'department':departments}
             return render(request,'dashboard.html',context)
 
     except Exception as e:

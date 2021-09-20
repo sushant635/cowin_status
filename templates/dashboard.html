@@ -150,10 +150,8 @@ table>tbody>tr>td{
 {% block Department %} 
 <select class='form-select' name="location" id="department1" >
   <option>Department</option>
-  <option>Biz App</option>
-  <option>Software Developer</option>
-  {% for i in site%}
-    <option value="{{i.id}}">{{i.name}}</option>
+  {% for i in department%}
+  <option value="{{i}}">{{i}}</option>
   {% endfor %}
 </select>
 {% endblock Department %}
@@ -161,10 +159,8 @@ table>tbody>tr>td{
 {% block Branch %} 
 <select class='form-select' name='branch' id='branch'>
   <option>Branch</option>
-  <option>Mumbai Ho</option>
-  <option>Bengaluru</option>
-    {% for i in demp %}
-    <option value='{{i.id}}'>{{i.name}}</option>
+    {% for i in branch %}
+    <option value='{{i}}'>{{i}}</option>
     {% endfor %}
 </select>
 {% endblock Branch %}
@@ -341,7 +337,7 @@ table>tbody>tr>td{
           <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
               <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
-                <h1 style="color:lightgreen">{{fully_vaccinated}}</h1>
+                <h1 style="color:#20e074">{{fully_vaccinated}}</h1>
               </div>
               <div class='col-lg-5 col-md-5 col-sm-6 col-xl-4 col-xs-8'>
                 <h5 class="card-title">Fully Vaccinated</h5>
@@ -353,7 +349,7 @@ table>tbody>tr>td{
           <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
               <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
-                <h1 style="color:orange">{{partial_vaccinated}}</h1>
+                <h1 style="color:#ffb800">{{partial_vaccinated}}</h1>
               </div>
               <div class='col-lg-5 col-md-5 col-sm-6 col-xl-4 col-xs-8'>
                 <h5 class="card-title">Partially Vaccinated</h5>
@@ -365,7 +361,7 @@ table>tbody>tr>td{
           <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
               <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
-                <h1 style="color: red;">{{not_vaccinated}}</h1>
+                <h1 style="color: #7d3ac1">{{not_vaccinated}}</h1>
               </div>
               <div class='col-lg-5 col-md-5 col-sm-6 col-xl-4 col-xs-8'>
                 <h5 class="card-title">Not Vaccinated</h5>
@@ -377,7 +373,7 @@ table>tbody>tr>td{
         <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
           <div class='rows'>
             <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
-              <h1 style="color:brown">{{not_checked}}</h1>
+              <h1 style="color:#fd3636">{{not_checked}}</h1>
             </div>
             <div class='col-lg-5 col-md-5 col-sm-6 col-xl-4 col-xs-8'>
               <h5 class="card-title">Not Checked</h5>
@@ -1095,7 +1091,7 @@ $("#pagin li a").click(function() {
                   datasets: [{
                     data: [{{fully_vaccinated}}, {{partial_vaccinated}}, {{not_vaccinated}},{{not_checked}}],
                     backgroundColor: [
-                      '#00ff00','#ffa500','#ff0000','#A52A2A'
+                  	'#20e074','#ffb800','#7d3ac1','#fd3636'
                     ],
           //           label: 'Population'
                   }],
