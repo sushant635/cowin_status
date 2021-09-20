@@ -35,7 +35,8 @@ body{
   /* background: -webkit-gradient(linear, center top, center bottom, color-stop(0%,#0575e6), color-stop(20%,#0575e6), color-stop(40%,#021b78), color-stop(90%,#021b78), color-stop(100%,#021b78)); */
   background-color: #035397;
   border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
+  /* border-top-left-radius: 10px; */
+  border-radius: 5px !important;
   width:100%;
   height: 65px;
 }
@@ -200,11 +201,11 @@ table>tbody>tr>td{
         <div class='container mt-5'>
           <div class='container mt-5 justify-content-center'>
             <div class='row'>
-              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2'>
+              <div class='col-lg-1 col-md-2 col-sm-3 col-xs-2 col-xl-2'>
                   <!-- <button>Data</button> -->
                   <a href="/static/sampletemplate/new_template.csv" download  class='btn btn-primary' style="color:black ;background-color:#ffffff;" id='site_csvsample'><img src="/static/img/download.png" height='20px'> Template</a>
               </div>
-              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-4 col-xl-2'>
+              <div class='col-lg-1 col-md-3 col-sm-3 col-xs-2 col-xl-2'>
                   <form action="/dashboard/" method="POST" enctype="multipart/form-data" id='upload_csv'> 
                       {% csrf_token %}
                       <label for="upload" class='btn ' style="background-image: linear-gradient(#00bbff, #035397); color:#ffffff" ><img src="/static/img/plus.png" height='20px'> Upload File</label>                    
@@ -216,11 +217,11 @@ table>tbody>tr>td{
          
                 </ul> -->
               </div>
-              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2'>
-                <button id="export" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);"><img src="/static/img/export.png" height='30px'></button>
+              <div class='col-lg-2 col-md-2 col-sm-3 col-xs-2 col-xl-2'>
+                <button id="export" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);"><img src="/static/img/export.png" height='24px'></button>
               <!-- </div>
               <div class='col-lg-1'> -->
-                <button id="exportemail" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);"><img src="/static/img/send-mail.png" height='30px'></button>
+                <button id="exportemail" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);"><img src="/static/img/send-mail.png" height='24px'></button>
               </div>
           </div>
           </div> 
@@ -230,7 +231,7 @@ table>tbody>tr>td{
             <div class="card ">
               <div style="overflow-x:auto;" class="table-responsive">
                 <table class="table " id="myTable">
-                  <thead style="background-color: #035397;" class='topnav'>
+                  <thead style="background-image: linear-gradient(#00bbff, #035397);border-radius: 25px !important" class='topnav'>
                     <tr class='text-light'>
                       <th scope="col" class='p-4'>Emp</th>
                       <th scope="col" class='p-4'>Last checked</th>
@@ -248,10 +249,18 @@ table>tbody>tr>td{
                           <td class='p-4'>{{emps.last_checked}}</td>
                           <td class='p-4'>{{emps.branch}}</td>
                           <td class='p-4'>{{emps.department}}</td>
-                          <td  class='p-4'>{{emps.status}}</td>
+                          {% if emps.status == "Not Checked" %}
+                          <td  class='p-4' style="color:#7d3ac1; ">{{emps.status}}</td>                                
+                          {% elif emps.status == 'Partially Vaccinated' %}
+                          <td  class='p-4' style="color:#ffb800">{{emps.status}}</td>                                
+                          {% elif emps.status == 'Fully Vaccinated' %}
+                          <td  class='p-4' style="color:#20e074">{{emps.status}}</td>                                
+                          {% else %}
+                          <td  class='p-4' style="color:#fd3636 ;">>{{emps.status}}</td>                                
+                          {% endif %}   
                           <td class='p-4'><a class="use-address" download style="cursor: pointer;">Download Certificate</a></td>
                           {% if emps.status == 'Not Checked'%}
-                          <td class='p-4'><button type="button" class="user-email btn btn-info">send email</button></td>
+                          <td class='p-4'><button type="button" class="user-email btn" style="background-image: linear-gradient(#00bbff, #035397);color:#ffffff"><b>send email</b></button></td>
                           {% else %}
                           <td class='p-4'style="display:none"><button type="button" class="user-email btn btn-info">send email</button></td>
                           {% endif %}
@@ -1095,7 +1104,7 @@ $("#pagin li a").click(function() {
                   datasets: [{
                     data: [{{fully_vaccinated}}, {{partial_vaccinated}}, {{not_vaccinated}},{{not_checked}}],
                     backgroundColor: [
-                      '#00ff00','#ffa500','#ff0000','#A52A2A'
+                      '#20e074','#ffb800','#7d3ac1','#fd3636'
                     ],
           //           label: 'Population'
                   }],
