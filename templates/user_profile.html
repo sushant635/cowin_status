@@ -57,7 +57,7 @@ figure img{
    margin-top: 15px;
 }
 .css{
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(59%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.65))), url('/static/img/corona.png') no-repeat;
+    background: url('/static/img/corona.png') no-repeat;
 
 
 }
@@ -68,6 +68,14 @@ figure img{
   display: flex;
   align-items: center;
 }
+.vertical {
+            border-left: 2px solid white;
+            height: 70px;
+            margin-top: 0%;
+            position:absolute;
+            /* left: 50%; */
+        }
+.line { border-bottom: 1px solid red; position: absolute; top: 10px; width: 100%; z-index: -1; }
 @media only screen and (max-width: 900px) {
         #history{
           margin-top: 20px;
@@ -84,7 +92,7 @@ figure img{
 
 
 {% block image_header %} 
-<a  class="dashboard"><img src="/static/img/Group 1615.png" height='40px'></a>
+<a href="{% url 'logout' %}" class="dashboard"><img src="/static/img/shutdown.png" height='40px'></a>
 {% endblock image_header %}
 
 
@@ -190,9 +198,12 @@ figure img{
             <div class='container css'>
                 <div class='row '>
                     <div class='col-md-4 col-lg-3 col-sm-5 col-xs-4 mt-5' >
+
                         <figure>
                             <img src="/static/img/form 1.png" alt="image">
+                            <div class = "vertical" style="margin-left: 33px;"></div>
                           </figure>
+
                     </div>
                     <div class='col-md-7 col-lg-9 col-sm-7 col-xs-7 mt-5' style="padding: 0% !important;">
                         <label class='fs-5 mt-3' style="  font-weight: 900; color:#fff"><b>Ensure all the details are filled</b></label>
@@ -202,6 +213,7 @@ figure img{
                     <div class='col-md-4 col-lg-3 col-sm-5 col-xs-4 mt-4' >
                         <figure>
                             <img src="/static/img/submit 1.png" alt="image">
+                            <div class = "vertical" style="margin-left: 33px;"></div>
                           </figure>
                     </div>
                     <div class='col-md-7 col-lg-9 col-sm-7 col-xs-7 mt-5' style="padding: 0% !important;">
@@ -209,10 +221,12 @@ figure img{
                     </div>
 
                 </div>
+                <!-- <svg width="500" height="500"><line x1="50" y1="50" x2="350" y2="350" stroke="black"/></svg> -->
                 <div class='row'>
                     <div class='col-md-4 col-lg-3 col-sm-5 col-xs-4 mt-4' >
                         <figure>
                             <img src="/static/img/otp.png" alt="image">
+                            <div class = "vertical" style="margin-left: 33px;"></div>
                           </figure>
                     </div>
                     <div class='col-md-7 col-lg-9 col-sm-7 col-xs-7 mt-5' style="padding: 0% !important;">

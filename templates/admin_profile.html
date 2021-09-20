@@ -27,6 +27,9 @@ body{
   height: 100%;
   width:100%;
 }
+hr.new2 {
+  border-top: 4px solid black;
+}
 .topnav {
   overflow: hidden;
   /* background-image: linear-gradient(#68A000, #3E5622); */
@@ -85,10 +88,16 @@ table>tbody>tr>td{
         .dashboard{
           display: none;
         }
+        .logout{
+          display: none;
+        }
 
     }
 </style>
 {% endblock content_css %}
+{% block logout %} 
+<a href="{% url 'logout' %}" class="logout"><img src="/static/img/shutdown.png" height='40px'></a>
+{% endblock logout %}
 {% block image_header %} 
 <a href="{% url 'dashboard' %}" class="dashboard"><img src="/static/img/Group 1615.png" height='40px'></a>
 {% endblock image_header %}
@@ -180,7 +189,15 @@ table>tbody>tr>td{
                         <input type="date" id='changedate' class=' form-control'  data-date="" data-date-format="DD MMMM YYYY">
                     </div>
                 </div>
-                <div class="row m-4">
+                <div class='row mt-3'>
+                  <div class='col-xs-1 col-sm-4 col-md-4 col-xl-3 col-lg-2' style="color: #f0f2fa;">
+                      9 PM
+                  </div>
+                  <div class='col-xs-10 col-sm-8 col-md-8 col-xl-9 col-lg-10'>
+                    <hr class="new2">
+                </div>
+                </div>
+                <div class="row m-4 mt-1">
                     <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
                         <div class='rows'>
                           <div class='col-lg-4' style="margin: 10px;">
@@ -192,7 +209,15 @@ table>tbody>tr>td{
                       </div>
                     </div>
                 </div>
-                <div class="row m-4">
+                <div class='row mt-3'>
+                  <div class='col-xs-1 col-sm-4 col-md-4 col-xl-3 col-lg-2' style="color: #f0f2fa;">
+                      10 PM
+                  </div>
+                  <div class='col-xs-10 col-sm-8 col-md-8 col-xl-9 col-lg-10'>
+                    <hr class="new2">
+                </div>
+                </div>
+                <div class="row m-4 mt-1">
                     <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
                         <div class='rows'>
                           <div class='col-lg-4' style="margin: 10px;">
@@ -210,7 +235,14 @@ table>tbody>tr>td{
                         <input type="date" id='todaydate' class=' form-control mt-5'  data-date="" data-date-format="DD MMMM YYYY" disabled>
                     </div>
                 </div>
-                <div class="row m-4">
+                <div class='row mt-3'>
+                  <div class='col-xs-1 col-sm-4 col-md-4 col-xl-3 col-lg-2' style="color: #f0f2fa;">
+                      9 PM
+                  </div>
+                  <div class='col-xs-10 col-sm-8 col-md-8 col-xl-9 col-lg-10'>
+                    <hr class="new2">
+                </div>
+                <div class="row m-4 mt-1">
                     <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
                         <div class='rows'>
                           <div class='col-lg-4' style="margin: 10px;">
@@ -222,7 +254,14 @@ table>tbody>tr>td{
                       </div>
                     </div>
                 </div>
-                <div class="row m-4">
+                <div class='row mt-3'>
+                  <div class='col-xs-1 col-sm-4 col-md-4 col-xl-3 col-lg-2' style="color: #f0f2fa;">
+                      9 PM
+                  </div>
+                  <div class='col-xs-10 col-sm-8 col-md-8 col-xl-9 col-lg-10'>
+                    <hr class="new2">
+                </div>
+                <div class="row m-4 mt-1">
                     <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
                         <div class='rows'>
                           <div class='col-lg-4' style="margin: 10px;">

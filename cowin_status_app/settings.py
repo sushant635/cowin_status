@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'cowin_status_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cowinstatus',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
+        'NAME': 'cowin_status',
+        'USER': 'odoo11',
+        'PASSWORD': 'asdfgh',
         'HOST': 'localhost',
         'PORT': '5432',  
         

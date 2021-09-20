@@ -255,7 +255,7 @@ table>tbody>tr>td{
                           {% endif %} 
                           <td class='p-4'><a class="use-address" download style="cursor: pointer;">Download Certificate</a></td>
                           {% if emps.status == 'Not Checked'%}
-                          <td class='p-4'><button type="button" class="user-email btn btn-info">send email</button></td>
+                          <td class='p-4'><button type="button" class="user-email btn" style="background-image: linear-gradient(#00bbff, #035397);color:#f0f2fa">send email</button></td>
                           {% else %}
                           <td class='p-4'style="display:none"><button type="button" class="user-email btn btn-info">send email</button></td>
                           {% endif %}
@@ -677,7 +677,8 @@ $("#pagin li a").click(function() {
           var td3 = tr[i].getElementsByTagName("td")[2];
           var td4 = tr[i].getElementsByTagName("td")[8]
 
-          if(td){
+          if(td){9
+
             txtvalue = td.textContent || td.innerText;
             var txtvalue2 = td2.textContent || td2.innerText;
             var txtvalue3 = td3.textContent || td3.innerText;
@@ -1094,6 +1095,17 @@ $("#pagin li a").click(function() {
 
             var config = {
               type: 'doughnut',
+              plugins: [{
+              afterDraw: chart => {
+                var ctx = chart.chart.ctx;
+                ctx.save();
+                var image = new Image();      
+                image.src = '/static/img/vaccine.png';      
+                imageSize = 180;
+                ctx.drawImage(image, chart.chart.width / 2 - imageSize / 2, chart.chart.height / 2 - imageSize / 2, imageSize, imageSize);
+                ctx.restore();
+              }
+            }],
                 data: {
                 // labels:['Fully Vaccinated','Partial vaccinated','Not Vaccinated','Not Checked']
                   datasets: [{
@@ -1101,11 +1113,13 @@ $("#pagin li a").click(function() {
                     backgroundColor: [
                   	'#20e074','#ffb800','#7d3ac1','#fd3636'
                     ],
+                  borderWidth: [0, 0, 0, 0],
           //           label: 'Population'
                   }],
                   labels: ['Fully Vaccinated','Partial vaccinated','Not Vaccinated','Not Checked']
                 },
                 options: {
+                  cutoutPercentage: 85,
                   responsive: true,
                   legend: {
                     display: false
