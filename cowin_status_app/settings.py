@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-#9vh2p+d33@1n#5=k(tb^&(u@0m%xm0waw8@53g73#zgdd$wat
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'cowin_status_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cowin_status',
-        'USER': 'odoo11',
-        'PASSWORD': 'asdfgh',
+        'NAME': 'cowinstatus',
+        'USER': 'admin',
+        'PASSWORD': 'admin',
         'HOST': 'localhost',
         'PORT': '5432',  
         

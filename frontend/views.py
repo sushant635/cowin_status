@@ -215,7 +215,7 @@ def dashboard(request):
                         beneficialy_id = fields[5]
                         mobile_number = fields[6]
                         print(fields)
-                        if User.objects.filter(username=username1).exists() and models.Employeeprofile.objects.filter(employee_code=emp_code,company=company_name).exists():
+                        if User.objects.filter(username=username1).exists():
                             print(emp_name)
                             emp_details.append(emp_name)
                             pass
@@ -404,6 +404,9 @@ def confirmOTP(request):
             today = date.today()
             if res.status_code == 200:
                 consumed = models.Consumed.objects.filter(company=company).values('Consumed').last()
+                if consumed == None or consumed == 0:
+                    messages.error(request,'employee name  and Cowin name are not same ')
+                    return redirect('user_profile')
                 today_min = datetime.combine(date.today(), time.min)
                 today_max = datetime.combine(date.today(), time.max)
                 today_cosumed = models.Consumed.objects.filter(company=company,created__range=(today_min, today_max)).values('today_consumed').last() 
@@ -445,6 +448,7 @@ def confirmOTP(request):
                     Beneficiary_Id = i['Beneficiary_Id']
                 emp_first_name = emp_name.split(' ')[0]
                 print(emp_first_name)
+                print(emp_first_name)
                 print(resp.status_code)
                 if resp.status_code == 200:
                     re = json.loads(resp.text)
@@ -455,9 +459,10 @@ def confirmOTP(request):
                         name = i['name']
                         first_name = name.split(' ')[0]
                         print(first_name)
+                        print(first_name)
                         if beneficiary_reference_id == Beneficiary_Id:
                             print('working')
-                            if emp_first_name == first_name:
+                            if emp_first_name.upper() == first_name.upper():
                                 print('working')
                                 print(i['vaccination_status'])
                                 vaccination_status = i['vaccination_status']
@@ -483,6 +488,41 @@ def confirmOTP(request):
                                     data = models.Employeeprofile.objects.filter(employee=user_id).update(gender=gender,cowin_status=vaccination_status,does1_date=dose1_date1,does2_date=dose2_date2,vaccine=vaccine,birth_year=birth_year,last_checked=today)
                                 else:
                                     data = models.Employeeprofile.objects.filter(employee=user_id).update(gender=gender,cowin_status=vaccination_status,does1_date=dose1_date1,vaccine=vaccine,birth_year=birth_year,last_checked=today)
+                                params = {
+                                "beneficiary_reference_id":beneficiary_reference_id,
+                                    }
+                                headers ={
+                                "accept": "application/pdf"
+                                }
+                                res = json.dumps(params)
+                                print(type(params))
+                                print(type(res))
+                                print(res)
+                                print(beneficiary_reference_id)
+                                resp = requests.get("https://cdn-api.co-vin.in/api/v2/registration/certificate/download?beneficiary_reference_id={}".format(beneficiary_reference_id),headers=headers, auth=BearerAuth(token),timeout=90)
+                                print(resp)
+                                if resp.status_code == 200:
+                                    # print(resp)
+                                    re = resp.text
+                                    print(type(re))
+                                    re = resp.text
+                                    chunk_size = 2000
+
+                                    with open(os.path.join(settings.MEDIA_ROOT,'download_certificate.pdf'),'wb') as fd:
+                                        for chunk in resp.iter_content(chunk_size):
+                                            print(type(chunk))
+                                            fd.write(chunk)
+                                    encoded_string = None
+                                    with open(os.path.join(settings.MEDIA_ROOT,'download_certificate.pdf'), "rb") as pdf_file:
+                                        encoded_string = base64.b64encode(pdf_file.read())
+                                    data = models.Employeeprofile.objects.filter(employee=user_id).values('employee_name').update(test=encoded_string)
+                                    # print(data)
+                                    print('data are saved is successfully')
+                                else:
+                                    print(resp.text)
+                                    print('data not store in database')
+                                    messages.error(request,resp.text)
+                                    return redirect('user_profile')
 
                                 print(dose1_date1)
                                 print(type(birth_year),birth_year,type(dose1_date),)
@@ -494,70 +534,6 @@ def confirmOTP(request):
                 else:
                     messages.error(request,'getting error for'+resp.text)
                     return redirect('user_profile')
-                    
-                params = {
-                    "beneficiary_reference_id":beneficiary_reference_id,
-                }
-                headers ={
-                    "accept": "application/pdf"
-                }
-                res = json.dumps(params)
-                print(type(params))
-                print(type(res))
-                print(res)
-                print(beneficiary_reference_id)
-                resp = requests.get("https://cdn-api.co-vin.in/api/v2/registration/certificate/download?beneficiary_reference_id={}".format(beneficiary_reference_id),headers=headers, auth=BearerAuth(token))
-                print(resp)
-                if resp.status_code == 200:
-                    # print(resp)
-                    re = resp.text
-                    print(type(re))
-                    re = resp.text
-                    # print(re)
-                    # encoded = base64.b64encode(re)
-                    # print(encoded)
-                    chunk_size = 2000
-                    # f = None
-                    # for chunk in resp:
-                    #     f.write(chunk)
-                    # resp.raw.decode_content = True
-                    # f = shutil.copyfileobj(resp.raw)
-                    # print('data',f)
-                    # my_data = resp.iter_content(chunk_size)
-                    # print(my_data)
-                    # chunk = ''
-                    # binary = []
-                    # print(resp.text)
-                    # b = resp.json()
-
-                    with open(os.path.join(settings.MEDIA_ROOT,'download_certificate.pdf'),'wb') as fd:
-                        for chunk in resp.iter_content(chunk_size):
-
-                            print(type(chunk))
-                            fd.write(chunk)
-                        # print(chunk)
-                        # binary.append(chunk)
-                        # print(chunk)
-                        #print('working')
-                    # file = download_certificate.pdf
-                    with open(os.path.join(settings.MEDIA_ROOT,'download_certificate.pdf'), "rb") as pdf_file:
-                        encoded_string = base64.b64encode(pdf_file.read())
-                    # b =  base64.b64decode(encoded_string)
-                    # datafile=open('download_certificate.text','rb')
-                    # pdfdatab=datafile.read()    #this is binary data
-                    # datafile.close()
-                    # print(type(binary))
-                    # print(encoded_string)
-                    # binarystr  = ''.join(binary)
-                    # print(binarystr)
-                    # print(type(binarystr))
-                    data = models.Employeeprofile.objects.filter(employee=user_id).update(test=encoded_string)
-                    # print(data)
-                    print('data are saved is successfully')
-
-                    # print(re)
-                    # 
-
                 return redirect('user_profile')
             else:
                 messages.error(request,"OTP Doest not match please try again")
@@ -778,7 +754,7 @@ def download_certificate(request):
                 #     # return response
                 #     # return HttpResponse('File download in tmp folder')
                 #     return 
-                return HttpResponse('http://localhost:8000/media/certificate.pdf')
+                return HttpResponse('http://35.154.107.216/media/certificate.pdf')
             else:
                 return HttpResponse('File data not present in database')
             # print(type(test))
@@ -958,6 +934,7 @@ def user_profile(request):
                 print('txndid',txnId)
                 request.session['txnId'] = txnId
                 print(re)
+                print(name)
                 data = models.Employeeprofile.objects.filter(employee=user_id).update(employee_name=name,employee_code=emp_code,employee_branch=branch,employee_department=department,phoneNumber=phone_number,Beneficiary_Id=beneficiary)
                 return redirect('user_profile')
             else:
