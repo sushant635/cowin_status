@@ -852,18 +852,68 @@ def admin_profile(request):
         # consumed = models.Consumed.objects.get(company=company_obj)
         consumed1 = models.Consumed.objects.filter(company=company).values('Consumed').last()
         consumed = consumed1['Consumed']
-        purchase = models.Purchase.objects.get(company=company_obj)
-        purchase_date1 = purchase.created
+        purchase1 = models.Purchase.objects.filter(company=company_obj).values('purchase','created').last()
+        print('purchase',purchase1)
+        purchase = purchase1['purchase']
+
+        purchase_date1 = purchase1['created']
         date_purchase = purchase_date1.strftime("%d/%m/%Y %H:%M:%S")
         print(type(date_purchase),date_purchase)
         purchase_date = datetime.strptime(date_purchase, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
         date = datetime.strptime(purchase_date, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
+        pur = models.Purchase.objects.filter(company=company_obj).values('today_purchase','created').order_by('-created')
+        con = models.Consumed.objects.filter(company=company_obj).values('today_consumed','created').order_by('-created')
+        print(con)
+        print(pur)
+        # print(con)
+        data = []
+        for i in pur:
+            data.append(i)
+        print(data)
+        print(len(data))
+        last_date = None
+        last_purchase = None
+        last_day = None
+        last_time = None
+        second_day = None
+        second_time = None
+        second_last_purchase= None
+        if len(data) >= 2:
+            last_date = data[0]['created']
+            last_purchase = data[0]['today_purchase']
+            date_last = last_date.strftime("%d/%m/%Y %H:%M:%S")
+            date_last1 = datetime.strptime(date_last, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
+            date_last1 = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
+            last_day = date_last1.date().strftime("%Y-%m-%d")
+            last_time = date_last1.time().strftime('%H:%M')
+            second_last_date = data[1]['created']
+            second_last_purchase = data[1]['today_purchase']
+            date_second = second_last_date.strftime("%d/%m/%Y %H:%M:%S")
+            date_second1 = datetime.strptime(date_second, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
+            date_second1 = datetime.strptime(date_second1, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
+            second_day = date_second1.date().strftime("%Y-%m-%d")
+            second_time = date_second1.time().strftime('%H:%M')
+            print('working')
+        else:
+            last_date = data[0]['created']
+            last_purchase = data[0]['today_purchase']
+            date_last = last_date.strftime("%d/%m/%Y %H:%M:%S")
+            date_last1 = datetime.strptime(date_last, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
+            date_last1 = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
+            last_day = date_last1.date().strftime("%Y-%m-%d")
+            last_time = date_last1.time().strftime('%H:%M')
+            print(last_day)
+
+
+
+        print(last_date,last_purchase)
         print(purchase_date)
         print('date o',date)
         print(consumed,purchase)
         password = user.password
         form = PasswordChangeForm(request.user)
-        context = {'company':company,'available':available,'consumed':consumed,'purchase':purchase,'user':user,'password':password,'form':form}
+        context = {'company':company,'available':available,'consumed':consumed,'purchase':purchase,'user':user,'password':password,'form':form,'last_day':last_day,'last_time':last_time,'last_purchase':last_purchase,\
+            'second_day':second_day,'second_time':second_time,'second_last_purchase':second_last_purchase}
         
         return render(request,'admin_profile.html',context)
     except Exception as e:

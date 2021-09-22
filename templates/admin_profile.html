@@ -1,315 +1,344 @@
-{% extends "base.html" %}
-{% load static %}
-{% block page_name %} 
-<h3 style="color:#035397">Profile</h3>
-{% endblock page_name %}
-
-{% block content_css %}
+{% extends "base.html" %} {% load static %} {% block page_name %}
+<h3 style="color: #035397">Profile</h3>
+{% endblock page_name %} {% block content_css %}
 <style>
-    .filter{
-    width:200px !important;
+  .filter {
+    width: 200px !important;
   }
-  .form-select{
-  background-color:#f0f2fa !important;
-  border: none !important;
-}
-.upload-input{
-  display: inline-block;
-  background-color: indigo;
-  color: white;
-  padding: 0.5rem;
-  /* font-family: sans-serif; */
-  border-radius: 0.3rem;
-  cursor: pointer;
-  /* margin-top: 1rem; */
-}
-body{
-  height: 100%;
-  width:100%;
-}
-hr.new2 {
-  border-top: 4px solid black;
-}
-.topnav {
-  overflow: hidden;
-  /* background-image: linear-gradient(#68A000, #3E5622); */
-  /* background-image: linear-gradient(180deg,#0575e6 20%, #021b78); */
-  /* background: -webkit-gradient(linear, center top, center bottom, color-stop(0%,#0575e6), color-stop(20%,#0575e6), color-stop(40%,#021b78), color-stop(90%,#021b78), color-stop(100%,#021b78)); */
-  background-color: #035397;
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
-  width:100%;
-  height: 65px;
-}
-.data{
-  height: 940px !important;
-  background-image: linear-gradient(#00bbff, #035397);
-  /* display: flex; */
-  max-height: 100%;
+
+  .form-select {
+    background-color: #f0f2fa !important;
+    border: none !important;
+  }
+
+  .upload-input {
+    display: inline-block;
+    background-color: indigo;
+    color: white;
+    padding: 0.5rem;
+    /* font-family: sans-serif; */
+    border-radius: 0.3rem;
+    cursor: pointer;
+    /* margin-top: 1rem; */
+  }
+
+  body {
+    height: 100%;
+    width: 100%;
+  }
+
+  hr.new2 {
+    border-top: 4px solid #ffffff;
+  }
+
+  .topnav {
+    overflow: hidden;
+    /* background-image: linear-gradient(#68A000, #3E5622); */
+    /* background-image: linear-gradient(180deg,#0575e6 20%, #021b78); */
+    /* background: -webkit-gradient(linear, center top, center bottom, color-stop(0%,#0575e6), color-stop(20%,#0575e6), color-stop(40%,#021b78), color-stop(90%,#021b78), color-stop(100%,#021b78)); */
+    background-color: #035397;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    width: 100%;
+    height: 65px;
+  }
+
+  .data {
+    height: 940px !important;
+    background-image: linear-gradient(#00bbff, #035397);
+    /* display: flex; */
+    max-height: 100%;
     flex-direction: column;
     justify-content: space-between;
-}
-.dataTables_length{
-  display:none !important;
-}
-table>tbody>tr>td{
-  padding-bottom: 20px !important;
-  padding-top:10px !important;
-}
-.centerimg {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-.card{
+  }
+
+  .dataTables_length {
+    display: none !important;
+  }
+
+  table>tbody>tr>td {
+    padding-bottom: 20px !important;
+    padding-top: 10px !important;
+  }
+
+  .centerimg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+
+  .card {
     border-radius: 12px !important;
-}
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 20%;
-}
-.center1 {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  /* width: 20%; */
-}
-.helptext{
-  visibility: hidden;
-}
+  }
 
-@media only screen and (max-width: 900px) {
-        #history{
-          margin-top: 20px;
-        }
-        .dashboard{
-          display: none;
-        }
-        .logout{
-          display: none;
-        }
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+  }
 
+  .center1 {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    /* width: 20%; */
+  }
+
+  .helptext {
+    visibility: hidden;
+  }
+
+  @media only screen and (max-width: 900px) {
+    #history {
+      margin-top: 20px;
     }
+
+    .dashboard {
+      display: none;
+    }
+
+    .logout {
+      display: none;
+    }
+  }
 </style>
-{% endblock content_css %}
-{% block logout %} 
-<a href="{% url 'logout' %}" class="logout"><img src="/static/img/shutdown.png" height='40px'></a>
-{% endblock logout %}
-{% block image_header %} 
-<a href="{% url 'dashboard' %}" class="dashboard"><img src="/static/img/Group 1615.png" height='40px'></a>
-{% endblock image_header %}
-{% block content %}
-<div class='row'>
-    <div class='col-lg-9 col-md-9 col-ms-9 col-xs-9'>
-        <div class='container'>
-            <div class='row mt-5 d-flex justify-content-center'  >
-                <div class='col-lg-3 col-sm-3 col-md-3 col-xs-3 mt-3'>
-                    <div class='card p-2' style="box-shadow: 5px 6px 6px 2px #e9ecef;border-radius: 10px;">
-                            <h1 style="color: #035397; font-weight:900 !important" class='text-center'>{{available}}</h1>
-                            <h5 class="card-title text-center" >Available</h5>
-                    </div>
-                </div>
-                <div class='col-lg-3 mt-3 col-sm-3 col-md-3 col-xs-3'>
-                    <div class='card p-2' style="box-shadow: 5px 6px 6px 2px #e9ecef;border-radius: 10px;">
-                        <h1 style="color: #035397; font-weight:900 !important" class='text-center'>{{purchase}}</h1>
-                        <h5 class="card-title text-center" >Purchased</h5>
-                    </div>
-                </div>
-                <div class='col-lg-3 mt-3 col-sm-3 col-md-3 col-xs-3'>
-                    <div class='card p-2' style="box-shadow: 5px 6px 6px 2px #e9ecef;border-radius: 10px;">
-                        <h1 style="color: #035397; font-weight:900 !important" class='text-center'>{{consumed}}</h1>
-                        <h5 class="card-title text-center" >Consumed</h5>
-                    </div>
-                </div>
-            </div>
-            <div class='container mt-5 justify-content-center'>
-                <div class='card p-5 '>
-                    <img src='/static/img/Logo-with-NO-TL-No-BG svg 1.png'   class='center' style="height: 40px; width: 178px;">
-                        <img src="/static/img/edit (2) 2.png" height='35px' width='35px' class='center1 mt-3' id="click">
-                    <div class='container mt-5' >
-                        <form method="POST" action="{% url 'change_username_company'%}" id="change_form">
-                            {% csrf_token %}
-                            <div class='row'>
-                                <div class='col-lg-3 col-sm-3 col-md-3 col-xs-12'>
-                                    <label>Company</label>
-                                </div>
-                                <div class='col-lg-6 col-sm-6 col-md-6 col-xs-12'>
-                                    <input type='text' class='form-control' name='company_name' id='company_name' value='{{company}}' disabled>
-                                </div>
-                            </div>
-                            <div class='row mt-4'>
-                                <div class='col-lg-3 col-sm-3 col-md-3 col-xs-12'>
-                                    <label>Username</label>
-                                </div>
-                                <div class='col-lg-6 col-sm-6 col-md-6 col-xs-12'>
-                                    <input type='text' class='form-control' name='user_name' id='user_name' value='{{user}}' disabled>
-                                </div>
-                            </div>
-                        </form>
-                        <div class='row mt-4'>
-                            <div class='col-lg-3 col-sm-3 col-md-3 col-xs-3'>
-                                <label>Password</label>
-                            </div>
-                            <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6'>
-                                <input type='password' class='form-control' name="password" id='password' value='{{password}}' disabled>
-                            </div>
-                        </div>
-                        <div class='row mt-2'>
-                            <div class='col-lg-3 col-sm-3 col-md-3 col-xs-3'>
-                            </div> 
-                            <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6'>
-                                <a  id="changepassword" class='text-primary'><u>Change Password</u></a>
-                            </div>
-                        </div>
-                        <div class='row mt-5 d-flex'>
-                            <div class='col-lg-2 col-md-2 col-sm-1 col-xs-6' id="submits" style="display: none;">
-                                <button class='btn' id="submit_button" style="background-image: linear-gradient(#00bbff, #035397); color:#ffffff">Submit</button>
-                            </div>
-                            <br>
-                            <div class='col-lg-2 col-md-2 col-sm-2 col-xs-6' id="cancels" style="display: none;">
-                                <button class='btn  btn-outline-primary' id="cancel_button">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{% endblock content_css %} {% block logout %}
+<a href="{% url 'logout' %}" class="logout"><img src="/static/img/shutdown.png" height="40px" data-toggle="tooltip"
+    data-placement="top" title="Logout" /></a>
+{% endblock logout %} {% block image_header %}
+<a href="{% url 'dashboard' %}" class="dashboard"><img src="/static/img/Group 1615.png" height="40px"
+    data-toggle="tooltip" data-placement="top" title="Go to Dashboard" /></a>
+{% endblock image_header %} {% block content %}
+<div class="row">
+  <div class="col-lg-9 col-md-9 col-ms-9 col-xs-9">
+    <div class="container">
+      <div class="row mt-5 d-flex justify-content-center">
+        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3 mt-3">
+          <div class="card p-2" style="box-shadow: 5px 6px 6px 2px #e9ecef; border-radius: 10px">
+            <h1 style="color: #035397; font-weight: 900 !important" class="text-center">
+              {{purchase}}
+            </h1>
+            <h5 class="card-title text-center">Total Employee</h5>
+          </div>
         </div>
+        <div class="col-lg-3 mt-3 col-sm-3 col-md-3 col-xs-3">
+          <div class="card p-2" style="box-shadow: 5px 6px 6px 2px #e9ecef; border-radius: 10px">
+            <h1 style="color: #035397; font-weight: 900 !important" class="text-center">
+              {{consumed}}
+            </h1>
+            <h5 class="card-title text-center">upload Employee</h5>
+          </div>
+        </div>
+        <div class="col-lg-3 mt-3 col-sm-3 col-md-3 col-xs-3">
+          <div class="card p-2" style="box-shadow: 5px 6px 6px 2px #e9ecef; border-radius: 10px">
+            <h1 style="color: #035397; font-weight: 900 !important" class="text-center">
+              {{available}}
+            </h1>
+            <h5 class="card-title text-center">Available Employee</h5>
+          </div>
+        </div>
+      </div>
+      <div class="container mt-5 justify-content-center">
+        <div class="card p-5">
+          <img src="/static/img/Logo-with-NO-TL-No-BG svg 1.png" class="center" style="height: 40px; width: 178px" />
+          <img src="/static/img/edit (2) 2.png" height="35px" width="35px" class="center1 mt-3" id="click" />
+          <div class="container mt-5">
+            <form method="POST" action="{% url 'change_username_company'%}" id="change_form">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                  <label>Company</label>
+                </div>
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <input type="text" class="form-control" name="company_name" id="company_name" value="{{company}}"
+                    disabled />
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                  <label>Username</label>
+                </div>
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <input type="text" class="form-control" name="user_name" id="user_name" value="{{user}}" disabled />
+                </div>
+              </div>
+            </form>
+            <div class="row mt-4">
+              <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                <label>Password</label>
+              </div>
+              <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                <input type="password" class="form-control" name="password" id="password" value="{{password}}"
+                  disabled />
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3"></div>
+              <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
+                <a id="changepassword" class="text-primary"><u>Change Password</u></a>
+              </div>
+            </div>
+            <div class="row mt-5 d-flex">
+              <div class="col-lg-2 col-md-2 col-sm-1 col-xs-6" id="submits" style="display: none">
+                <button class="btn" id="submit_button" style="
+                    background-image: linear-gradient(#00bbff, #035397);
+                    color: #ffffff;
+                  ">
+                  Submit
+                </button>
+              </div>
+              <br />
+              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6" id="cancels" style="display: none">
+                <button class="btn btn-outline-primary" id="cancel_button">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class='col-lg-3 col-md-3 col-sm-3 col-xs-3' id='history'>
-        <div class='data'>
-            <div class='container'>
-                <div class='row'>
-                    <h5 class='text-light mt-5'>Purchase History</h5>
-                </div>
-                <div class='row'>
-                    <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
-                        <input type="date" id='changedate' class=' form-control'  data-date="" data-date-format="DD MMMM YYYY">
-                    </div>
-                </div>
-                <div class='row mt-3'>
-                  <div class='col-xs-1 col-sm-4 col-md-4 col-xl-3 col-lg-2' style="color: #f0f2fa;">
-                      9 PM
-                  </div>
-                  <div class='col-xs-10 col-sm-8 col-md-8 col-xl-9 col-lg-10'>
-                    <hr class="new2">
-                </div>
-                </div>
-                <div class="row m-4 mt-1">
-                    <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
-                        <div class='rows'>
-                          <div class='col-lg-4' style="margin: 10px;">
-                            <h5 >Purchase</h5>
-                          </div>
-                          <div class='col-lg-4' style="margin: 10px;">
-                            <h4 style="color: green;">0</h4>
-                          </div>
-                      </div>
-                    </div>
-                </div>
-                <div class='row mt-3'>
-                  <div class='col-xs-1 col-sm-4 col-md-4 col-xl-3 col-lg-2' style="color: #f0f2fa;">
-                      10 PM
-                  </div>
-                  <div class='col-xs-10 col-sm-8 col-md-8 col-xl-9 col-lg-10'>
-                    <hr class="new2">
-                </div>
-                </div>
-                <div class="row m-4 mt-1">
-                    <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
-                        <div class='rows'>
-                          <div class='col-lg-4' style="margin: 10px;">
-                            <h5 >Used</h5>
-                          </div>
-                          <div class='col-lg-4' style="margin: 10px;">
-                            <h4 style="color: green;">0</h4>
-                          </div>
-                      </div>
-                    </div>
-                </div>
-
-                <div class='row'>
-                    <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
-                        <input type="date" id='todaydate' class=' form-control mt-5'  data-date="" data-date-format="DD MMMM YYYY" disabled>
-                    </div>
-                </div>
-                <div class='row mt-3'>
-                  <div class='col-xs-1 col-sm-4 col-md-4 col-xl-3 col-lg-2' style="color: #f0f2fa;">
-                      9 PM
-                  </div>
-                  <div class='col-xs-10 col-sm-8 col-md-8 col-xl-9 col-lg-10'>
-                    <hr class="new2">
-                </div>
-                <div class="row m-4 mt-1">
-                    <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
-                        <div class='rows'>
-                          <div class='col-lg-4' style="margin: 10px;">
-                            <h5 >Purchase</h5>
-                          </div>
-                          <div class='col-lg-4' style="margin: 10px;">
-                            <h4 style="color: green;">0</h4>
-                          </div>
-                      </div>
-                    </div>
-                </div>
-                <div class='row mt-3'>
-                  <div class='col-xs-1 col-sm-4 col-md-4 col-xl-3 col-lg-2' style="color: #f0f2fa;">
-                      9 PM
-                  </div>
-                  <div class='col-xs-10 col-sm-8 col-md-8 col-xl-9 col-lg-10'>
-                    <hr class="new2">
-                </div>
-                <div class="row m-4 mt-1">
-                    <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
-                        <div class='rows'>
-                          <div class='col-lg-4' style="margin: 10px;">
-                            <h5 >Used</h5>
-                          </div>
-                          <div class='col-lg-4' style="margin: 10px;">
-                            <h4 style="color: green;">70</h4>
-                          </div>
-                      </div>
-                    </div>
-                </div>
+  </div>
+  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" id="history">
+    <div class="data">
+      <div class="container">
+        <div class="row">
+          <h5 class="text-light mt-5">Purchase History</h5>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+            <input type="date" id="changedate" class="form-control" data-date="" data-date-format="DD MMMM YYYY"
+              disabled value="{{last_day}}" />
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-xs-1 col-sm-4 col-md-4 col-xl-3 col-lg-2" style="color: #f0f2fa">
+            <label style="font-size: large">{{last_time}}</label>
+          </div>
+          <div class="col-xs-10 col-sm-8 col-md-8 col-xl-9 col-lg-10">
+            <hr class="new2" />
+          </div>
+        </div>
+        <div class="row m-4 mt-1">
+          <div class="card" style="box-shadow: 5px 6px 6px 2px #035397; border-radius: 10px">
+            <div class="rows">
+              <div class="col-lg-4" style="margin: 10px">
+                <h5>Purchase</h5>
+              </div>
+              <div class="col-lg-4" style="margin: 10px">
+                <h4 style="">{{last_purchase}}</h4>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</div>
+        <div class="row mt-3">
+          <div class="col-xs-1 col-sm-4 col-md-4 col-xl-3 col-lg-2" style="color: #f0f2fa">
+            <label style="font-size: large">9 PM</label>
+          </div>
+          <div class="col-xs-10 col-sm-8 col-md-8 col-xl-9 col-lg-10">
+            <hr class="new2" />
+          </div>
+        </div>
+        <div class="row m-4 mt-1">
+          <div class="card" style="box-shadow: 5px 6px 6px 2px #035397; border-radius: 10px">
+            <div class="rows">
+              <div class="col-lg-4" style="margin: 10px">
+                <h5>Used</h5>
+              </div>
+              <div class="col-lg-4" style="margin: 10px">
+                <h4 style="color: green">0</h4>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<div class="modal fade" id="changepasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+            <input type="date" id="todaydate" class="form-control mt-5" data-date="" data-date-format="DD MMMM YYYY"
+              disabled value="{{second_day}}" />
+          </div>
         </div>
-        <div class="modal-body">
+        <div class="row mt-3">
+          <div class="col-xs-1 col-sm-4 col-md-4 col-xl-3 col-lg-2" style="color: #f0f2fa">
+            <label style="font-size: large">{{second_time}}</label>
+          </div>
+          <div class="col-xs-10 col-sm-8 col-md-8 col-xl-9 col-lg-10">
+            <hr class="new2" />
+          </div>
+        </div>
+        <div class="row m-4 mt-1">
+          <div class="card" style="box-shadow: 5px 6px 6px 2px #035397; border-radius: 10px">
+            <div class="rows">
+              <div class="col-lg-4" style="margin: 10px">
+                <h5>Purchase</h5>
+              </div>
+              <div class="col-lg-4" style="margin: 10px">
+                <h4 style="">{{second_last_purchase}}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-xs-1 col-sm-4 col-md-4 col-xl-3 col-lg-2" style="color: #f0f2fa">
+            <label style="font-size: large">9 PM</label>
+          </div>
+          <div class="col-xs-10 col-sm-8 col-md-8 col-xl-9 col-lg-10">
+            <hr class="new2" />
+          </div>
+        </div>
+        <div class="row m-4 mt-1">
+          <div class="card" style="box-shadow: 5px 6px 6px 2px #035397; border-radius: 10px">
+            <div class="rows">
+              <div class="col-lg-4" style="margin: 10px">
+                <h5>Used</h5>
+              </div>
+              <div class="col-lg-4" style="margin: 10px">
+                <h4 style="color: green">0</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="changepasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
             <form method="post" action="{% url 'change_password'%}" id="change_password">
               {% csrf_token %}
-              <div class='row'>
-                <div class='col-xl-3 col-sm-3 col-md-4 col-lg-4 col-xs-12'>
+              <div class="row">
+                <div class="col-xl-3 col-sm-3 col-md-4 col-lg-4 col-xs-12">
                   <label for="id_old_password">Old password:</label>
                 </div>
-                <div class='col-xl-4 col-sm-5 col-md-5 col-lg-5 col-xs-12'>
-                  <input type="password" name="old_password" autocomplete="current-password" autofocus="" required="" id="id_old_password" class='form-control'>
+                <div class="col-xl-4 col-sm-5 col-md-5 col-lg-5 col-xs-12">
+                  <input type="password" name="old_password" autocomplete="current-password" autofocus="" required=""
+                    id="id_old_password" class="form-control" />
                 </div>
               </div>
-              <div class='row'>
-                <div class='col-xl-3 col-sm-3 col-md-4 col-lg-4 col-xs-12'>
-                  <label for="id_new_password1">New password:</label>                
+              <div class="row">
+                <div class="col-xl-3 col-sm-3 col-md-4 col-lg-4 col-xs-12">
+                  <label for="id_new_password1">New password:</label>
                 </div>
-                <div class='col-xl-4 col-sm-5 col-md-5 col-lg-5 col-xs-12'>
-                  <input type="password" name="new_password1" autocomplete="new-password" required="" id="id_new_password1" class='form-control'>                
+                <div class="col-xl-4 col-sm-5 col-md-5 col-lg-5 col-xs-12">
+                  <input type="password" name="new_password1" autocomplete="new-password" required=""
+                    id="id_new_password1" class="form-control" />
                 </div>
               </div>
-              <div class='row'>
-                <div class='col-xl-3 col-sm-3 col-md-4 col-lg-4 col-xs-12'>
-                  <label for="id_new_password2">New password confirmation:</label>                
+              <div class="row">
+                <div class="col-xl-3 col-sm-3 col-md-4 col-lg-4 col-xs-12">
+                  <label for="id_new_password2">New password confirmation:</label>
                 </div>
-                <div class='col-xl-4 col-sm-5 col-md-5 col-lg-5 col-xs-12'>
-                  <input type="password" name="new_password2" autocomplete="new-password" required="" id="id_new_password2" class='form-control'>                
+                <div class="col-xl-4 col-sm-5 col-md-5 col-lg-5 col-xs-12">
+                  <input type="password" name="new_password2" autocomplete="new-password" required=""
+                    id="id_new_password2" class="form-control" />
                 </div>
               </div>
               <!-- {% for field in form %}
@@ -325,72 +354,76 @@ table>tbody>tr>td{
                 {{ form.as_p }}
                 <label>{{ form.label }}</label> -->
             </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" id='modalsubmit' class="btn btn-primary" style="background-image: linear-gradient(#00bbff, #035397); color:#ffffff">Submit</button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button type="submit" id="modalsubmit" class="btn btn-primary" style="
+                background-image: linear-gradient(#00bbff, #035397);
+                color: #ffffff;
+              ">
+              Submit
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-{% endblock content %}
-
-
-{% block content_js %}
-{% for message in messages %}
+    {% endblock content %} {% block content_js %} {% for message in messages %}
     <script>
-      window.onload = function(){
-        alert('{{message}}')
-      }
+      window.onload = function () {
+        alert("{{message}}");
+      };
     </script>
-{% endfor %}
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    {% endfor %}
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-<script>
-    var date = new Date();
-    var day = date.getDate();
-    var month = date.getMonth();
-    var year = date.getFullYear();
-    // alert(year)
-    if (month < 10 ) month = '0' + month;
-    if (day < 10) day = '0' + day;
-    // var today = day + '/' + month + '/' + year;
-    var today = year + "-" + month + "-" + day;
-    document.getElementById('changedate').value = today;
-    document.getElementById('todaydate').value = today;
+    <script>
+      var date = new Date();
+      var day = date.getDate();
+      var month = date.getMonth();
+      var year = date.getFullYear();
+      // alert(year)
+      if (month < 10) month = "0" + month;
+      if (day < 10) day = "0" + day;
+      // var today = day + '/' + month + '/' + year;
+      var today = year + "-" + month + "-" + day;
+      // document.getElementById('changedate').value = ;
+      // document.getElementById('todaydate').value = today;
 
-    $('#click').click(function(){
+      $("#click").click(function () {
         // alert('working')
-        $('#company_name').removeAttr('disabled');
-        $('#user_name').removeAttr('disabled')
-        $('#submits').show();
-        $('#cancels').show();
-    })
+        $("#company_name").removeAttr("disabled");
+        $("#user_name").removeAttr("disabled");
+        $("#submits").show();
+        $("#cancels").show();
+      });
 
-    $('#cancel_button').click(function(){
-        $('#company_name').attr('disabled',true);
-        $('#user_name').attr('disabled',true)
-        $('#submits').hide();
-        $('#cancels').hide();
+      $("#cancel_button").click(function () {
+        $("#company_name").attr("disabled", true);
+        $("#user_name").attr("disabled", true);
+        $("#submits").hide();
+        $("#cancels").hide();
+      });
 
-    })
-
-    $('#modalsubmit').click(function(){
+      $("#modalsubmit").click(function () {
         // alert('working')
-        $('#change_password').submit();
-    })
+        $("#change_password").submit();
+      });
 
-    $('#submit_button').click(function(){
+      $("#submit_button").click(function () {
         // alert('working')
-        $('#change_form').submit();
-    })
+        $("#change_form").submit();
+      });
 
-    $('#changepassword').click(function(){
+      $("#changepassword").click(function () {
         // alert('working')
-        $('#changepasswordModal').modal('show');
-    })
-</script>
-      
-{% endblock content_js %}
+        $("#changepasswordModal").modal("show");
+      });
+    </script>
+
+    {% endblock content_js %}
+  </div>
+</div>

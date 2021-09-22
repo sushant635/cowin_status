@@ -94,6 +94,32 @@ table>tbody>tr>td{
     background:#035397;
     color:#ffffff;
 }
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
 /* .current{
   background:#035397;
 } */
@@ -149,7 +175,7 @@ table>tbody>tr>td{
 
 {% block Department %} 
 <select class='form-select' name="location" id="department1" >
-  <option>Department</option>
+  <option value="Department">Department</option>
   {% for i in department%}
   <option value="{{i}}">{{i}}</option>
   {% endfor %}
@@ -158,7 +184,7 @@ table>tbody>tr>td{
 
 {% block Branch %} 
 <select class='form-select' name='branch' id='branch'>
-  <option>Branch</option>
+  <option value="Branch">Branch</option>
     {% for i in branch %}
     <option value='{{i}}'>{{i}}</option>
     {% endfor %}
@@ -188,7 +214,7 @@ table>tbody>tr>td{
         </div>
 
 {% block image_header %} 
-<a href="{% url 'profile' %}" class="profile"><img src="/static/img/user (3).png" height='40px'></a>
+<a href="{% url 'profile' %}" class="profile" data-toggle="tooltip" data-placement="top" title="Admin Profile"><img src="/static/img/user (3).png" height='40px'></a>
 {% endblock image_header %}
 {% block content %}
 <div class='row'>
@@ -213,10 +239,11 @@ table>tbody>tr>td{
                 </ul> -->
               </div>
               <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2'>
-                <button id="export" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);"><img src="/static/img/export.png" height='24px'></button>
+                <button id="export" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV File"><img src="/static/img/export.png" height='24px'></button>
+                
               <!-- </div>
               <div class='col-lg-1'> -->
-                <button id="exportemail" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);"><img src="/static/img/send-mail.png" height='24px'></button>
+                <button id="exportemail" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV for Email"><img src="/static/img/send-mail.png" height='24px'></button>
               </div>
           </div>
           </div> 
@@ -245,13 +272,13 @@ table>tbody>tr>td{
                           <td class='p-4'>{{emps.branch}}</td>
                           <td class='p-4'>{{emps.department}}</td>
                           {% if emps.status == "Not Checked" %}
-			  <td  class='p-4' style="color:#7d3ac1; "><b>{{emps.status}}</b></td>                                
+			                      <td  class='p-4' style="color:#fd3636 ; "><b>{{emps.status}}</b></td>                                
                           {% elif emps.status == 'Partially Vaccinated' %}
                           <td  class='p-4' style="color:#ffb800"><b>{{emps.status}}</b></td>                                
                           {% elif emps.status == 'Fully Vaccinated' %}
                           <td  class='p-4' style="color:#20e074"><b>{{emps.status}}</b></td>                                
                           {% else %}
-                          <td  class='p-4' style="color:#fd3636 ;"><b>{{emps.status}}</b></td>                                
+                          <td  class='p-4' style="color:#7d3ac1;"><b>{{emps.status}}</b></td>                                
                           {% endif %} 
                           <td class='p-4'><a class="use-address" download style="cursor: pointer;">Download Certificate</a></td>
                           {% if emps.status == 'Not Checked'%}
@@ -332,10 +359,10 @@ table>tbody>tr>td{
         <div class='row m-4'>
           <div class='card ' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
-              <div class='col-lg-3'>
+              <div class='col-lg-3 col-xs-6 col-sm-4 col-md-4 col-xl-2'>
                 <h1 style="color: #035397; font-weight:500px !important;">{{total}}</h1>
               </div>
-              <div class='col-lg-4'>
+              <div class='col-lg-5 col-xl-6 col-xs-6 col-sm-8 col-md-8'>
                 <h5 class="card-title">Total Employee</h5>
               </div>
             </div>
@@ -347,7 +374,7 @@ table>tbody>tr>td{
               <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
                 <h1 style="color:#20e074">{{fully_vaccinated}}</h1>
               </div>
-              <div class='col-lg-5 col-md-5 col-sm-6 col-xl-4 col-xs-8'>
+              <div class='col-lg-5 col-md-5 col-sm-6 col-xl-6 col-xs-8'>
                 <h5 class="card-title">Fully Vaccinated</h5>
               </div>
           </div>
@@ -359,7 +386,7 @@ table>tbody>tr>td{
               <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
                 <h1 style="color:#ffb800">{{partial_vaccinated}}</h1>
               </div>
-              <div class='col-lg-5 col-md-5 col-sm-6 col-xl-4 col-xs-8'>
+              <div class='col-lg-5 col-md-5 col-sm-6 col-xl-6 col-xs-8'>
                 <h5 class="card-title">Partially Vaccinated</h5>
               </div>
           </div>
@@ -371,7 +398,7 @@ table>tbody>tr>td{
               <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
                 <h1 style="color: #7d3ac1">{{not_vaccinated}}</h1>
               </div>
-              <div class='col-lg-5 col-md-5 col-sm-6 col-xl-4 col-xs-8'>
+              <div class='col-lg-5 col-md-5 col-sm-6 col-xl-6 col-xs-8'>
                 <h5 class="card-title">Not Vaccinated</h5>
               </div>
           </div>
@@ -383,7 +410,7 @@ table>tbody>tr>td{
             <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
               <h1 style="color:#fd3636">{{not_checked}}</h1>
             </div>
-            <div class='col-lg-5 col-md-5 col-sm-6 col-xl-4 col-xs-8'>
+            <div class='col-lg-5 col-md-5 col-sm-6 col-xl-6 col-xs-8'>
               <h5 class="card-title">Not Checked</h5>
             </div>
         </div>
@@ -482,7 +509,7 @@ $("#pagin li a").click(function() {
            var  txtvalue2 = td2.textContent || td2.innerText;
            var  txtvalue3 = tdstatus.textContent || tdstatus.innerText;
            var  txtvalue4 = tdgender.textContent || tdgender.innerText;
-            console.log(txtvalue2)
+            // console.log(txtvalue2)
             // alert(txtvalue.toUpperCase())
             // alert(filter)
             // alert(txtvalue)
@@ -506,7 +533,7 @@ $("#pagin li a").click(function() {
             }
             else if(branch != "BRANCH" && status == 'STATUS' && gender == 'GENDER'){
                 if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == branch){
-                  console.log('working')
+                  // console.log('working')
                 tr[i].style.display = '';
                   }else{
                     tr[i].style.display = 'none';
@@ -556,7 +583,9 @@ $("#pagin li a").click(function() {
                     }
             }
             else{
-              console.log('Working')
+              // console.log('Working')
+              tr[i].style.display = '';
+              // tr[i].style.display = 'none';
             }
 
             // if(txtvalue.toUpperCase().indexOf(filter) > -1){
@@ -651,7 +680,8 @@ $("#pagin li a").click(function() {
                     }
             }
             else{
-              console.log('Working')
+              // console.log('Working')
+              tr[i].style.display = '';
             }
 
           }
@@ -774,7 +804,7 @@ $("#pagin li a").click(function() {
         // alert(tr.length)
         // alert(filter)
        for(i = 0 ; i< tr.length; i++){
-        console.log(tr[i])
+        // console.log(tr[i])
           td = tr[i].getElementsByTagName("td")[8];
           var td4 = tr[i].getElementsByTagName("td")[4];
           var td2 = tr[i].getElementsByTagName("td")[3]
@@ -929,7 +959,7 @@ $("#pagin li a").click(function() {
                   var currentDate = new Date()
                   var Difference_In_Time = currentDate.getTime() - date1.getTime();
                   var Difference_In_Days =parseInt(Difference_In_Time / (1000 * 60 * 60 * 24));
-                  console.log(Difference_In_Time / (1000 * 60 * 60 * 24))
+                  // console.log(Difference_In_Time / (1000 * 60 * 60 * 24))
                   
                   Difference_In_Days2 =''
                   if(col9_value != ''){
@@ -946,7 +976,7 @@ $("#pagin li a").click(function() {
                   // alert(row.length)
                   // ['Name','Last Checked','Branch','Department','Status','Emp Code','Gender','Birth Year','Beneficiary Id','vaccine','Dose1 Date','Does2 Date','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'],
                   arrData.push(row.join(","))
-                  console.log('rows',row)
+                  // console.log('rows',row)
                   // alert(arrData.length)
                   var obj={};
                   obj.col1=col1_value;
@@ -963,15 +993,15 @@ $("#pagin li a").click(function() {
           });   
           // alert(arrData.length) 
           len = arrData.length;
-          console.log(len)
+          // console.log(len)
           var data = []
           data.push(['Name','Last Checked','Branch','Department','Status','Emp Code','Gender','Birth Year','Beneficiary Id','vaccine','Dose1 Date','Does2 Date','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'])
           for(var i =1 ; i<=len;i++){
-            console.log(i)
-            console.log(arrData[i])
+            // console.log(i)
+            // console.log(arrData[i])
             data.push(arrData[i])
           }
-          console.log(data)
+          // console.log(data)
           downloadCSVFile(data.join("\n"), "status.csv")
           // htmlToCSV(arrData, "status.csv");
         })
@@ -1059,14 +1089,14 @@ $("#pagin li a").click(function() {
                   var row = []
                   row.push(col1_value,col2_value,col3_value,col4_value,col5_value,col6_value,col8_value,col9_value,col10_value,col11_value,col12_value,col13_value,Difference_In_Days, Difference_In_Days2)
                   arrData.push(row.join(","))
-                  console.log('rows',row)
+                  // console.log('rows',row)
                   var obj={};
                   obj.col1=col1_value;
                   obj.col2=col2_value;
                   obj.col3=col3_value;
                   obj.col4=col4_value;
                   obj.col5=col5_value;
-                  console.log('array data',arrData);
+                  // console.log('array data',arrData);
                   // htmlToCSV(arrData, "status.csv");
                 }    
           }); 
