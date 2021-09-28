@@ -378,8 +378,6 @@ def confirmOTP(request):
             print(user_id)
             print(request.POST)
             otp = request.POST.get('otp')
-            txtId = request.session.get('txnId')
-            sha_signature = encrypt_string(otp)
             print(sha_signature)
             print(otp,txtId)
             url = 'https://cdn-api.co-vin.in/api/v2/auth/validateMobileOtp'
