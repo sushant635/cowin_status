@@ -332,7 +332,7 @@ div.pager span.active {
                 <table class="table paginated" id="myTable">
                   <thead style="background-image: linear-gradient(#00bbff, #035397);border-radius: 25px !important" class='topnav'>
                     <tr class='text-light'>
-                      <th scope="col" class='p-4'>Emp</th>
+                      <th scope="col" class='p-4'>Employee Name</th>
                       <th scope="col" class='p-4'>Last checked</th>
                       <th scope="col" class='p-4'>Branch</th>
                       <th scope="col" class='p-4'>Department</th>
@@ -456,9 +456,7 @@ div.pager span.active {
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 <script>
 
-$(document).ready( function () {
-    $('#myTable').DataTable();
-} );
+
 
 
 
@@ -512,7 +510,7 @@ $(document).ready( function () {
 
 $('table.paginated').each(function(){
   var currentPage = 0;
-    var numPerPage = 7;
+    var numPerPage = 10 ;
     var $table = $(this);
     console.log($table)
     $table.bind('repaginate', function() {
@@ -952,9 +950,7 @@ $('table.paginated').each(function(){
 
             }
             else if (filter == 'STATUS' && gender != "GENDER" ){
-              if(txtvalue4.toUpperCase() =$(document).ready( function () {
-    $('#myTable').DataTable();
-} );= gender){
+              if(txtvalue4.toUpperCase() = gender ){
                   // console.log('working')
                 tr[i].style.display = '';
                   }else{

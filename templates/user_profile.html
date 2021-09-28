@@ -80,6 +80,10 @@ figure img{
   display: flex;
   align-items: center;
 }
+.required-field::after {
+    content: "*";
+    color: red;
+}
 .vertical {
             border-left: 2px solid white;
             height: 70px;
@@ -230,7 +234,7 @@ figure img{
                                 {% csrf_token %}
                                 <div class='row'>
                                     <div class='col-lg-3 col-sm-5 col-md-5 col-xs-12 col-xl-3'>
-                                        <label>Name</label>
+                                        <label class='required-field'>Name</label>
                                     </div>
                                     <div class='col-lg-6 col-sm-6 col-md-6 col-xs-12 col-xl-5'>
                                         <input type='text' class='form-control' name='user_name' id='user_name' value='{{name}}'>
@@ -238,7 +242,7 @@ figure img{
                                 </div>
                                 <div class='row mt-4'>
                                     <div class='col-lg-3 col-sm-5 col-md-5 col-xs-12 col-xl-3'>
-                                        <label>Emp Code</label>
+                                        <label class='required-field'>Emp Code</label>
                                     </div>
                                     <div class='col-lg-6 col-sm-6 col-md-6 col-xs-12 col-xl-5'>
                                         <input type='text' class='form-control' name='emp_code' id='emp_code' value='{{emp_code}}'>
@@ -247,7 +251,7 @@ figure img{
                             
                             <div class='row mt-4'>
                                 <div class='col-lg-3 col-sm-5 col-md-5 col-xs-3 col-xl-3'>
-                                    <label>Department</label>
+                                    <label class='required-field' >Department</label>
                                 </div>
                                 <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6 col-xl-5'>
                                     <input type='text' class='form-control'  name="department" id='department' value='{{department}}' >
@@ -255,7 +259,7 @@ figure img{
                             </div>
                             <div class='row mt-4'>
                                 <div class='col-lg-3 col-sm-5 col-md-5 col-xs-3 col-xl-3'>
-                                    <label>Branch</label>
+                                    <label class='required-field'>Branch</label>
                                 </div>
                                 <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6 col-xl-5'>
                                     <input type='text' class='form-control' name="branch" id='branch' value='{{branch}}' >
@@ -263,18 +267,18 @@ figure img{
                             </div>
                             <div class='row mt-4'>
                                 <div class='col-lg-3 col-sm-5 col-md-5 col-xs-3 col-xl-3'>
-                                    <label>Beneficiary Id</label>
+                                    <label class='required-field'>Beneficiary Id</label>
                                 </div>
                                 <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6 col-xl-5'>
-                                    <input type='text' class='form-control' name="beneficiary" id='beneficiary' value='{{beneficiary}}' >
+                                    <input type='text' class='form-control' name="beneficiary" id='beneficiary' value='{{beneficiary}}' required>
                                 </div>
                             </div>
                             <div class='row mt-4'>
                                 <div class='col-lg-3 col-sm-5 col-md-5 col-xs-3 col-xl-3'>
-                                    <label>Mobile Number</label>
+                                    <label class='required-field'>Mobile Number</label>
                                 </div>
                                 <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6 col-xl-5'>
-                                    <input type='text' class='form-control' name="mobile_number" id='mobile_number' value='{{phone}}' >
+                                    <input type='text' class='form-control' name="mobile_number" id='mobile_number' value='{{phone}}' required>
                                 </div>
                             </div>
                             <div class='row mt-5 d-flex'>
@@ -346,7 +350,7 @@ figure img{
                             </div>
                             <div class='row mt-4'>
                                 <div class='col-lg-5 col-md-3 col-sm-5 col-xs-12 col-xl-3'>
-                                    <label class='text-center ms-4 mt-2' style="color:#fff"><b></b> OTP</label>
+                                    <label class='text-center ms-4 mt-2 required-field' style="color:#fff"><b></b> OTP</label>
                                 </div>
                                 <div class='col-lg-6 col-md-8 col-sm-6 col-xs-12 col-xl-7'>
                                     <input id="otp" type="text" class="form-control" name="otp"  maxlength="8" size="8" required autofocus>
@@ -368,12 +372,36 @@ figure img{
 
 
 {% block content_js %}
-{% for message in messages %}
 <script>
+{% for message in messages %}
+
   window.onload = function(){
     alert('{{message}}')
   }
-</script>
 {% endfor %}
 
+
+$('#submit_button1').click(function(){
+    name = $('#user_name').val();
+  emp_code = $('#emp_code').val();
+  department = $('#department').val();
+  branch = $('#branch').val();
+  beneficiary = $('#beneficiary').val();
+  mobile_number = $('#mobile_number').val();
+  console.log(name,emp_code,department,branch,beneficiary)
+  console.log('beneficiary',  beneficiary  )
+    //   alert('working')
+//     if(name == null && emp_code == null && department == null && branch == null && beneficiary != null  && mobile_number == null){
+//       alert('Please fill in the required details')
+//       return false;
+//   }
+// if(name != null){
+//     alert('working')
+// }
+  })
+
+
+
+
+</script>
 {% endblock content_js %}

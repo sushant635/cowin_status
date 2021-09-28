@@ -197,14 +197,19 @@ def dashboard(request):
             company_name = company.company
             print('company',company)
             csv_file = request.FILES["upload"]
+            if not csv_file.name.endswith('.csv'):
+                messages.error(request,'Please upload proper file template')
+                return HttpResponseRedirect(reverse('dashboard'))
             file_data = csv_file.read().decode("utf-8")
+            
             lines = file_data.split("\n")
-            # print(lines)
             first = 0
             emp_details = []
-            for line in lines:
+            for line in lines:                     
                 if line != '':
                     if first != 0:
+                        print('***************************************************',line)
+                        
                         fields = line.split(',')
                         # print(fields)
                         username1 = fields[2]
@@ -215,9 +220,9 @@ def dashboard(request):
                         department = fields[4]
                         beneficialy_id = fields[5]
                         mobile_number = fields[6]
-                        print(fields)
+                        # print(fields)
                         if User.objects.filter(username=username1).exists():
-                            print(emp_name)
+                            # print(emp_name)
                             emp_details.append(emp_name)
                             pass
                         else:
@@ -250,50 +255,20 @@ def dashboard(request):
                                     messages.error(request,e,username1)
                                     return redirect('dashboard')               
                             else:
-                                messages.error(request,'Please enter the Email name and Emp code in csv file')
-                                return redirect('dashboard')
-                                
-
-
+                                messages.error(request,'Please fill in the required employee details in csv file')
+                                return redirect('dashboard') 
                     first+=1
-                            # user_form = UserForm(username=username1,password=password1)
-                            # if user_form.is_valid():
-                            #     user = user_form.save()
-                            #     group = Group.objects.get(name='employee')
-                            #     user.groups.add(group)
-
-                            #     user.set_password(user.password)
-                            #     user.save()
-                            # else:
-                            #     messages(request,user_form.errors,profile_form.errors)
-                            #     return redirect('dashboard')
-                # obj = [
-                #     models.Employeeprofile(
-                #        company = company,
-                #        company_HR = company,
-                #        employee = User.objects.get(username=row['Email'])
-                #        employee_name = row[''] 
-                #     )
-                #     for row in list_of_dict
-                # ]
-                # print(obj)
-                # print(username,password)
-
-                # print(list_of_dict)
-                # if not csv_file.name.endswith('.csv'):
-                #     messages.error(request,'File is not CSV type')
+                # else:
+                #     messages.error(request,'Please upload proper file template')
                 #     return HttpResponseRedirect(reverse('dashboard'))
-                # if csv_file.multiple_chunks():
-                #     messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(5000*5000),))
-                #     return HttpResponseRedirect(reverse("dashboard"))
+                # 
             print(emp_details)
-            if emp_details != '':
-                print('working')
-                listToStr = ','.join([str(elem) for elem in emp_details])
-                messages.error(request,'This employee are already exists ' + listToStr)
-
-                print(listToStr)
-                return redirect('dashboard')
+            if len(emp_details) >= 1:
+                    print('working')
+                    listToStr = ','.join([str(elem) for elem in emp_details])
+                    messages.error(request,'Employee(s) already exists.  ' + listToStr)  
+                    print(listToStr)
+                    return redirect('dashboard')  
             else:
                 return redirect('dashboard')
             
@@ -403,7 +378,7 @@ def confirmOTP(request):
             print(user_id)
             print(request.POST)
             otp = request.POST.get('otp')
-            txtId = request.session.get('txnId')
+            txtemp_detailsId = request.session.get('txnId')
             sha_signature = encrypt_string(otp)
             print(sha_signature)
             print(otp,txtId)
@@ -458,7 +433,7 @@ def confirmOTP(request):
                 del request.session['txnId']
                 token = re['token']
                 # request.session['token'] = token
-                url = 'https://cdn-api.co-vin.in/api/v2/appointment/beneficiaries'
+                url = 'https://cdfullpathn-api.co-vin.in/api/v2/appointment/beneficiaries'
                 resp = requests.get(url, auth=BearerAuth(token))
                 print(resp)
                 data = models.Employeeprofile.objects.filter(employee=user_id).values('employee_name','Beneficiary_Id')
@@ -777,7 +752,7 @@ def download_certificate(request):
                 #     return 
                 return HttpResponse('http://35.154.107.216/media/certificate.pdf')
             else:
-                return HttpResponse('File data not present in database')
+                return HttpResponse('Certificate not available at present. Please send email to follow-up')
             # print(type(test))
             # my_str_as_bytes = str.encode(test)
             # print(type(my_str_as_bytes))
@@ -1104,7 +1079,7 @@ def send_user_email(request):
             email.content_subtype = "html"
             email.send()
 
-            return HttpResponse('Email send to user' + name)
+            return HttpResponse('Email sent to user   ' + name)
     except Exception as e:
         print(e,'line number of error {}'.format(sys.exc_info()[-1].tb_lineno))
 def download_csv(request, queryset):
