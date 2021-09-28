@@ -378,7 +378,7 @@ def confirmOTP(request):
             print(user_id)
             print(request.POST)
             otp = request.POST.get('otp')
-            txtemp_detailsId = request.session.get('txnId')
+            txtId = request.session.get('txnId')
             sha_signature = encrypt_string(otp)
             print(sha_signature)
             print(otp,txtId)
