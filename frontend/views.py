@@ -433,7 +433,7 @@ def confirmOTP(request):
                 del request.session['txnId']
                 token = re['token']
                 # request.session['token'] = token
-                url = 'https://cdfullpathn-api.co-vin.in/api/v2/appointment/beneficiaries'
+                url = 'https://cdn-api.co-vin.in/api/v2/appointment/beneficiaries'
                 resp = requests.get(url, auth=BearerAuth(token))
                 print(resp)
                 data = models.Employeeprofile.objects.filter(employee=user_id).values('employee_name','Beneficiary_Id')
@@ -753,55 +753,7 @@ def download_certificate(request):
                 return HttpResponse('http://35.154.107.216/media/certificate.pdf')
             else:
                 return HttpResponse('Certificate not available at present. Please send email to follow-up')
-            # print(type(test))
-            # my_str_as_bytes = str.encode(test)
-            # print(type(my_str_as_bytes))
-            # b = list(test)
-            # c = bytes(b)
-            # print(type(c))
-            # print(request.POST)
-            # beneficiary_reference_id = request.POST.get('data')
-            # token = request.session.get('token')
-            # url = "https://cdn-api.co-vin.in/api/v2/registration/certificate/download?beneficiary_reference_id=[beneficiary_reference_id]"
-            # params = {
-            #     "beneficiary_reference_id":beneficiary_reference_id,
-            # }
-            # headers ={
-            #     "accept": "application/pdf"
-            # }
-            # res = json.dumps(params)
-            # print(type(params))
-            # print(type(res))
-            # print(res)
-            # print(beneficiary_reference_id)
-            # resp = requests.get("https://cdn-api.co-vin.in/api/v2/registration/certificate/download?beneficiary_reference_id={}".format(beneficiary_reference_id),headers=headers, auth=BearerAuth(token))
-            # print(resp)
-            # if resp.status_code == 200:
-            #     filename = '/tmp/download_certificate.pdf'
-            #     # scriptPath = sys.path[0]
-            #     # response = HttpResponse(content_type='application/pdf')
-            #     # downloadPath = os.path.join(scriptPath, '../Downloads/')
-            #     re = resp.text
-            #     chunk_size = 2000
-            #     with open(filename,'wb') as fd:
-            #         for chunk in resp.iter_content(chunk_size):
-            #             fd.write(chunk)
-            #     # contentmail_subject = "Hi! CoWin Status CSV"
-            message = "This is csv file where all details about cowin status"
-            email = EmailMessage(
-                mail_subject,
-                message,
-                settings.EMAIL_HOST_USER,
-                [current_user],
-            )
-            email.attach('media/status.csv',csvfile.getvalue() ,'text/csv')
-            email.send() 
-            #     # response['Content-Disposition'] = content
-
-            return HttpResponse('File download in tmp folder')
-            # return 
-            # return HttpResponse(re)
-
+            
     except Exception as e:
         print(e,'line number of error {}'.format(sys.exc_info()[-1].tb_lineno))
 
