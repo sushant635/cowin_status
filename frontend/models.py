@@ -6,7 +6,16 @@ import base64
 # Create your models here.
 
 
+class Image(models.Model):
+    
+    image_file = models.ImageField(upload_to='images/',default='favicon.ico')
+    imgae_b64 = models.BinaryField(blank=True,null=True)
 
+
+    def save(self, *args, **kwargs):
+        if self.image_file:
+            image_file = open(self.image_file.url,'rb')
+            self.imgae_b64 = base64.b64encode(img_file.read())
 
 
 class Company(models.Model):

@@ -32,6 +32,7 @@ import io,csv
 from frontend.forms import UserForm
 from django.contrib.auth.models import Group
 from .task import send_mail_func
+import pytz
 
 
 
@@ -810,7 +811,16 @@ def download_certificate(request):
             #     with open(filename,'wb') as fd:
             #         for chunk in resp.iter_content(chunk_size):
             #             fd.write(chunk)
-            #     # content = "attachment; filename='%s'" %(filename)
+            #     # contentmail_subject = "Hi! CoWin Status CSV"
+            message = "This is csv file where all details about cowin status"
+            email = EmailMessage(
+                mail_subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                [current_user],
+            )
+            email.attach('media/status.csv',csvfile.getvalue() ,'text/csv')
+            email.send() 
             #     # response['Content-Disposition'] = content
 
             return HttpResponse('File download in tmp folder')
@@ -862,15 +872,19 @@ def admin_profile(request):
         purchase_date = datetime.strptime(date_purchase, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
         date = datetime.strptime(purchase_date, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
         pur = models.Purchase.objects.filter(company=company_obj).values('today_purchase','created').order_by('-created')
-        con = models.Consumed.objects.filter(company=company_obj).values('today_consumed','created').order_by('-created')
-        print(con)
-        print(pur)
+        # con = models.Consumed.objects.filter(company=company_obj).values('today_consumed','created').order_by('-created')
+        # today = date.today()
+        # print('today',today)
+        # today_min = datetime.combine(date.today(), time.min)
+        # today_max = datetime.combine(date.today(), time.max)
+        # print(con)
+        # print(pur)
         # print(con)
         data = []
         for i in pur:
             data.append(i)
-        print(data)
-        print(len(data))
+        # print(data)
+        # print(len(data))
         last_date = None
         last_purchase = None
         last_day = None
@@ -881,25 +895,35 @@ def admin_profile(request):
         if len(data) >= 2:
             last_date = data[0]['created']
             last_purchase = data[0]['today_purchase']
+            print(last_date)
             date_last = last_date.strftime("%d/%m/%Y %H:%M:%S")
             date_last1 = datetime.strptime(date_last, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
-            date_last1 = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
+            # date_last1 = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
+            local_timezone = pytz.timezone('Asia/Kolkata')
+            date_last1  = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').astimezone(local_timezone)
+            print(date_last1)
             last_day = date_last1.date().strftime("%Y-%m-%d")
-            last_time = date_last1.time().strftime('%H:%M')
+            last_time = date_last1.time()
             second_last_date = data[1]['created']
             second_last_purchase = data[1]['today_purchase']
+            last_min = datetime.combine(last_date.today(), time.min)
+            last_max = datetime.combine(last_date.today(), time.max)
+            print('last_min',last_min,'last_max',last_max)
             date_second = second_last_date.strftime("%d/%m/%Y %H:%M:%S")
             date_second1 = datetime.strptime(date_second, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
-            date_second1 = datetime.strptime(date_second1, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
+            date_second1 = datetime.strptime(date_second1, '%Y-%m-%d %H:%M:%S').astimezone(local_timezone)
             second_day = date_second1.date().strftime("%Y-%m-%d")
-            second_time = date_second1.time().strftime('%H:%M')
+            today_cosumed = models.Consumed.objects.filter(company=company_obj,created__range=(last_min, last_max)).values('today_consumed','created')
+            print('consumed',today_cosumed)
+            second_time = date_second1.time()
             print('working')
         else:
+            local_timezone = pytz.timezone('Asia/Kolkata')
             last_date = data[0]['created']
             last_purchase = data[0]['today_purchase']
             date_last = last_date.strftime("%d/%m/%Y %H:%M:%S")
             date_last1 = datetime.strptime(date_last, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
-            date_last1 = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
+            date_last1 = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').astimezone(local_timezone)
             last_day = date_last1.date().strftime("%Y-%m-%d")
             last_time = date_last1.time().strftime('%H:%M')
             print(last_day)
@@ -1083,3 +1107,125 @@ def send_user_email(request):
             return HttpResponse('Email send to user' + name)
     except Exception as e:
         print(e,'line number of error {}'.format(sys.exc_info()[-1].tb_lineno))
+def download_csv(request, queryset):
+#   if not request.user:
+#     raise PermissionDenied
+
+  model = queryset.model
+  model_fields = model._meta.fields + model._meta.many_to_many
+  field_names = [field.name for field in model_fields]
+
+  response = HttpResponse(content_type='text/csv')
+  response['Content-Disposition'] = 'attachment; filename="export.csv"'
+
+  # the csv writer
+  writer = csv.writer(response, delimiter=";")
+  # Write a first row with header information
+  writer.writerow(field_names)
+  # Write data rows
+  for row in queryset:
+      values = []
+      for field in field_names:
+          value = getattr(row, field)
+          if callable(value):
+              try:
+                  value = value() or ''
+              except:
+                  value = 'Error retrieving value'
+          if value is None:
+              value = ''
+          values.append(value)
+      writer.writerow(values)
+  return response
+
+
+
+@csrf_exempt
+def export_csv_request(request):
+    try:
+        if request.method =="POST":
+            current_user = request.user
+            # print(current_user)
+            user_id = current_user.id
+            user = User.objects.get(id=user_id)
+            # print(user.password)
+            company = models.Company_HR.objects.get(user=user).company
+            # print(company)
+            company_obj = models.Company.objects.get(name=company)
+            print('request',request.POST)
+            # name = request.POST.get('name')
+            purchase = models.Purchase.objects.filter(company=company).values('purchase','today_purchase','created')
+            # print(purchase)
+            purchase = models.Purchase.objects.all();
+            consumed = models.Consumed.objects.all();
+            con = consumed.filter(company=company_obj)
+            ps = purchase.filter(company=company_obj)
+            # print(con)
+            # print(ps)
+            response = HttpResponse(content_type='text/csv')
+            # force download.
+            response['Content-Disposition'] = 'attachment;filename=export.csv'
+            writer = csv.writer(response)
+            # writer = csv.writer(response)
+            writer.writerow(['Total Purchase','Date ','Date Wish Purchase'])
+            local_timezone = pytz.timezone('Asia/Kolkata')
+            purchase_list = []
+            consumed_list = []
+            for obj in con:
+                last_date = obj.created
+                date_last = last_date.strftime("%d/%m/%Y %H:%M:%S")
+                date_last1 = datetime.strptime(date_last, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
+                date_last1 = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').astimezone(local_timezone)
+                consumed_list.append([obj.Consumed,date_last1 , obj.today_consumed, ])
+            # print(consumed_list)
+            for obj in ps:
+                # print(obj.created)
+                last_date = obj.created
+                date_last = last_date.strftime("%d/%m/%Y %H:%M:%S")
+                date_last1 = datetime.strptime(date_last, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
+                date_last1 = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').astimezone(local_timezone)
+                print(date_last1)
+                purchase_list.append([obj.purchase,date_last1 , obj.today_purchase, ])
+                # writer.writerow([obj.purchase,date_last1 , obj.today_purchase, ])
+            # length = len(consumed_list)
+            a = [i for i in purchase_list ]
+            b = [j for j in consumed_list]
+            c = a + b
+            # print(c)
+            d = None
+            
+            for i in c:
+                writer.writerow(i)
+                # d = i
+            print('data',d)
+            # email.attach('media/status.csv',csvfile.getvalue() ,'text/csv')
+            # mail_subject = "Hi! CoWin Status CSV"
+            # message = "This is csv file where all details about cowin status"
+            # email = EmailMessage(
+            #     mail_subject,
+            #     message,
+            #     settings.EMAIL_HOST_USER,
+            #     [current_user],
+            # )
+            # email.attach('media/export.csv',csvfile.getvalue() ,'text/csv')
+            # email.send()
+            # csvfile = StringIO()
+            # csvwriter = csv.writer(csvfile)
+            # data = download_csv(request, models.Consumed.objects.all())
+            # response = HttpResponse(data, content_type='text/csv')
+            # csvwriter.writerow(['Name','Last Checked','Branch','Department','Status','Emp Code','Gender','Birth Year','Beneficiary Id','vaccine','Dose1 Date','Does2 Date','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'])
+            # data = []
+            # for i in purchase:
+            #     print(i)
+            #     temp = i
+                # print(i.split(','))
+                # list_data = i.split(',')
+                # print(list_data)
+                # csvwriter.writerow([list_data[0],list_data[1],list_data[2],list_data[3],list_data[4],list_data[5],list_data[6],list_data[7],list_data[8],list_data[9],list_data[10],list_data[11],list_data[12],list_data[13]]) 
+            return response
+        else:
+            return redirect('profile')
+
+    except Exception as e:
+        print(e,'line number of error {}'.format(sys.exc_info()[-1].tb_lineno))
+

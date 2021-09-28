@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block page_name %} 
-<h3 style="color:#035397">Profile</h3>
-{% endblock page_name %}
+
 
 
 {% block content_css %}
@@ -13,6 +11,10 @@
   margin-right: auto;
   width: 20%;
 }
+.form-control{
+    background-color:#f0f2fa !important;
+    border-color: #035397;
+}
 .center1 {
   display: block;
   margin-left: auto;
@@ -22,7 +24,8 @@
 .data{
   height: 990px !important;
   background-image: linear-gradient(#00bbff, #035397);
-  /* display: flex; */
+  display: flex;
+  width:100% !important;
   max-height: 100%;
     flex-direction: column;
     justify-content: space-between;
@@ -40,27 +43,36 @@
 
 figure{
     display:block;
-    width:68px;
-    height: 68px;
+    width:65px;
+    height: 65px;
     border-radius: 50px;
     font-size: 25px;
     text-align: center;
-    margin-right: 10px;
+    /* margin-right: 10px; */
     background: #fff;
     line-height: 1.7em;
 }
 
 figure img{
    display:inline-block;
-   width: 40px;
+   width: 35px;
    height: auto;
    margin-top: 15px;
 }
 .css{
-    background: url('/static/img/corona.png') no-repeat;
-
-
+    background: url('/static/img/MicrosoftTeams-image.png') no-repeat,url('/static/img/MicrosoftTeams-image.png') no-repeat;
+    background-position: left top,right bottom;
 }
+.css_big{
+    background: url('/static/img/MicrosoftTeams-image\ \(1\).png') no-repeat,url('/static/img/MicrosoftTeams-image.png') no-repeat;
+    background-position: left top,right bottom;
+    background-size: 70%;
+    ba
+}
+/* .css_right{
+    background: url('/static/img/MicrosoftTeams-image.png') no-repeat;
+    background-position: right,bottom;
+} */
 .vertical-center {
   min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
   /* min-height: 100vh; These two lines are counted as one :-)       */
@@ -73,8 +85,10 @@ figure img{
             height: 70px;
             margin-top: 0%;
             position:absolute;
+
             /* left: 50%; */
         }
+     
 .line { border-bottom: 1px solid red; position: absolute; top: 10px; width: 100%; z-index: -1; }
 @media only screen and (max-width: 900px) {
         #history{
@@ -83,39 +97,121 @@ figure img{
         .dashboard{
           display: none;
         }
+        #user_profile{
+            display: none;  
+        }
+        /* #submit_button{
+            width:50% !important;
+        } */
+        .icon{
+            width: 20px !important;
+        }
+        /* .submit_button{
+        text-align:center !important;
+    } */
 
     }
+@media only screen and (max-width:500px) {
+    .work{
+        width:10px !important;
+    }
+    .figure{
+    display:block;
+    width:50px;
+    height: 50px;
+    border-radius: 50px;
+    font-size: 25px;
+    text-align: center;
+    /* margin-right: 10px; */
+    background: #fff;
+    line-height: 1.7em;
+}
+
+.figure img{
+   display:inline-block;
+   width: 30px;
+   height: auto;
+   margin-top: 15px;
+}
+.write{
+    width:250px !important;
+}
+    /* .icons{
+        width:300px !important;
+    } */
+    /* .submits{
+        text-align:center !important;
+        margin-left: 100px !important;
+
+    } */
+    #submit_button1{
+        margin-left: 65px;
+    }
+    .row>*{
+        width: fit-content !important;
+    }
+    #otpsubmit{
+            width:300px !important;
+        }
+    #otp{
+        width:200px !important; 
+    }
+    #check_status{
+        margin-left: 100px !important;
+        /* text-align: center; */
+    }
+}
+@media only screen and (max-width:350px){
+    .write{
+            width:200px !important;
+        } 
+        .row>*{
+                width: fit-content !important;
+            }   
+        #otpsubmit{
+            width:250px !important;
+        }
+        #otp{
+        width:150px !important; 
+    }
+    #submit_button1{
+        margin-left: 50px;
+    }
+}
 
     </style>
 {% endblock content_css %}
+{% block page_name %} 
+<h3 style="color:#035397" id="user_profile">Profile</h3>
+{% endblock page_name %}
+{% block logout %}
+<a href="{% url 'logout' %}" ><img src="/static/img/shutdown.png" height="40px" data-toggle="tooltip"
+    data-placement="top" title="Logout" /></a>
+{% endblock logout %}
 
 
-
-{% block image_header %} 
- 
-{% endblock image_header %}
 
 
 {% block content %}      
 <div class='row'>
-    <div class='col-lg-9 col-md-9 col-sm-9 col-xs-9'>
+    <div class='col-lg-9 col-md-8 col-sm-8 col-xs-12 col-xl-9'>
         <div class='row'>
             <div class=''>
                 <div class='container mt-5 justify-content-center'>
-                    <div class='card p-2 ms-3' style="box-shadow: 5px 6px 6px 2px #e9ecef;border-radius: 10px;">
+                    <div class='card p-2 ms-3' style="box-shadow: 1px 1px 1px 1px #000000;border-radius: 10px;">
                         <div class='row '>
-                            <div class='col-lg-5 col-sm-5 col-md-5 col-xs-12 col-xl-5 '>
-                                <h3 class='ms-5 vertical-center'>You Status is</h3>
+                            <div class='col-lg-6 col-sm-7 col-md-6 col-xs-12 col-xl-6 '>
+                                <h3 class='ms-4 vertical-center'>You Status is</h3>
                             </div>
-                            <div class='col-lg-7 col-sm-7 col-md-7 col-xs-12 col-xl-7'>
+                            <div class='col-lg-6 col-sm-7 col-md-6 col-xs-12 col-xl-6'>
                                 {% if status == "Not Checked" %}
-                                <h2 class='vertical-center' style="color: brown;" >{{status}}</h2>
+                                <h2 class=' ms-4 vertical-center' style="color: brown;" >{{status}}</h2>
                                 {% elif status == 'Partially Vaccinated' %}
-                                <h2 class='vertical-center' style="color: orange;">{{status}}</h2>
+                                <h2 class='ms-4 vertical-center' style="color: orange;">{{status}}</h2>
                                 {% elif status == 'Fully Vaccinated' %}
-                                <h2 class='vertical-center' style="color: greenyellow;">{{status}}</h2>
+                                <h2 class='ms-4 vertical-center' style="color: greenyellow;">{{status}}</h2>
                                 {% else %}
-                                <h2 class='vertical-center' style="color: red;">{{status}}</h2>
+                                <h2 class='ms-4 vertical-center' style="color: red;">{{status}}</h2>
                                 {% endif %}
                             </div>
                         </div>
@@ -127,63 +223,63 @@ figure img{
         <div class='row'>
             <div class='container'>
                 <div class='container mt-5 justify-content-center'>
-                    <div class='card p-5  ' style="    box-shadow: 5px 6px 6px 2px #e9ecef;border-radius: 10px;">
+                    <div class='card p-4  ' style="    box-shadow: 5px 6px 6px 2px #e9ecef;border-radius: 10px;">
                         <h2 class='text-center'>Form</h2>
-                        <div class='container mt-5' >
+                        <div class='container text-center mt-5' >
                             <form method="POST" action="{% url 'user_profile'%}" id="change_form">
                                 {% csrf_token %}
                                 <div class='row'>
-                                    <div class='col-lg-3 col-sm-3 col-md-3 col-xs-12'>
+                                    <div class='col-lg-3 col-sm-5 col-md-5 col-xs-12 col-xl-3'>
                                         <label>Name</label>
                                     </div>
-                                    <div class='col-lg-6 col-sm-6 col-md-6 col-xs-12'>
+                                    <div class='col-lg-6 col-sm-6 col-md-6 col-xs-12 col-xl-5'>
                                         <input type='text' class='form-control' name='user_name' id='user_name' value='{{name}}'>
                                     </div>
                                 </div>
                                 <div class='row mt-4'>
-                                    <div class='col-lg-3 col-sm-3 col-md-3 col-xs-12'>
+                                    <div class='col-lg-3 col-sm-5 col-md-5 col-xs-12 col-xl-3'>
                                         <label>Emp Code</label>
                                     </div>
-                                    <div class='col-lg-6 col-sm-6 col-md-6 col-xs-12'>
+                                    <div class='col-lg-6 col-sm-6 col-md-6 col-xs-12 col-xl-5'>
                                         <input type='text' class='form-control' name='emp_code' id='emp_code' value='{{emp_code}}'>
                                     </div>
                                 </div>
                             
                             <div class='row mt-4'>
-                                <div class='col-lg-3 col-sm-3 col-md-3 col-xs-3'>
+                                <div class='col-lg-3 col-sm-5 col-md-5 col-xs-3 col-xl-3'>
                                     <label>Department</label>
                                 </div>
-                                <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6'>
+                                <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6 col-xl-5'>
                                     <input type='text' class='form-control'  name="department" id='department' value='{{department}}' >
                                 </div>
                             </div>
                             <div class='row mt-4'>
-                                <div class='col-lg-3 col-sm-3 col-md-3 col-xs-3'>
+                                <div class='col-lg-3 col-sm-5 col-md-5 col-xs-3 col-xl-3'>
                                     <label>Branch</label>
                                 </div>
-                                <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6'>
+                                <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6 col-xl-5'>
                                     <input type='text' class='form-control' name="branch" id='branch' value='{{branch}}' >
                                 </div>
                             </div>
                             <div class='row mt-4'>
-                                <div class='col-lg-3 col-sm-3 col-md-3 col-xs-3'>
+                                <div class='col-lg-3 col-sm-5 col-md-5 col-xs-3 col-xl-3'>
                                     <label>Beneficiary Id</label>
                                 </div>
-                                <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6'>
+                                <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6 col-xl-5'>
                                     <input type='text' class='form-control' name="beneficiary" id='beneficiary' value='{{beneficiary}}' >
                                 </div>
                             </div>
                             <div class='row mt-4'>
-                                <div class='col-lg-3 col-sm-3 col-md-3 col-xs-3'>
+                                <div class='col-lg-3 col-sm-5 col-md-5 col-xs-3 col-xl-3'>
                                     <label>Mobile Number</label>
                                 </div>
-                                <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6'>
+                                <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6 col-xl-5'>
                                     <input type='text' class='form-control' name="mobile_number" id='mobile_number' value='{{phone}}' >
                                 </div>
                             </div>
                             <div class='row mt-5 d-flex'>
-                                <div class='col-lg-2 col-md-2 col-sm-1 col-xs-6 justify-content-center' id="submits">
-                                    <button class='btn ' type='submit' id="submit_button" style="background-image: linear-gradient(#00bbff, #035397); color:#ffffff">Submit</button>
+                                <div class='d-flex justify-content-center' id="submits">
+                                    <button class='btn btn-lg ' type='submit'  id="submit_button1" style="background-image: linear-gradient(#00bbff, #035397); color:#ffffff;">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -193,73 +289,71 @@ figure img{
             </div>
         </div>
     </div>
-    <div class='col-lg-3 col-md-3 col-sm-3 col-xs-3' id='history'>
+    <div class='col-lg-3 col-md-4 col-sm-4 col-xs-12 col-xl-3' id='history'>
         <div class='data' >
-            <div class='container css'>
+            <div class='container css_big'>
                 <div class='row '>
-                    <div class='col-md-4 col-lg-3 col-sm-5 col-xs-4 mt-5' >
-
+                    <div class='col-md-5 col-lg-5 col-sm-5 col-xs-5 mt-5 col-xl-3' >
                         <figure>
                             <img src="/static/img/form 1.png" alt="image">
-                            <div class = "vertical" style="margin-left: 33px;"></div>
+                            <div class = "vertical" style="margin-left: 30px;"></div>
                           </figure>
-
                     </div>
-                    <div class='col-md-7 col-lg-9 col-sm-7 col-xs-7 mt-5' style="padding: 0% !important;">
-                        <label class='fs-5 mt-3' style="  font-weight: 900; color:#fff"><b>Ensure all the details are filled</b></label>
+                    <div class='col-md-7 col-lg-7 col-sm-7 col-xs-7 mt-5 col-xl-9' style="padding: 0% !important;">
+                        <label class='fs-5 mt-1 write' style="  font-weight: 900; color:#fff">Ensure all the details are filled</label>
                     </div>
                 </div>
                 <div class='row'>
-                    <div class='col-md-4 col-lg-3 col-sm-5 col-xs-4 mt-4' >
+                    <div class='col-md-5 col-lg-5 col-sm-5 col-xs-4 mt-4 col-xl-3' >
                         <figure>
                             <img src="/static/img/submit 1.png" alt="image">
                             <div class = "vertical" style="margin-left: 33px;"></div>
                           </figure>
                     </div>
-                    <div class='col-md-7 col-lg-9 col-sm-7 col-xs-7 mt-5' style="padding: 0% !important;">
-                        <label class='fs-5' style="  font-weight: 900;color:#fff"><b>Submit the button</b></label>
+                    <div class='col-md-7 col-lg-7 col-sm-7 col-xs-7 mt-4 col-xl-8' style="padding: 0% !important;">
+                        <label class='fs-5 mt-1' style="  font-weight: 900;color:#fff"><b>Submit the button</b></label>
                     </div>
 
                 </div>
                 <!-- <svg width="500" height="500"><line x1="50" y1="50" x2="350" y2="350" stroke="black"/></svg> -->
                 <div class='row'>
-                    <div class='col-md-4 col-lg-3 col-sm-5 col-xs-4 mt-4' >
+                    <div class='col-md-5 col-lg-5 col-sm-5 col-xs-4 mt-4 col-xl-3' >
                         <figure>
                             <img src="/static/img/otp.png" alt="image">
                             <div class = "vertical" style="margin-left: 33px;"></div>
                           </figure>
                     </div>
-                    <div class='col-md-7 col-lg-9 col-sm-7 col-xs-7 mt-5' style="padding: 0% !important;">
-                        <label class='fs-5' style="  font-weight: 900;color:#fff"><b>Enter the otp</b></label>
+                    <div class='col-md-7 col-lg-7 col-sm-7 col-xs-7 mt-4 col-xl-8' style="padding: 0% !important;">
+                        <label class='fs-5 mt-1' style="  font-weight: 900;color:#fff"><b>Enter the otp</b></label>
                     </div>
                 </div>
                 <div class='row'>
-                    <div class='col-md-4 col-lg-3 col-sm-5 col-xs-4 mt-4' >
+                    <div class='col-md-5 col-lg-5 col-sm-5 col-xs-4 mt-4 col-xl-3' >
                         <figure>
                             <img src="/static/img/form 1.png" alt="image">
                           </figure>
                     </div>
-                    <div class='col-md-7 col-lg-9 col-sm-7 col-xs-7 mt-5' style="padding: 0% !important;">
-                        <label class='fs-5' style="  font-weight: 900;color:#fff"><b>Check the vaccination status</b></label>
+                    <div class='col-md-7 col-lg-7 col-sm-7 col-xs-7 mt-4 col-xl-8' style="padding: 0% !important;">
+                        <label class='fs-5 mt-1 write' style="  font-weight: 900;color:#fff"><b>Check the vaccination status</b></label>
                     </div>
                 </div>
-                <div class=' mt-5 '>
-                    <div class='card p-2 css' style="background-color: #035397;box-shadow: 5px 6px 6px 2px;border-radius: 10px;">
+                <div class='mt-5'>
+                    <div class='card css css_right' style="background-color: #035397;box-shadow: 5px 6px 6px 2px;border-radius: 10px;">
                         <form method="post" action="{% url 'confirmotp'%}">
                             {% csrf_token %}
                             <div class='row'>
-                                <h4 style="color:#fff" class='text-center'><b>Check Status</b></h4>
+                                <h4 style="color:#fff" class='text-center mt-4' id='check_status'><b>Check Status</b></h4>
                             </div>
-                            <div class='row mt-5 p-4'>
-                                <div class='col-lg-5 col-md-5 col-sm-5 col-xs-12 col-xl-5'>
-                                    <label class='text-center ms-2 mt-2' style="color:#fff"><b></b> OTP</label>
+                            <div class='row mt-4'>
+                                <div class='col-lg-5 col-md-3 col-sm-5 col-xs-12 col-xl-3'>
+                                    <label class='text-center ms-4 mt-2' style="color:#fff"><b></b> OTP</label>
                                 </div>
-                                <div class='col-lg-6 col-md-5 col-sm-5 col-xs-12 col-xl-5'>
+                                <div class='col-lg-6 col-md-8 col-sm-6 col-xs-12 col-xl-7'>
                                     <input id="otp" type="text" class="form-control" name="otp"  maxlength="8" size="8" required autofocus>
                                 </div>
                             </div>
-                            <div class='row p-4 mt-5 mb-4'>
-                                <input type="submit" class='btn btn-light'>
+                            <div class='row p-4 mt-3 mb-4'>
+                                <input type="submit" class='btn btn-light' id="otpsubmit">
                             </div>
                             </div>
                         </form>

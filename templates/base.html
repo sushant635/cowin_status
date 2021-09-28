@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,7 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <!-- <link type='text/css' href='/static/css/menu.css' rel='stylesheet'> -->
-        <link rel="stylesheet" type="text/css" href="/static/DataTables/datatables.min.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.csss"/>
+        
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -18,6 +20,9 @@
             body{
                 font-family: 'Roboto', sans-serif;
                  background-color:#f0f2fa;
+                 height:100%;
+                 margin:0px;
+
                 }
             /* header{
             background-color: white !important;
@@ -40,14 +45,40 @@
                     z-index: var(--z-fixed);
                     transition: .5s
                 } */ 
-
+                html.touch div {
+                    width: 480px;
+                }
+                html.no-touch div {
+                    width: auto;
+                }
                 #dashboard{
                   display: none; 
                 }
                 #profile{
                   display: none; 
                 }
-               
+                .main-navigation {
+                    float: left;
+                    width: 80%;
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: baseline;
+                }
+                #department2{
+                  margin-left: 60px;
+                    
+                  }
+               @media only screen and (max-width: 400px) {
+                .navbar-toggler{
+                  /* margin: left 30px;
+                   */
+                  margin-left: 50px;
+                }
+                #department2{
+                  margin-left: 0px;
+                    
+                  }
+               }
                 @media only screen and (max-width: 900px) {
                   #name{
                     margin-top:10px;
@@ -61,11 +92,28 @@
                 #icons{
                   display: none;
                 }
-                  #department{
+                .navbar-toggler{
+                  
+                  margin-left: 100px;
+                }
+                  #department2{
+                    margin-top:10px;
+                    margin-left: 0px;
+                  }
+                  #branch2{
+                    margin-top:10px;
+                  }
+                  #status2{
+                    margin-top:10px;
+                  }
+                  #gender2{
+                    margin-top:10px;
 
                   }
 
+
                 }
+                
 
         </style>
         {% block content_css %}
@@ -75,61 +123,49 @@
     <body>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <img src="/static/img/Logo-with-NO-TL-No-BG svg 1.png" height="40px" >
+          <img src="/static/img/Logo-with-NO-TL-No-BG svg 1.png" height="35px" >
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="nav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
               <li class="nav-item ps-4" id='name'>
                 {% block page_name %} {% endblock page_name %}
               </li>
-              <li class="nav-item ps-5">
-                
+              <li class="nav-item ps-2" id="dashboard">
+                {% block dashboard %} {% endblock dashboard %}
               </li>
-              <li class="nav-item ps-5">
+              <li class="nav-item ps-2" id="profile">
+                {% block profile %} {% endblock profile %}
               </li>
-              <li class="nav-item ps-2 col-xs-12" id="dashboard">
-                <a class="nav-link " aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
-              </li>
-              <li class="nav-item ps-2 col-xs-12" id="profile">
-                <a class="nav-link " aria-current="page" href="{% url 'profile' %}">Profile</a>
-              </li>
-              <li class="nav-item ps-2 col-xs-12" id='department'>
+              <li class="nav-item ps-2" id="department2">
                 {% block Department %} {% endblock Department %}
               </li>
-              <li class="nav-item ps-2 col-xs-12">
+              
+              <li class="nav-item ps-2" id="branch2">
                 {% block Branch %} {% endblock Branch %}
               </li>
-              <li class="nav-item ps-2 col-xs-12">
+              <li class="nav-item ps-2" id="status2">
                 {% block Status %} {% endblock Status %}
               </li>
-              <li class="nav-item ps-2 col-xs-12  ">
+              <li class="nav-item ps-2" id="gender2">
                 {% block Gender %} {% endblock Gender %}
               </li>
-              <li class="nav-item ms-5 ps-5">
-              </li>
+              
             </ul>
-            </div>
-            
-            <div class='icons'>
+            <div class="d-flex">
               {% block image_header %} {% endblock image_header %}
-            </div>
-            <div class='icons ms-4'>
-              {% block logout %} {% endblock logout %}
-            </div>
+              <div class='ps-3'>
+                {% block logout %} {% endblock logout %}
 
+              </div>
+
+              
+            </div>
           </div>
         </div>
       </nav>
-        <!-- <header class="header" id="header">
-            <div class='row mt-3'>
-              <div class='col-lg-2 col-md-2 col-sm-2 col-xs-12'>
-                <img src="/static/img/Logo-with-NO-TL-No-BG svg 1.png" height="40px" class='ms-5 pb-1'>
-              </div>
-              
-            </div>
-          </header> -->
+      
         {% block content %}
       
       {% endblock content %}
@@ -142,10 +178,14 @@
     <script src="/static/js/popper.min.js"></script>
     <script src="/static/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <script src="/static/js/jquery-3.6.0.js" ></script>
-    <script type="text/javascript" src="/static/DataTables/datatables.min.js"></script>
+    
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
       {% block content_js %}
-      
+          <script>
+            $('html.touch #popup').hide();
+
+          </script>
       {% endblock content_js %}
     </body>
 </html>

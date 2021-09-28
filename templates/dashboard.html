@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block page_name %} 
-<h3 style="color:#035397">Dashboard</h3>
-{% endblock page_name %}
+
 
 {% block content_css %}
 <style>
@@ -11,8 +9,9 @@
   }
   .form-select{
   background-color:#f0f2fa !important;
-  border: none !important;
+  border-color: #035397;
   width:180px !important;
+
 }
 .upload-input{
   display: inline-block;
@@ -155,7 +154,55 @@ table>tbody>tr>td{
   background-color: #ddd;
   border-radius: 5px;
 } */
-@media only screen and (max-width: 900px) {
+div.pager {
+    /* text-align: center; */
+    margin: 1em 0;
+}
+
+div.pager span {
+    display: inline-block;
+    width: 2.0em;
+    height: 2.0em;
+    line-height: 2.0;
+    text-align: center;
+    cursor: pointer;
+    background: #ffffff;
+    color: #000;
+    margin-right: 0.8em;
+    margin-top:0% !important;
+    border-radius: 50%;
+}
+.previous{
+  width: 2.8em !important;
+  background: #f0f2fa !important;
+  color: #707070  !important;
+  border-radius: 1px !important;
+  /* display: inline-block; */
+  /* position: fixed; */
+
+}
+.next{
+  width: 2.8em !important;
+  background: #f0f2fa !important;
+  color: #035397  !important;
+  border-radius: 1px !important;
+  
+
+}
+
+
+div.pager span.active {
+    background: #035397;
+    color: #fff;
+}
+@media only screen and (max-width:1024) {
+  .form-select{
+  background-color:#f0f2fa !important;
+  border: none !important;
+  width:100px !important;
+}
+}
+@media only screen and (max-width: 600px) {
         #myTable{
             display: none;
         }
@@ -168,13 +215,35 @@ table>tbody>tr>td{
         .profile{
           display: none;
         }
+        .dashboard1{
+          display: none;
+        }
+        #pages{
+          display: none;
+        }
+        #exporticon{
+          text-align: center;
+        }
+        .profile2{
+          display: none;
+        }
 
     }
 </style>
 {% endblock content_css %}
+{% block page_name %} 
+<h3 style="color:#035397" class="dashboard1">Dashboard</h3>
+{% endblock page_name %}
+{% block dashboard %} 
+<a class="nav-link " aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
+{% endblock dashboard %}
+{% block profile %} 
+<a class="nav-link " aria-current="page" href="{% url 'profile' %}">Profile</a>
+{% endblock profile %}
 
+<!--  -->
 {% block Department %} 
-<select class='form-select' name="location" id="department1" >
+<select class='form-select select' name="location" id="department1" >
   <option value="Department">Department</option>
   {% for i in department%}
   <option value="{{i}}">{{i}}</option>
@@ -209,36 +278,44 @@ table>tbody>tr>td{
 </select>
 {% endblock Gender %}
           
-            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-8">
+            <!-- <div class="col-lg-2 col-md-3 col-sm-3 col-xs-8">
             
-        </div>
+        </div> -->
 
 {% block image_header %} 
-<a href="{% url 'profile' %}" class="profile" data-toggle="tooltip" data-placement="top" title="Admin Profile"><img src="/static/img/user (3).png" height='40px'></a>
+<a href="{% url 'profile' %}" class="profile2" data-toggle="tooltip" data-placement="top" title="Admin Profile"><img src="/static/img/user (3).png" height='40px'></a>
 {% endblock image_header %}
 {% block content %}
+
+
 <div class='row'>
-    <div class='col-lg-9 col-md-9 col-sm-9 col-xs-12'>
+    <div class='col-lg-9 col-md-9 col-sm-9 col-xs-12 col-xl-9'>
         <div class='container mt-5'>
           <div class='container mt-5 justify-content-center'>
             <div class='row'>
-              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2'>
+              <div class='col-lg- col-md-4 col-sm-3 col-xs-12 col-xl-2 mt-2'>
                   <!-- <button>Data</button> -->
                   <a href="/static/sampletemplate/new_template.csv" download  class='btn btn-primary' style="color:black ;background-color:#ffffff;" id='site_csvsample'><img src="/static/img/download.png" height='20px'> Template</a>
               </div>
-              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-4 col-xl-2'>
+              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-4 col-xl-2 mt-2'>
                   <form action="/dashboard/" method="POST" enctype="multipart/form-data" id='upload_csv'> 
                       {% csrf_token %}
                       <label for="upload" class='btn ' style="background-image: linear-gradient(#00bbff, #035397); color:#ffffff" ><img src="/static/img/plus.png" height='20px'> Upload File</label>                    
                       <input type="file" id="upload" name="upload" hidden/>
                   </form>
               </div>
-              <div class='col-lg-3 col-sm-3 col-xs-3 col-xl-6'>
+              <div class='col-lg-4 col-sm-1 col-md-6 col-xs-3 col-xl-6' id="pages">
+                <div class="pager">
+                  <span class="previous">Prev</spnan>
+                    <span class="next "><b>Next</b></spnan>
+                    
+                </div>
+                
                 <!-- <ul id="pagin" class="pagination1">
-         
-                </ul> -->
-              </div>
-              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2'>
+                  
+                </ul> --> 
+            </div>
+              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2 mt-2' id="exporticon">
                 <button id="export" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV File"><img src="/static/img/export.png" height='24px'></button>
                 
               <!-- </div>
@@ -252,7 +329,7 @@ table>tbody>tr>td{
           <div class="container mt-5 justify-content-center">
             <div class="card ">
               <div style="overflow-x:auto;" class="table-responsive">
-                <table class="table " id="myTable">
+                <table class="table paginated" id="myTable">
                   <thead style="background-image: linear-gradient(#00bbff, #035397);border-radius: 25px !important" class='topnav'>
                     <tr class='text-light'>
                       <th scope="col" class='p-4'>Emp</th>
@@ -272,19 +349,19 @@ table>tbody>tr>td{
                           <td class='p-4'>{{emps.branch}}</td>
                           <td class='p-4'>{{emps.department}}</td>
                           {% if emps.status == "Not Checked" %}
-			                      <td  class='p-4' style="color:#fd3636 ; "><b>{{emps.status}}</b></td>                                
+			                      <td  class='p-4' style=" "><b style="padding:10px;;background-color:#ffebeb;border-radius: 20px;"><span style="color: #fd3636;">{{emps.status}}</span></b></td>                                
                           {% elif emps.status == 'Partially Vaccinated' %}
-                          <td  class='p-4' style="color:#ffb800"><b>{{emps.status}}</b></td>                                
+                          <td  class='p-4' style="color:#ffb800"><b style="padding:10px;;background-color:#fff8e5;border-radius: 20px;" >{{emps.status}}</b></td>                                
                           {% elif emps.status == 'Fully Vaccinated' %}
-                          <td  class='p-4' style="color:#20e074"><b>{{emps.status}}</b></td>                                
+                          <td  class='p-4' style="color:#20e074"><b style="padding:10px;;background-color:#e6fdf4;border-radius: 20px;" >{{emps.status}}</b></td>                                
                           {% else %}
-                          <td  class='p-4' style="color:#7d3ac1;"><b>{{emps.status}}</b></td>                                
+                          <td  class='p-4' style="color:#7d3ac1;"><b style="padding:10px;;background-color:#dbd5e2;border-radius: 20px;" >{{emps.status}}</b></td>                                
                           {% endif %} 
                           <td class='p-4'><a class="use-address" download style="cursor: pointer;">Download Certificate</a></td>
                           {% if emps.status == 'Not Checked'%}
-                          <td class='p-4'><button type="button" class="user-email btn" style="background-image: linear-gradient(#00bbff, #035397);color:#f0f2fa">send email</button></td>
+                          <td class='p-4'><button type="button" class="user-email btn" style="background-image: linear-gradient(#00bbff, #035397);color:#f0f2fa"><img src="/static/img/send-mail.png" height='24px'></button></td>
                           {% else %}
-                          <td class='p-4'style="display:none"><button type="button" class="user-email btn btn-info">send email</button></td>
+                          <td class='p-4'style="display:none"><button type="button" class="user-email btn btn-info"><img src="/static/img/send-mail.png" height='24px'></button></td>
                           {% endif %}
                           <td class='p-4' style="display:none">{{emps.emp_code}}</td>
                           <td class='p-4' style="display:none">{{emps.gender}}</td>
@@ -298,59 +375,11 @@ table>tbody>tr>td{
                   </tbody>
                 </table>
               </div>
-              
-                <!-- <div class='topnav p-4'>
-                    <div class='row'>
-                        <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2'>
-                            <labe class='text-center text-light ms-4'>Emp</labe>
-                        </div>
-                        <div class='col-lg-1 col-md-1 col-sm-1'>
-                            <labe class='text-center text-light '>Emp Code</labe>
-                        </div>
-                        <div class='col-lg-2 col-md-2 col-sm-2 ps-5'>
-                            <labe class='text-center text-light '>Branch</labe>
-                        </div>
-                        <div class='col-lg-1 col-md-1 col-sm-1'>
-                          <labe class='text-center text-light '>Gender</labe>
-                        </div>
-                        <div class='col-lg-2 col-md-2 col-sm-2 ps-5'>
-                            <labe class='text-center text-light '>Department</labe>
-                        </div>
-                        <div class='col-lg-2 col-md-2 col-sm-2 ps-4'>
-                          <labe class='text-center text-light '>Status</labe>
-                        </div>
-                        <div class='col-lg-2 col-md-2 col-sm-2'>
-                          <labe class='text-center text-light '>Download Certificate</labe>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- <div class='p-4 pt-2'>
-                  <table id="myTable">
-                    <tbody>
-                      {% for emps in emp %}
-                      <tr class='border-bottom' >
-                        <td style="width: 13em !important" class='ms-4'>{{emps.name}}</td>
-                        <td style="width: 8em !important ">{{emps.emp_code}}</td>
-                        <td style="width: 11.73em !important ">{{emps.branch}}</td>
-                        <td style="width: 8em !important ">{{emps.gender}}</td>
-                        <td style="width: 11.60em !important ">{{emps.department}}</td>
-                        <td  style="width: 12em !important ">{{emps.vaccination_status}}</td>
-                        <td style="width: 12em !important ;cursor: pointer;"><a class="use-address" href='#'>Download Certificate</a></td>
-                        <td style="display:none">{{emps.dose1_date}}</td>
-                        <td style="display:none">{{emps.dose2_date}}</td>
-                        <td style="display:none">{{emps.birth_year}}</td>
-                        <td style="display:none">{{emps.beneficiary_reference_id}}</td>
-                        <td style="display:none">{{emps.vaccine}}</td>
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div> -->
             </div>
       </div>
     </div>
     </div>
-    <div class='col-lg-3 col-md-3 col-sm-3 col-xs-12'> 
+    <div class='col-lg-3 col-md-3 col-sm-3 col-xs-12 col-xl-3'> 
       <div class='data'>
         <div id="container"  style="width: 100%;">
           <canvas id="pie-chart" class='centerimg pt-4' height='140px;'></canvas>
@@ -359,60 +388,60 @@ table>tbody>tr>td{
         <div class='row m-4'>
           <div class='card ' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
-              <div class='col-lg-3 col-xs-6 col-sm-4 col-md-4 col-xl-2'>
+              <!-- <div class='col-lg-3 col-xs-6 col-sm-4 col-md-4 col-xl-2'> -->
                 <h1 style="color: #035397; font-weight:500px !important;">{{total}}</h1>
-              </div>
-              <div class='col-lg-5 col-xl-6 col-xs-6 col-sm-8 col-md-8'>
+              <!-- </div> -->
+              <!-- <div class='col-lg-5 col-xl-6 col-xs-6 col-sm-8 col-md-8'> -->
                 <h5 class="card-title">Total Employee</h5>
-              </div>
+              <!-- </div> -->
             </div>
           </div>
         </div>
         <div class='row m-4 '>
           <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
-              <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
+              <!-- <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'> -->
                 <h1 style="color:#20e074">{{fully_vaccinated}}</h1>
-              </div>
-              <div class='col-lg-5 col-md-5 col-sm-6 col-xl-6 col-xs-8'>
+              <!-- </div> -->
+              <!-- <div class='col-lg-5 col-md-5 col-sm-6 col-xl-6 col-xs-8'> -->
                 <h5 class="card-title">Fully Vaccinated</h5>
-              </div>
+              <!-- </div> -->
           </div>
         </div>
         </div>
         <div class='row m-4'>
           <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
-              <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
+              <!-- <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'> -->
                 <h1 style="color:#ffb800">{{partial_vaccinated}}</h1>
-              </div>
-              <div class='col-lg-5 col-md-5 col-sm-6 col-xl-6 col-xs-8'>
+              <!-- </div> -->
+              <!-- <div class='col-lg-5 col-md-5 col-sm-6 col-xl-6 col-xs-8'> -->
                 <h5 class="card-title">Partially Vaccinated</h5>
-              </div>
+              <!-- </div> -->
           </div>
         </div>
         </div>
         <div class='row m-4'>
           <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
-              <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
+              <!-- <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'> -->
                 <h1 style="color: #7d3ac1">{{not_vaccinated}}</h1>
-              </div>
-              <div class='col-lg-5 col-md-5 col-sm-6 col-xl-6 col-xs-8'>
+              <!-- </div> -->
+              <!-- <div class='col-lg-5 col-md-5 col-sm-6 col-xl-6 col-xs-8'> -->
                 <h5 class="card-title">Not Vaccinated</h5>
-              </div>
+              <!-- </div> -->
           </div>
         </div>
       </div>
       <div class='row m-4'>
         <div class='card' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
           <div class='rows'>
-            <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'>
+            <!-- <div class='col-lg-3 col-md-4 col-sm-4 col-xl-3 col-xs-4'> -->
               <h1 style="color:#fd3636">{{not_checked}}</h1>
-            </div>
-            <div class='col-lg-5 col-md-5 col-sm-6 col-xl-6 col-xs-8'>
+            <!-- </div> -->
+            <!-- <div class='col-lg-5 col-md-5 col-sm-6 col-xl-6 col-xs-8'> -->
               <h5 class="card-title">Not Checked</h5>
-            </div>
+            <!-- </div> -->
         </div>
       </div>
     </div>
@@ -426,6 +455,14 @@ table>tbody>tr>td{
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 <script>
+
+$(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+
+
+
+  console.log(screen.height,screen.width)
       {% for message in messages %}
       // window.onload = function(){
       //   alert('{{message}}') 
@@ -436,36 +473,106 @@ table>tbody>tr>td{
       // alert(window.onload)
     {% endfor %}
 
-    pageSize = 7
-    var pageCount = $('#myTable tr').length/pageSize;
-    for(var i = 0 ; i<pageCount;i++){
+  //   pageSize = 7
+  //   var pageCount = $('#myTable tr').length/pageSize;
+  //   for(var i = 0 ; i<pageCount;i++){
         
-        $("#pagin").append('<li><a href="#">'+(i+1)+'</a></li> ');
-      }
+  //       $("#pagin").append('<li><a href="#">'+(i+1)+'</a></li> ');
+  //     }
 
-      $("#pagin li").first().find("a").addClass("current")
-    showPage = function(page) {
-	    $(".border-bottom").hide();
-	    $(".border-bottom").each(function(n) {
-	        if (n >= pageSize * (page - 1) && n < pageSize * page)
-	            $(this).show();
-	    });        
-	}
+  //     $("#pagin li").first().find("a").addClass("current")
+  //   showPage = function(page) {
+	//     $(".border-bottom").hide();
+	//     $(".border-bottom").each(function(n) {
+	//         if (n >= pageSize * (page - 1) && n < pageSize * page)
+	//             $(this).show();
+	//     });        
+	// }
     // alert(pageCount)
     // showPage(1);
 
-$("#pagin li a").click(function() {
-    $("#pagin li a").removeClass("current");
-    $(this).addClass("current");
-    showPage(parseInt($(this).text())) 
-});
+// $("#pagin li a").click(function() {
+//     $("#pagin li a").removeClass("current");
+//     $(this).addClass("current");
+//     showPage(parseInt($(this).text())) 
+// });
 
     // $(document).ready(function() {
     //             $('#myTable').paging({limit:7});
     //         });
-    $("li").click(function () {
-  $(this).addClass("active").siblings().removeClass("active");
+//     $("li").click(function () {
+//   $(this).addClass("active").siblings().removeClass("active");
+// });
+
+// $('td','table').each(function(i){
+//   $(this).text(i+1)
+//   console.log('working',$(this).text(i+1))
+// })
+
+
+$('table.paginated').each(function(){
+  var currentPage = 0;
+    var numPerPage = 7;
+    var $table = $(this);
+    console.log($table)
+    $table.bind('repaginate', function() {
+        $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+    
 });
+    $table.trigger('repaginate');
+    var numRows = $table.find('tbody tr').length;
+    console.log('numRows',numRows)
+    console.log(numRows)
+    var numPages = Math.ceil(numRows / numPerPage);
+    console.log(numPages)
+    var $pager = $('.pager');
+    var $previous = $('.previous');
+    var $next = $('.next')
+    for (var page = 0; page < numPages; page++) {
+      $('<span class="page-number"></span>').text(page + 1).bind('click', {
+          newPage: page
+      }, function(event) {
+          currentPage = event.data['newPage'];
+          console.log(currentPage)
+          $table.trigger('repaginate');
+          $(this).addClass('active').siblings().removeClass('active');
+      }).appendTo($pager).addClass('clickable');
+    }
+    // $pager.insertBefore($table).find('span.page-number:first').addClass('active');
+    $pager.find('span.page-number:first').addClass('active')
+    $previous.insertBefore('span.page-number:first');
+    $next.insertAfter('span.page-number:last');
+    $next.click(function (e) {
+        $previous.addClass('clickable');
+        $pager.find('.active').next('.page-number.clickable').click();
+    });
+    $previous.click(function (e) {
+        $next.addClass('clickable');
+        $pager.find('.active').prev('.page-number.clickable').click();
+    });
+    $table.on('repaginate', function () {
+        $next.addClass('clickable');
+        $previous.addClass('clickable');
+        
+        setTimeout(function () {
+            var $active = $pager.find('.page-number.active');
+            if ($active.next('.page-number.clickable').length === 0) {
+                $next.removeClass('clickable');
+            } else if ($active.prev('.page-number.clickable').length === 0) {
+                $previous.removeClass('clickable');
+            }
+        });
+    });
+    $table.trigger('repaginate');
+});
+
+
+
+
+
+
+
+
       $('.user-email').click(function(){
         // alert('working')
         var name = $(this).closest("tr").find('td:eq(0)').text();
@@ -500,11 +607,15 @@ $("#pagin li a").click(function() {
         // alert(tr.length)
         // alert(filter)
         for(i = 0 ; i< tr.length; i++){
+          // var rowText = tr[i].textContent;
+          // console.log('row text',rowText)
           td = tr[i].getElementsByTagName("td")[3];
          var  td2 = tr[i].getElementsByTagName("td")[2]
         var   tdstatus = tr[i].getElementsByTagName("td")[4]
         var  tdgender = tr[i].getElementsByTagName("td")[8]
           if(td){
+            console.log('dept',filter,'branch',branch,'status',status,'gender',gender)
+            // alert('working')
             txtvalue = td.textContent || td.innerText;
            var  txtvalue2 = td2.textContent || td2.innerText;
            var  txtvalue3 = tdstatus.textContent || tdstatus.innerText;
@@ -514,22 +625,87 @@ $("#pagin li a").click(function() {
             // alert(filter)
             // alert(txtvalue)
             // console.log(txtvalue2.toUpperCase())
-            if(txtvalue2.toUpperCase() == branch ){
-              // alert(tr[i])
-              console.log(tr[i])
-              // alert('working')
-            }
+            // if(txtvalue2.toUpperCase() == branch ){
+            //   // alert(tr[i])
+            //   console.log(tr[i])
+            //   tr[i].style.display = '';
+            //   // alert('working')
+            // }
             // else{
-            //   // alert('not working')
+            //   // alert('not working')numRows
             //   cons
             // }
             
             if(branch == "BRANCH" && status == 'STATUS' && gender == 'GENDER' && filter != 'DEPARTMENT'){
                   if(txtvalue.toUpperCase().indexOf(filter) > -1){
                   tr[i].style.display = '';
-                }else{
+                  var numRows = tr.length;
+                  var x = document.getElementById("myTable");
+                  console.log('numRows',numRows)
+                    console.log(tr[i])
+                    var row = []
+                    // var number_of_items = $('.paginated tr').filter(":not(.hidden)").size();
+                    // console.log('data',number_of_items)
+
+                    // $('td','table').each(function(i){
+                      // var pluse = txtvalue 
+                      // row.push(txtvalue,txtvalue2)
+                      // console.log(row)
+                      // $(this).text(row)
+
+                      // console.log(objCells)
+                      // var data1 = $(this).find("td:eq(0) input[type='text']").val();
+                      // console.log('data1',data1)
+                      
+                      // var val = $(this).closest('tr').val();
+                      // console.log('data are working',val)
+                      // console.log('working',tr[i].html())
+                      // $(this).text(tr[i])
+                      // console.log('working',$(this).text(tr[i]))
+                    // })
+                      //     $('table.paginated').each(function(){
+                      //     var currentPage = 0;
+                      //       var numPerPage = 7;
+                      //       var $table = $(this);
+                      //       console.log($table)
+                      //       $table.bind('repaginate', function() {
+                      //           $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+                            
+                      //   });
+                      //       $table.trigger('repaginate');
+                      //       var numRows = $table.find('tbody tr').length;
+                      //       console.log('numRows',numRows)
+                      // });
+                      console.log(tr[i].length)
+                }else{  
                   tr[i].style.display = 'none';
                 }
+            }
+            else if(filter == 'DEPARTMENT' && branch != "BRANCH" ){
+              // alert('working')
+              if(txtvalue2.toUpperCase() == branch){
+                  // console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
+            }
+            else if(filter == 'DEPARTMENT' && status != "STATUS" ){
+              if(txtvalue3.toUpperCase() == status){
+                  // console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
+
+            }
+            else if (filter == 'DEPARTMENT' && gender != "GENDER" ){
+              if(txtvalue4.toUpperCase() == gender){
+                  // console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
             }
             else if(branch != "BRANCH" && status == 'STATUS' && gender == 'GENDER'){
                 if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == branch){
@@ -582,20 +758,21 @@ $("#pagin li a").click(function() {
                       tr[i].style.display = 'none';
                     }
             }
+            
             else{
-              // console.log('Working')
+              console.log('Working')
               tr[i].style.display = '';
               // tr[i].style.display = 'none';
+              // alert('working')
             }
 
-            // if(txtvalue.toUpperCase().indexOf(filter) > -1){
-            //   tr[i].style.display = '';
-            // }else{
-            //   tr[i].style.display = 'none';
+            // if(filter == 'DEPARTMENT' && branch != "BRANCH"){
+            //   alert('working')
             // }
-
           }
         }
+       
+        
       })
 
 
@@ -627,6 +804,32 @@ $("#pagin li a").click(function() {
                 }else{
                   tr[i].style.display = 'none';
                 }
+            }
+            else if(filter == 'BRANCH' && department != "DEPARTMENT" ){
+              // alert('working')
+              if(txtvalue2.toUpperCase() == department){
+                  // console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
+            }
+            else if(filter == 'BRANCH' && status != "STATUS" ){
+              if(txtvalue3.toUpperCase() == status){
+                  // console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
+
+            }
+            else if (filter == 'BRANCH' && gender != "GENDER" ){
+              if(txtvalue4.toUpperCase() == gender){
+                  // console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
             }
             else if(department != 'DEPARTMENT' && status == 'STATUS' && gender == 'GENDER'){
                 if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department){
@@ -730,6 +933,34 @@ $("#pagin li a").click(function() {
                   tr[i].style.display = 'none';
                 }
             }
+            else if(filter == 'STATUS' && department != "DEPARTMENT" ){
+              // alert('working')
+              if(txtvalue2.toUpperCase() == department){
+                  // console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
+            }
+            else if(filter == 'STATUS' && branch != "BRANCH" ){
+              if(txtvalue3.toUpperCase() == branch){
+                  // console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
+
+            }
+            else if (filter == 'STATUS' && gender != "GENDER" ){
+              if(txtvalue4.toUpperCase() =$(document).ready( function () {
+    $('#myTable').DataTable();
+} );= gender){
+                  // console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
+            }
             else if(department != 'DEPARTMENT' && branch == 'BRANCH' && gender == 'GENDER'){
                 if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department){
                   console.log('working')
@@ -782,7 +1013,9 @@ $("#pagin li a").click(function() {
                     }
             }
             else{
-              console.log('Working')
+              // console.log('Working')
+              tr[i].style.display = '';
+
             }
 
 
@@ -830,6 +1063,32 @@ $("#pagin li a").click(function() {
                 }else{
                   tr[i].style.display = 'none';
                 }
+            }
+            else if(filter == 'GENDER' && department != "DEPARTMENT" ){
+              // alert('working')
+              if(txtvalue2.toUpperCase() == department){
+                  // console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
+            }
+            else if(filter == 'GENDER' && branch != "BRANCH" ){
+              if(txtvalue3.toUpperCase() == branch){
+                  // console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
+
+            }
+            else if (filter == 'GENDER' && status != "STATUS" ){
+              if(txtvalue4.toUpperCase() == status){
+                  // console.log('working')
+                tr[i].style.display = '';
+                  }else{
+                    tr[i].style.display = 'none';
+                  }
             }
             else if(department != 'DEPARTMENT' && branch == 'BRANCH' && status == 'STATUS'){
                 if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department){
@@ -884,6 +1143,7 @@ $("#pagin li a").click(function() {
             }
             else{
               console.log('Working')
+              tr[i].style.display = '';
             }
           }
         }
@@ -926,15 +1186,69 @@ $("#pagin li a").click(function() {
           // Round to nearest whole number to deal with DST.
           return Math.round((second-first)/(1000*60*60*24));
       }
+      
 
       $('#export').click(function(){
         var arrData=[];
    // loop over each table row (tr)
           $("#myTable tr").each(function(){
                 var currentRow=$(this);
-                if(currentRow.is(':hidden')){
-                 console.log('working')
-                }else{
+                if(currentRow.is(':hidden') && screen.width >= 500){
+                 console.log('working is hidden')
+                }
+                else if (screen.width <= 500 && currentRow.is(':hidden')){
+                    // alert('working')
+                    var col1_value=currentRow.find("td:eq(0)").text();
+                  var col2_value=currentRow.find("td:eq(1)").text();
+                  var col3_value=currentRow.find("td:eq(2)").text();
+                  var col4_value=currentRow.find("td:eq(3)").text();
+                  var col5_value=currentRow.find("td:eq(4)").text();
+                  var col6_value=currentRow.find("td:eq(7)").text();
+                  // var col7_value=currentRow.find("td:eq(6)").text();
+                  var col8_value=currentRow.find("td:eq(8)").text();
+                  var col9_value=currentRow.find("td:eq(9)").text();
+                  var col10_value=currentRow.find("td:eq(10)").text();
+                  var col11_value=currentRow.find("td:eq(11)").text();
+                  var col12_value=currentRow.find("td:eq(12)").text();
+                  var col13_value=currentRow.find("td:eq(13)").text();
+                    
+                  var datearray = col12_value.split("-");
+                  var newdate = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
+                  var date1 = new Date(newdate)
+
+
+
+                  var currentDate = new Date()
+                  var Difference_In_Time = currentDate.getTime() - date1.getTime();
+                  var Difference_In_Days =parseInt(Difference_In_Time / (1000 * 60 * 60 * 24));
+                  // console.log(Difference_In_Time / (1000 * 60 * 60 * 24))
+                  
+                  Difference_In_Days2 =''
+                  if(col9_value != ''){
+                    var datearray1 = col13_value.split("-");
+                    var newdate1 = datearray1[1] + '/' + datearray1[0] + '/' + datearray1[2];
+                    var date3 = new Date(newdate1)
+                    var Difference_In_Time1 = currentDate.getTime() - date3.getTime()
+                    var Difference_In_Days2 = parseInt(Difference_In_Time1 / (1000 * 60 * 60 * 24));
+                  
+                    
+                  }
+                  var row = []
+                  row.push(col1_value,col2_value,col3_value,col4_value,col5_value,col6_value,col8_value,col9_value,col10_value,col11_value,col12_value,col13_value,Difference_In_Days, Difference_In_Days2)
+                  // alert(row.length)
+                  // ['Name','Last Checked','Branch','Department','Status','Emp Code','Gender','Birth Year','Beneficiary Id','vaccine','Dose1 Date','Does2 Date','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'],
+                  arrData.push(row.join(","))
+                  // console.log('rows',row)
+                  // alert(arrData.length)
+                  var obj={};
+                  obj.col1=col1_value;
+                  obj.col2=col2_value;
+                  obj.col3=col3_value;
+                  obj.col4=col4_value;
+                  obj.col5=col5_value;
+                  // alert(arrData)
+                  }
+                else{
                     // console.log(currentRow.length)
                     var col1_value=currentRow.find("td:eq(0)").text();
                   var col2_value=currentRow.find("td:eq(1)").text();
@@ -1021,6 +1335,7 @@ $("#pagin li a").click(function() {
           data.push(row.join(",")); 
           // console.log('NEXT LINE',data.join("\n"))		
         }
+        
 
         // downloadCSVFile(data.join("\n"), );
       }
@@ -1047,9 +1362,61 @@ $("#pagin li a").click(function() {
         var arrData=[];
         $("#myTable tr").each(function(){
                 var currentRow=$(this);
-                if(currentRow.is(':hidden')){
+                if(currentRow.is(':hidden') && screen.width >= 500){
                  console.log('working')
-                }else{
+                }else if (screen.width <= 500 && currentRow.is(':hidden')){
+                    // alert('working')
+                    var col1_value=currentRow.find("td:eq(0)").text();
+                  var col2_value=currentRow.find("td:eq(1)").text();
+                  var col3_value=currentRow.find("td:eq(2)").text();
+                  var col4_value=currentRow.find("td:eq(3)").text();
+                  var col5_value=currentRow.find("td:eq(4)").text();
+                  var col6_value=currentRow.find("td:eq(7)").text();
+                  // var col7_value=currentRow.find("td:eq(6)").text();
+                  var col8_value=currentRow.find("td:eq(8)").text();
+                  var col9_value=currentRow.find("td:eq(9)").text();
+                  var col10_value=currentRow.find("td:eq(10)").text();
+                  var col11_value=currentRow.find("td:eq(11)").text();
+                  var col12_value=currentRow.find("td:eq(12)").text();
+                  var col13_value=currentRow.find("td:eq(13)").text();
+                    
+                  var datearray = col12_value.split("-");
+                  var newdate = datearray[1] + '/' + datearray[0] + '/' + datearray[2];
+                  var date1 = new Date(newdate)
+
+
+
+                  var currentDate = new Date()
+                  var Difference_In_Time = currentDate.getTime() - date1.getTime();
+                  var Difference_In_Days =parseInt(Difference_In_Time / (1000 * 60 * 60 * 24));
+                  // console.log(Difference_In_Time / (1000 * 60 * 60 * 24))
+                  
+                  Difference_In_Days2 =''
+                  if(col9_value != ''){
+                    var datearray1 = col13_value.split("-");
+                    var newdate1 = datearray1[1] + '/' + datearray1[0] + '/' + datearray1[2];
+                    var date3 = new Date(newdate1)
+                    var Difference_In_Time1 = currentDate.getTime() - date3.getTime()
+                    var Difference_In_Days2 = parseInt(Difference_In_Time1 / (1000 * 60 * 60 * 24));
+                  
+                    
+                  }
+                  var row = []
+                  row.push(col1_value,col2_value,col3_value,col4_value,col5_value,col6_value,col8_value,col9_value,col10_value,col11_value,col12_value,col13_value,Difference_In_Days, Difference_In_Days2)
+                  // alert(row.length)
+                  // ['Name','Last Checked','Branch','Department','Status','Emp Code','Gender','Birth Year','Beneficiary Id','vaccine','Dose1 Date','Does2 Date','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'],
+                  arrData.push(row.join(","))
+                  // console.log('rows',row)
+                  // alert(arrData.length)
+                  var obj={};
+                  obj.col1=col1_value;
+                  obj.col2=col2_value;
+                  obj.col3=col3_value;
+                  obj.col4=col4_value;
+                  obj.col5=col5_value;
+                  // alert(arrData)
+                  }
+                else{
                     // console.log(currentRow.length)
                     var col1_value=currentRow.find("td:eq(0)").text();
                   var col2_value=currentRow.find("td:eq(1)").text();
@@ -1118,9 +1485,7 @@ $("#pagin li a").click(function() {
         $('#upload').change(function(){
             $('#upload_csv').submit();
             })
-            // $(function() {
-            //   $("#table_id").dataTable();
-            // });
+       
 
 
             var config = {
@@ -1130,27 +1495,27 @@ $("#pagin li a").click(function() {
                 var ctx = chart.chart.ctx;
                 ctx.save();
                 var image = new Image();      
-                image.src = '/static/img/vaccine.png';      
-                imageSize = 180;
+                image.src = "{% static 'img/vaccine.png' %}";      
+                imageSize = 160;
                 ctx.drawImage(image, chart.chart.width / 2 - imageSize / 2, chart.chart.height / 2 - imageSize / 2, imageSize, imageSize);
                 ctx.restore();
               }
             }],
-                data: {
+                data: {
                 // labels:['Fully Vaccinated','Partial vaccinated','Not Vaccinated','Not Checked']
-                  datasets: [{
-                    data: [{{fully_vaccinated}}, {{partial_vaccinated}}, {{not_vaccinated}},{{not_checked}}],
-                    backgroundColor: [
-                  	'#20e074','#ffb800','#7d3ac1','#fd3636'
-                    ],
+                  datasets: [{
+                    data: [{{fully_vaccinated}}, {{partial_vaccinated}}, {{not_vaccinated}},{{not_checked}}],
+                    backgroundColor: [
+                  	'#20e074','#ffb800','#7d3ac1','#fd3636'
+                    ],
                   borderWidth: [0, 0, 0, 0],
-          //           label: 'Population'
-                  }],
-                  labels: ['Fully Vaccinated','Partial vaccinated','Not Vaccinated','Not Checked']
-                },
-                options: {
+          //           label: 'Population'
+                  }],
+                  labels: ['Fully Vaccinated','Partial vaccinated','Not Vaccinated','Not Checked']
+                },
+                options: {
                   cutoutPercentage: 85,
-                  responsive: true,
+                  responsive: true,
                   legend: {
                     display: false
                 },
@@ -1158,13 +1523,13 @@ $("#pagin li a").click(function() {
                     enabled: true,
                 }
 
-                }
-              };
-           
-              window.onload = function() {
-                var ctx = document.getElementById('pie-chart').getContext('2d');
-                window.myPie = new Chart(ctx, config);
-              };
+                }
+              };
+           
+              window.onload = function() {
+                var ctx = document.getElementById('pie-chart').getContext('2d');
+                window.myPie = new Chart(ctx, config);
+              };
           $('.use-address').click(function () {
             // alert('working')
             var name = $(this).closest("tr").find('td:eq(0)').text();

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from frontend.models import Company_HR,Company,Available,Consumed,Purchase,ApiCount,Employeeprofile,RegisterModel
+from frontend.models import Company_HR,Company,Available,Consumed,Purchase,ApiCount,Employeeprofile,RegisterModel,Image
 # Register your models here.
 
 admin.site.register(Company_HR)
@@ -10,3 +10,4 @@ admin.site.register(Consumed)
 admin.site.register(ApiCount)
 admin.site.register(Employeeprofile)
 admin.site.register(RegisterModel)
+admin.site.register(Image)

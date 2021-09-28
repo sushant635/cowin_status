@@ -54,6 +54,22 @@ body{
   border-radius: 6px;
 
 }
+@media only screen and (max-width: 900px) {
+    /* #history {
+      margin-top: 20px;
+    }
+
+    .dashboard {
+      display: none;
+    }
+
+    .logout {
+      display: none;
+    } */
+    .bg-image{
+      display: none;
+    }
+  }
 /* .btn {
     margin-left: 23px !important;
 } */
@@ -77,14 +93,22 @@ body{
                             <form method="post" action="{% url 'login'%}">
                                 {% csrf_token %} 
                                 
-                                <div class="form-group m-2">
+                                <div class="form-group m-2 row">
+                                  <div class='col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12'>
                                     <label for="email " class="m-2">Username</label>
+                                  </div>
+                                  <div class='col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12'>
                                     <input id="email" type="text" class="form-control m-2 ms-3 data" name="username" placeholder='Username' value="{{username}}" required autofocus>
+                                  </div>      
                                 </div>
-                                <div class="form-group m-2 mt-4">
+                                <div class="form-group m-2 mt-4 row">
+                                  <div class='col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12'>
                                     <label for="password" class='m-2'>Password
                                     </label>
+                                  </div>
+                                  <div class='col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12'>
                                     <input id="password" type="password" class="form-control m-2 ms-3 data" name="password" placeholder="Password" value="{{password}}" required data-eye>
+                                  </div>
                                     <div class="invalid-feedback">
                                         Password is required
                                     </div>
