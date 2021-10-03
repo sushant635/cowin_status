@@ -33,5 +33,6 @@ urlpatterns = [
     path('user_profile/',views.user_profile,name='user_profile'),
     path('request/',views.test),
     path('send_email/',views.send_user_email,name='send_email'),
-    path('export_csv_request/',views.export_csv_request,name='export_csv_request')
+    path('export_csv_request/',views.export_csv_request,name='export_csv_request'),
+    path('exportfiledata/',views.exportfile_csv,name='exportfiledata')
 ] + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT) +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

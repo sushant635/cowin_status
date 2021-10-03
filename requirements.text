@@ -34,3 +34,4 @@ zipp==3.5.0
 redis==3.5.3
 celery==5.1.2
 django-celery-beat == 
+django-filter==21.1

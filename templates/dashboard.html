@@ -242,13 +242,16 @@ div.pager span.active {
 {% endblock profile %}
 
 <!--  -->
-{% block Department %} 
-<select class='form-select select' name="location" id="department1" >
+{% block Department %}
+<form method="get" action="{% url 'dashboard'%}" id='filter_form'>
+<select class='form-select select' name="department" id="department1" >
   <option value="Department">Department</option>
   {% for i in department%}
   <option value="{{i}}">{{i}}</option>
   {% endfor %}
 </select>
+<!-- <input type="submit" value='submit'>  -->
+
 {% endblock Department %}
 
 {% block Branch %} 
@@ -276,7 +279,13 @@ div.pager span.active {
   <option>Male</option>
   <option>Female</option>               
 </select>
+</form>
 {% endblock Gender %}
+{% block submit_button %} 
+<button class="btn btn-primary" type="submit" id='submit'>Search</button>
+
+{% endblock submit_button %}
+</form>
           
             <!-- <div class="col-lg-2 col-md-3 col-sm-3 col-xs-8">
             
@@ -286,7 +295,9 @@ div.pager span.active {
 <a href="{% url 'profile' %}" class="profile2" data-toggle="tooltip" data-placement="top" title="Admin Profile"><img src="/static/img/user (3).png" height='40px'></a>
 {% endblock image_header %}
 {% block content %}
-
+<!-- <form method="get"> -->
+  {{ filtered_qs.form}}
+<!-- </form> -->
 
 <div class='row'>
     <div class='col-lg-9 col-md-9 col-sm-9 col-xs-12 col-xl-9'>
@@ -316,11 +327,19 @@ div.pager span.active {
                 </ul> --> 
             </div>
               <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2 mt-2' id="exporticon">
-                <button id="export" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV File"><img src="/static/img/export.png" height='24px'></button>
-                
-              <!-- </div>
-              <div class='col-lg-1'> -->
-                <button id="exportemail" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV for Email"><img src="/static/img/send-mail.png" height='24px'></button>
+                <div class='row'>
+                  <div class='col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-6'>
+                    <form method="POST" action="{% url 'exportfiledata'%}" id="export_form" >
+                      {% csrf_token %}
+                      <button id="exportfile" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV File" type='button'><img src="/static/img/export.png" height='24px'></button>
+                    </form>
+                  </div>
+                  <div class='col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-6'>
+                    <form method="POST" action="{% url 'exportfile'%}" id="exportemail_form" >
+                      <button id="exportemailfile" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV for Email" type='button'><img src="/static/img/send-mail.png" height='24px'></button>
+                    </form>
+                  </div>
+                </div>
               </div>
           </div>
           </div> 
@@ -332,11 +351,11 @@ div.pager span.active {
                 <table class="table paginated" id="myTable">
                   <thead style="background-image: linear-gradient(#00bbff, #035397);border-radius: 25px !important" class='topnav'>
                     <tr class='text-light'>
-                      <th scope="col" class='p-4'>Employee Name</th>
+                      <th scope="col" class='p-4' id="employee_id" style="cursor: pointer;">Employee Name</th>
                       <th scope="col" class='p-4'>Last checked</th>
                       <th scope="col" class='p-4'>Branch</th>
                       <th scope="col" class='p-4'>Department</th>
-                      <th scope="col" class='p-4'>Status</th>
+                      <th scope="col" class='p-4' id="status_id" style="cursor: pointer;">Status</th>
                       <th scope="col" class='p-4' >Download Certificate</th>
                       <th scope="col" class='p-4'>Action</th>
                     </tr>
@@ -455,8 +474,63 @@ div.pager span.active {
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 <script>
+  
+$('#exportemailfile').click(function(){
+  var department1 = $('#department1').val()
+  // alert(department1)
+  var branch = $('#branch').val();
+  var status = $('#status').val();
+  var gender = $('#gender').val();
+  var department_input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "department1").val(department1)
+  var branch_input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "branch").val(branch)
+  var status_input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "status").val(status)
+
+  var gender_input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "gender").val(gender)
+  $('#exportemail_form').append(department_input,branch_input,status_input,gender_input)
+
+  
+  $('#exportemail_form').submit()
+  
+  console.log(branch,status,gender,department1)
+})
 
 
+
+$('#exportfile').click(function(){
+  // alert('working')
+  var department1 = $('#department1').val()
+  // alert(department1)
+  var branch = $('#branch').val();
+  var status = $('#status').val();
+  var gender = $('#gender').val();
+  var department_input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "department1").val(department1)
+  var branch_input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "branch").val(branch)
+  var status_input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "status").val(status)
+
+  var gender_input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "gender").val(gender)
+  $('#export_form').append(department_input,branch_input,status_input,gender_input)
+
+  
+  $('#export_form').submit()
+  
+  console.log(branch,status,gender,department1)
+})
 
 
 
@@ -470,6 +544,81 @@ div.pager span.active {
       alert('{{message}}')
       // alert(window.onload)
     {% endfor %}
+
+$('#status_id').click(function(){
+  // alert('working')\
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("myTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[1];
+      y = rows[i + 1].getElementsByTagName("TD")[1];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+})
+
+
+$('#employee_id').click(function(){
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("myTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[0];
+      y = rows[i + 1].getElementsByTagName("TD")[0];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+
+
+
+})
 
   //   pageSize = 7
   //   var pageCount = $('#myTable tr').length/pageSize;
@@ -502,7 +651,7 @@ div.pager span.active {
 //   $(this).addClass("active").siblings().removeClass("active");
 // });
 
-// $('td','table').each(function(i){
+// $('td','table').each(function(i){table
 //   $(this).text(i+1)
 //   console.log('working',$(this).text(i+1))
 // })
@@ -510,7 +659,7 @@ div.pager span.active {
 
 $('table.paginated').each(function(){
   var currentPage = 0;
-    var numPerPage = 10 ;
+    var numPerPage = 5 ;
     var $table = $(this);
     console.log($table)
     $table.bind('repaginate', function() {
@@ -564,13 +713,6 @@ $('table.paginated').each(function(){
     $table.trigger('repaginate');
 });
 
-
-
-
-
-
-
-
       $('.user-email').click(function(){
         // alert('working')
         var name = $(this).closest("tr").find('td:eq(0)').text();
@@ -590,561 +732,635 @@ $('table.paginated').each(function(){
 
       
       })
+      $('#submit').click(function(){
+        $('#filter_form').submit()
+      
+      })
 
       $('#department1').click(function(){
-        var input, filter , table , tr , td , i, txtvalue;
-        input =  $('#department1').val();
-        // alert(input)
-        filter = input.toUpperCase();
-        var branch = $('#branch').val().toUpperCase();
-        var status = $('#status').val().toUpperCase();
-        var gender = $('#gender').val().toUpperCase();
-        // alert(branch)
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        // alert(tr.length)
-        // alert(filter)
-        for(i = 0 ; i< tr.length; i++){
-          // var rowText = tr[i].textContent;
-          // console.log('row text',rowText)
-          td = tr[i].getElementsByTagName("td")[3];
-         var  td2 = tr[i].getElementsByTagName("td")[2]
-        var   tdstatus = tr[i].getElementsByTagName("td")[4]
-        var  tdgender = tr[i].getElementsByTagName("td")[8]
-          if(td){
-            console.log('dept',filter,'branch',branch,'status',status,'gender',gender)
-            // alert('working')
-            txtvalue = td.textContent || td.innerText;
-           var  txtvalue2 = td2.textContent || td2.innerText;
-           var  txtvalue3 = tdstatus.textContent || tdstatus.innerText;
-           var  txtvalue4 = tdgender.textContent || tdgender.innerText;
-            // console.log(txtvalue2)
-            // alert(txtvalue.toUpperCase())
-            // alert(filter)
-            // alert(txtvalue)
-            // console.log(txtvalue2.toUpperCase())
-            // if(txtvalue2.toUpperCase() == branch ){
-            //   // alert(tr[i])
-            //   console.log(tr[i])
-            //   tr[i].style.display = '';
-            //   // alert('working')
-            // }
-            // else{
-            //   // alert('not working')numRows
-            //   cons
-            // }
+        // 
+//         var input, filter , table , tr , td , i, txtvalue;
+//         input =  $('#department1').val();
+//         alert(input)
+//         filter = input.toUpperCase();
+//         var branch = $('#branch').val().toUpperCase();
+//         var status = $('#status').val().toUpperCase();
+//         var gender = $('#gender').val().toUpperCase();
+//         // alert(branch)
+//         table = document.getElementById("myTable");
+//         tr = table.getElementsByTagName("tr");
+//         // alert(tr.length)
+//         // alert(filter)
+//         for(i = 0 ; i< tr.length; i++){
+//           // var rowText = tr[i].textContent;
+//           // console.log('row text',rowText)
+//           td = tr[i].getElementsByTagName("td")[3];
+//          var  td2 = tr[i].getElementsByTagName("td")[2]
+//         var   tdstatus = tr[i].getElementsByTagName("td")[4]
+//         var  tdgender = tr[i].getElementsByTagName("td")[8]
+//           if(td){
+//             console.log('dept',filter,'branch',branch,'status',status,'gender',gender)
+//             // alert('working')
+//             txtvalue = td.textContent || td.innerText;
+//            var  txtvalue2 = td2.textContent || td2.innerText;
+//            var  txtvalue3 = tdstatus.textContent || tdstatus.innerText;
+//            var  txtvalue4 = tdgender.textContent || tdgender.innerText;
+
             
-            if(branch == "BRANCH" && status == 'STATUS' && gender == 'GENDER' && filter != 'DEPARTMENT'){
-                  if(txtvalue.toUpperCase().indexOf(filter) > -1){
-                  tr[i].style.display = '';
-                  var numRows = tr.length;
-                  var x = document.getElementById("myTable");
-                  console.log('numRows',numRows)
-                    console.log(tr[i])
-                    var row = []
-                    // var number_of_items = $('.paginated tr').filter(":not(.hidden)").size();
-                    // console.log('data',number_of_items)
+//             if(branch == "BRANCH" && status == 'STATUS' && gender == 'GENDER' && filter != 'DEPARTMENT'){
+//                   if(txtvalue.toUpperCase().indexOf(filter) > -1){
+//                   tr[i].style.display = '';
+//                   var numRows = tr.length;
+//                   var x = document.getElementById("myTable");
+//                   console.log('numRows',numRows)
+//                       console.log('######################',tr[i].length)
 
-                    // $('td','table').each(function(i){
-                      // var pluse = txtvalue 
-                      // row.push(txtvalue,txtvalue2)
-                      // console.log(row)
-                      // $(this).text(row)
 
-                      // console.log(objCells)
-                      // var data1 = $(this).find("td:eq(0) input[type='text']").val();
-                      // console.log('data1',data1)
-                      
-                      // var val = $(this).closest('tr').val();
-                      // console.log('data are working',val)
-                      // console.log('working',tr[i].html())
-                      // $(this).text(tr[i])
-                      // console.log('working',$(this).text(tr[i]))
-                    // })
-                      //     $('table.paginated').each(function(){
-                      //     var currentPage = 0;
-                      //       var numPerPage = 7;
-                      //       var $table = $(this);
-                      //       console.log($table)
-                      //       $table.bind('repaginate', function() {
-                      //           $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
-                            
-                      //   });
-                      //       $table.trigger('repaginate');
-                      //       var numRows = $table.find('tbody tr').length;
-                      //       console.log('numRows',numRows)
-                      // });
-                      console.log(tr[i].length)
-                }else{  
-                  tr[i].style.display = 'none';
-                }
-            }
-            else if(filter == 'DEPARTMENT' && branch != "BRANCH" ){
-              // alert('working')
-              if(txtvalue2.toUpperCase() == branch){
-                  // console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
-            }
-            else if(filter == 'DEPARTMENT' && status != "STATUS" ){
-              if(txtvalue3.toUpperCase() == status){
-                  // console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
+//                 }else{  
+//                   tr[i].style.display = 'none';
+//                 }
+//             }
+//             else if(filter == 'DEPARTMENT' && branch != "BRANCH" ){
+//               // alert('working')
+//               if(txtvalue2.toUpperCase() == branch){
+//                   // console.log('working')
+//                 tr[i].style.display = '';
+//                   }else{
+//                     tr[i].style.display = 'none';
+//                   }
+//             }
+//             else if(filter == 'DEPARTMENT' && status != "STATUS" ){
+//               if(txtvalue3.toUpperCase() == status){
+//                   // console.log('working')
+//                 tr[i].style.display = '';
+//                   }else{
+//                     tr[i].style.display = 'none';
+//                   }
 
-            }
-            else if (filter == 'DEPARTMENT' && gender != "GENDER" ){
-              if(txtvalue4.toUpperCase() == gender){
-                  // console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
-            }
-            else if(branch != "BRANCH" && status == 'STATUS' && gender == 'GENDER'){
-                if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == branch){
-                  // console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
-            }else if(branch == "BRANCH" && status != 'STATUS' && gender == 'GENDER'){
-                if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(branch == "BRANCH" && status == 'STATUS' && gender != 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue4.toUpperCase() == gender){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
+//             }
+//             else if (filter == 'DEPARTMENT' && gender != "GENDER" ){
+//               if(txtvalue4.toUpperCase() == gender){
+//                   // console.log('working')
+//                 tr[i].style.display = '';
+//                   }else{
+//                     tr[i].style.display = 'none';
+//                   }
+//             }
+//             else if(branch != "BRANCH" && status == 'STATUS' && gender == 'GENDER'){
+//                 if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == branch){
+//                   // console.log('working')
+//                 tr[i].style.display = '';
+//                   }else{
+//                     tr[i].style.display = 'none';
+//                   }
+//             }else if(branch == "BRANCH" && status != 'STATUS' && gender == 'GENDER'){
+//                 if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status){
+//                     console.log('working')
+//                   tr[i].style.display = '';
+//                     }else{
+//                       tr[i].style.display = 'none';
+//                     }
+//             }else if(branch == "BRANCH" && status == 'STATUS' && gender != 'GENDER'){
+//               if(txtvalue.toUpperCase() == filter && txtvalue4.toUpperCase() == gender){
+//                     console.log('working')
+//                   tr[i].style.display = '';
+//                     }else{
+//                       tr[i].style.display = 'none';
+//                     }
 
-            }else if(branch != "BRANCH" && status != 'STATUS' && gender == 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == branch && txtvalue3.toUpperCase() == status){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(branch != "BRANCH" && status == 'STATUS' && gender != 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == branch && txtvalue4.toUpperCase() == gender){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(branch == "BRANCH" && status != 'STATUS' && gender != 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status && txtvalue4.toUpperCase() == gender){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(branch != "BRANCH" && status != 'STATUS' && gender != 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status && txtvalue4.toUpperCase() == gender && txtvalue2.toUpperCase() == branch){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }
+//             }else if(branch != "BRANCH" && status != 'STATUS' && gender == 'GENDER'){
+//               if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == branch && txtvalue3.toUpperCase() == status){
+//                     console.log('working')
+//                   tr[i].style.display = '';
+//                     }else{
+//                       tr[i].style.display = 'none';
+//                     }
+//             }else if(branch != "BRANCH" && status == 'STATUS' && gender != 'GENDER'){
+//               if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == branch && txtvalue4.toUpperCase() == gender){
+//                     console.log('working')
+//                   tr[i].style.display = '';
+//                     }else{
+//                       tr[i].style.display = 'none';
+//                     }
+//             }else if(branch == "BRANCH" && status != 'STATUS' && gender != 'GENDER'){
+//               if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status && txtvalue4.toUpperCase() == gender){
+//                     console.log('working')
+//                   tr[i].style.display = '';
+//                     }else{
+//                       tr[i].style.display = 'none';
+//                     }
+//             }else if(branch != "BRANCH" && status != 'STATUS' && gender != 'GENDER'){
+//               if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status && txtvalue4.toUpperCase() == gender && txtvalue2.toUpperCase() == branch){
+//                     console.log('working')
+//                   tr[i].style.display = '';
+//                     }else{
+//                       tr[i].style.display = 'none';
+//                     }
+//             }
             
-            else{
-              console.log('Working')
-              tr[i].style.display = '';
-              // tr[i].style.display = 'none';
-              // alert('working')
-            }
+//             else{
+//               console.log('Working')
+//               tr[i].style.display = '';
+//               // tr[i].style.display = 'none';
+//               // alert('working')
+//             }
 
-            // if(filter == 'DEPARTMENT' && branch != "BRANCH"){
-            //   alert('working')
-            // }
-          }
-        }
-       
+//             // if(filter == 'DEPARTMENT' && branch != "BRANCH"){
+//             //   alert('working')
+//             // }
+//           }
+          
+     
+//           // console.log('################',$("tbody > tr:visible"))
+//         }
+//         function getDisplayedRows($targetTable) {
+//             return $targetTable.find('tbody tr:not([style*="display: none"])');
+//     }
+
+//     $(function() { //shortcut for document ready
+//         var $table = $("#myTable"), //get table by selector
+//             $visibleRows = getDisplayedRows($table);
+//             //run function to get rows without display: none
+//             console.log($visibleRows.text())
+
+//     });
+//           $("tbody td:not([style*='display: block'])").each(function(){
+        
+//         console.log('data @@@@@@',$(this).text());
+//       });
+// // $('tbody tr','table').each(function(){table
+  
+// //   var $table = $("#myTable"), //get table by selector
+// //   $visibleRows = getDisplayedRows($table);
+// //   console.log($visibleRows.length)
+// //   // console.log('working',$(this).text(i+1))
+// //   $(this).text($visibleRows.text());
+// //   // $(this).text(i+1)
+// // })
+//     console.log('@@@@@@@###$$$$$$$$$$$$%%%%%%%%%%%%%%',$('tbody tr:not([style*="display: none"])').length)
+// //         $('table.paginated').each(function() {
+// //   var currentPage = 0;
+// //   var numPerPage = 12;
+// //   var $table = $(this);
+// //   var $pager = $('<div class="pager1"></div>');
+// //   var $previous = $('<span class="previous1"><<</spnan>');
+// //   var $next = $('<span class="next1">>></spnan>');
+
+// //   $pager.find('span.page-number1:first').addClass('active');
+
+// //   $table.bind('repaginate', function() {
+// //     $table.find('tbody tr').hide();
+
+// //     // $filteredRows = $table.find('tbody tr').filter(function(i, tr) {
+// //       // alert('working')  
+// //       // var $table = $("#myTable"), //get table by selector
+// //             // $visibleRows = getDisplayedRows($table);
+// //             //run function to get rows without display: none
+// //             console.log($visibleRows.text())
+// //       return $visibleRows;
+// //       // return $('#department1').val() != "" ? $(tr).find("td").get().map(function(td) {
+// //         // return $(td).text();
+// //         // alert($(td).text())
+// //       // }).filter(function(td){
+// //       	// return td.indexOf($('#department1').val()) != -1; 
+// //       // }).length > 0 : true;
+// //     });
+
+// //     $filteredRows.slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+
+// //     var numRows = $filteredRows.length;
+// //     var numPages = Math.ceil(numRows / numPerPage);
+		
+// //     $pager.find('.page-number1, .previous1, .next1').remove();
+// //     for (var page = 0; page < numPages; page++) {
+// //       var $newPage = $('<span class="page-number1"></span>').text(page + 1).bind('click', {
+// //         newPage: page
+// //       }, function(event) {
+// //         currentPage = event.data['newPage'];
+// //         $table.trigger('repaginate');
+// //       })
+// //       if(page == currentPage){
+// //       	$newPage.addClass('clickable active');
+// //      	}else{
+// //       	$newPage.addClass('clickable');
+// //       }
+// //       $newPage.appendTo($pager)
+// //     }
+    
+// //     $previous.insertBefore('span.page-number1:first');
+// //   	$next.insertAfter('span.page-number1:last');
+
+// //     $next.click(function(e) {
+// //       $previous.addClass('clickable');
+// //       $pager.find('.active').next('.page-number1.clickable').click();
+// //     });
+// //     $previous.click(function(e) {
+// //       $next.addClass('clickable');
+// //       $pager.find('.active').prev('.page-number1.clickable').click();
+// //     });
+
+// //     $next.addClass('clickable');
+// //     $previous.addClass('clickable');
+
+// //     setTimeout(function() {
+// //       var $active = $pager.find('.page-number1.active');
+// //       if ($active.next('.page-number1.clickable').length === 0) {
+// //         $next.removeClass('clickable');
+// //       } else if ($active.prev('.page-number1.clickable').length === 0) {
+// //         $previous.removeClass('clickable');
+// //       }
+// //     });
+// //   });
+// //   $table.trigger('repaginate');
+// // });
+        
+//         // alert($('tr:not([style*="display: none"])').length)
+//         $('.pager').hide();
+//         $('.previous').hide();
+//         $('.next').hide();
+        
         
       })
 
 
-      $('#branch').click(function(){
-        var input , filter, table, tr, td,i,txtvalue;
-        input = $('#branch').val();
-        // alert(input)
-        filter = input.toUpperCase();
-        var department = $('#department1').val().toUpperCase();
-        var status = $('#status').val().toUpperCase();
-        var gender = $('#gender').val().toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
+
+      // $('#branch').click(function(){
         
-        for(i = 0 ; i< tr.length; i++){
-          td = tr[i].getElementsByTagName("td")[2];
-          var td2 = tr[i].getElementsByTagName("td")[3]
-          var tdstatus = tr[i].getElementsByTagName("td")[4]
-          var tdgender = tr[i].getElementsByTagName("td")[8]
-          if(td){
-            txtvalue = td.textContent || td.innerText;
-            var txtvalue2 = td2.textContent || td2.innerText;
-            var txtvalue3 = tdstatus.textContent || tdstatus.innerText;
-            var txtvalue4 = tdgender.textContent || tdgender.innerText;
+      //   var input , filter, table, tr, td,i,txtvalue;
+      //   input = $('#branch').val();
+      //   // alert(input)
+      //   filter = input.toUpperCase();
+      //   var department = $('#department1').val().toUpperCase();
+      //   var status = $('#status').val().toUpperCase();
+      //   var gender = $('#gender').val().toUpperCase();
+      //   table = document.getElementById("myTable");
+      //   tr = table.getElementsByTagName("tr");
+        
+      //   for(i = 0 ; i< tr.length; i++){
+      //     td = tr[i].getElementsByTagName("td")[2];
+      //     var td2 = tr[i].getElementsByTagName("td")[3]
+      //     var tdstatus = tr[i].getElementsByTagName("td")[4]
+      //     var tdgender = tr[i].getElementsByTagName("td")[8]
+      //     if(td){
+      //       txtvalue = td.textContent || td.innerText;
+      //       var txtvalue2 = td2.textContent || td2.innerText;
+      //       var txtvalue3 = tdstatus.textContent || tdstatus.innerText;
+      //       var txtvalue4 = tdgender.textContent || tdgender.innerText;
 
-            if(filter != "BRANCH" && status == 'STATUS' && gender == 'GENDER' && department == 'DEPARTMENT'){
-                  if(txtvalue.toUpperCase().indexOf(filter) > -1){
-                  tr[i].style.display = '';
-                }else{
-                  tr[i].style.display = 'none';
-                }
-            }
-            else if(filter == 'BRANCH' && department != "DEPARTMENT" ){
-              // alert('working')
-              if(txtvalue2.toUpperCase() == department){
-                  // console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
-            }
-            else if(filter == 'BRANCH' && status != "STATUS" ){
-              if(txtvalue3.toUpperCase() == status){
-                  // console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
+      //       if(filter != "BRANCH" && status == 'STATUS' && gender == 'GENDER' && department == 'DEPARTMENT'){
+      //         $('#filter_form').submit()  
+      //       }
+      //       else if(filter == 'BRANCH' && department != "DEPARTMENT" ){
+      //         // alert('working')
+      //         if(txtvalue2.toUpperCase() == department){
+      //             // console.log('working')
+      //           tr[i].style.display = '';
+      //             }else{
+      //               tr[i].style.display = 'none';
+      //             }
+      //       }
+      //       else if(filter == 'BRANCH' && status != "STATUS" ){
+      //         if(txtvalue3.toUpperCase() == status){
+      //             // console.log('working')
+      //           tr[i].style.display = '';
+      //             }else{
+      //               tr[i].style.display = 'none';
+      //             }
 
-            }
-            else if (filter == 'BRANCH' && gender != "GENDER" ){
-              if(txtvalue4.toUpperCase() == gender){
-                  // console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
-            }
-            else if(department != 'DEPARTMENT' && status == 'STATUS' && gender == 'GENDER'){
-                if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department){
-                  console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
-            }else if(department == 'DEPARTMENT' && status != 'STATUS' && gender == 'GENDER'){
-                if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(department == 'DEPARTMENT' && status == 'STATUS' && gender != 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue4.toUpperCase() == gender){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
+      //       }
+      //       else if (filter == 'BRANCH' && gender != "GENDER" ){
+      //         if(txtvalue4.toUpperCase() == gender){
+      //             // console.log('working')
+      //           tr[i].style.display = '';
+      //             }else{
+      //               tr[i].style.display = 'none';
+      //             }
+      //       }
+      //       else if(department != 'DEPARTMENT' && status == 'STATUS' && gender == 'GENDER'){
+      //           if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department){
+      //             console.log('working')
+      //           tr[i].style.display = '';
+      //             }else{
+      //               tr[i].style.display = 'none';
+      //             }
+      //       }else if(department == 'DEPARTMENT' && status != 'STATUS' && gender == 'GENDER'){
+      //           if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }else if(department == 'DEPARTMENT' && status == 'STATUS' && gender != 'GENDER'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue4.toUpperCase() == gender){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
 
-            }else if(department != 'DEPARTMENT' && status != 'STATUS' && gender == 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue3.toUpperCase() == status){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(department != 'DEPARTMENT' && status == 'STATUS' && gender != 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue4.toUpperCase() == gender){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(department == 'DEPARTMENT' && status != 'STATUS' && gender != 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status && txtvalue4.toUpperCase() == gender){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(department != 'DEPARTMENT' && status != 'STATUS' && gender != 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status && txtvalue4.toUpperCase() == gender && txtvalue2.toUpperCase() == department){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }
-            else{
-              // console.log('Working')
-              tr[i].style.display = '';
-            }
+      //       }else if(department != 'DEPARTMENT' && status != 'STATUS' && gender == 'GENDER'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue3.toUpperCase() == status){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }else if(department != 'DEPARTMENT' && status == 'STATUS' && gender != 'GENDER'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue4.toUpperCase() == gender){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }else if(department == 'DEPARTMENT' && status != 'STATUS' && gender != 'GENDER'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status && txtvalue4.toUpperCase() == gender){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }else if(department != 'DEPARTMENT' && status != 'STATUS' && gender != 'GENDER'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == status && txtvalue4.toUpperCase() == gender && txtvalue2.toUpperCase() == department){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }
+      //       else{
+      //         // console.log('Working')
+      //         tr[i].style.display = '';
+      //       }
 
-          }
-        }
+      //     }
+      //   }
+      //   // $('.pager').hide();
+      //   // $('.previous').hide();
+      //   // $('.next').hide();
 
-      })
+      // })
 
-      $('#status').click(function(){
-        var input, filter , table , tr , td,i,txtvalue;
-        input = $('#status').val();
-        filter = input.toUpperCase();
-        // alert(filter)
-        var department = $('#department1').val().toUpperCase();
-        var gender = $('#gender').val().toUpperCase();
-        var branch = $('#branch').val().toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        // alert(tr.length)
-        // alert(filter)
-        for(i = 0 ; i< tr.length; i++){
-          td = tr[i].getElementsByTagName("td")[4];
-          var td2 = tr[i].getElementsByTagName("td")[3]
-          var td3 = tr[i].getElementsByTagName("td")[2];
-          var td4 = tr[i].getElementsByTagName("td")[8]
+      // $('#status').click(function(){
+      //   var input, filter , table , tr , td,i,txtvalue;
+      //   input = $('#status').val();
+      //   filter = input.toUpperCase();
+      //   // alert(filter)
+      //   var department = $('#department1').val().toUpperCase();
+      //   var gender = $('#gender').val().toUpperCase();
+      //   var branch = $('#branch').val().toUpperCase();
+      //   table = document.getElementById("myTable");
+      //   tr = table.getElementsByTagName("tr");
+      //   // alert(tr.length)
+      //   // alert(filter)
+      //   for(i = 0 ; i< tr.length; i++){
+      //     td = tr[i].getElementsByTagName("td")[4];
+      //     var td2 = tr[i].getElementsByTagName("td")[3]
+      //     var td3 = tr[i].getElementsByTagName("td")[2];
+      //     var td4 = tr[i].getElementsByTagName("td")[8]
 
-          if(td){9
+      //     if(td){9
 
-            txtvalue = td.textContent || td.innerText;
-            var txtvalue2 = td2.textContent || td2.innerText;
-            var txtvalue3 = td3.textContent || td3.innerText;
-            var txtvalue4 = td4.textContent || td4.innerText;
-            // alert(txtvalue.toUpperCase())
-            // alert(filter)
-            // alert(txtvalue)
-            // if(txtvalue.toUpperCase() == filter ){
-            //   tr[i].style.display = '';
-            //   console.log(txtvalue)
-            //   console.log(tr[i].innerText)
-            // }else{BRANCH
-            //   tr[i].style.display = 'none';
-            // }
-            if(filter != "STATUS" && branch == 'BRANCH' && gender == 'GENDER' && department == 'DEPARTMENT'){
-                  if(txtvalue.toUpperCase().indexOf(filter) > -1){
-                  tr[i].style.display = '';
-                }else{
-                  tr[i].style.display = 'none';
-                }
-            }
-            else if(filter == 'STATUS' && department != "DEPARTMENT" ){
-              // alert('working')
-              if(txtvalue2.toUpperCase() == department){
-                  // console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
-            }
-            else if(filter == 'STATUS' && branch != "BRANCH" ){
-              if(txtvalue3.toUpperCase() == branch){
-                  // console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
+      //       txtvalue = td.textContent || td.innerText;
+      //       var txtvalue2 = td2.textContent || td2.innerText;
+      //       var txtvalue3 = td3.textContent || td3.innerText;
+      //       var txtvalue4 = td4.textContent || td4.innerText;
+      //       // alert(txtvalue.toUpperCase())
+      //       // alert(filter)
+      //       // alert(txtvalue)
+      //       // if(txtvalue.toUpperCase() == filter ){
+      //       //   tr[i].style.display = '';
+      //       //   console.log(txtvalue)
+      //       //   console.log(tr[i].innerText)
+      //       // }else{BRANCH
+      //       //   tr[i].style.display = 'none';
+      //       // }
+      //       if(filter != "STATUS" && branch == 'BRANCH' && gender == 'GENDER' && department == 'DEPARTMENT'){
+      //             if(txtvalue.toUpperCase().indexOf(filter) > -1){
+      //             tr[i].style.display = '';
+      //           }else{
+      //             tr[i].style.display = 'none';
+      //           }
+      //       }
+      //       else if(filter == 'STATUS' && department != "DEPARTMENT" ){
+      //         // alert('working')
+      //         if(txtvalue2.toUpperCase() == department){
+      //             // console.log('working')
+      //           tr[i].style.display = '';
+      //             }else{
+      //               tr[i].style.display = 'none';
+      //             }
+      //       }
+      //       else if(filter == 'STATUS' && branch != "BRANCH" ){
+      //         if(txtvalue3.toUpperCase() == branch){
+      //             // console.log('working')
+      //           tr[i].style.display = '';
+      //             }else{
+      //               tr[i].style.display = 'none';
+      //             }
 
-            }
-            else if (filter == 'STATUS' && gender != "GENDER" ){
-              if(txtvalue4.toUpperCase() = gender ){
-                  // console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
-            }
-            else if(department != 'DEPARTMENT' && branch == 'BRANCH' && gender == 'GENDER'){
-                if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department){
-                  console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
-            }else if(department == 'DEPARTMENT' && branch != 'BRANCH'  && gender == 'GENDER'){
-                if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(department == 'DEPARTMENT' && branch == 'BRANCH' && gender != 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue4.toUpperCase() == gender){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
+      //       }
+      //       else if (filter == 'STATUS' && gender != "GENDER" ){
+      //         if(txtvalue4.toUpperCase() = gender ){
+      //             // console.log('working')
+      //           tr[i].style.display = '';
+      //             }else{
+      //               tr[i].style.display = 'none';
+      //             }
+      //       }
+      //       else if(department != 'DEPARTMENT' && branch == 'BRANCH' && gender == 'GENDER'){
+      //           if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department){
+      //             console.log('working')
+      //           tr[i].style.display = '';
+      //             }else{
+      //               tr[i].style.display = 'none';
+      //             }
+      //       }else if(department == 'DEPARTMENT' && branch != 'BRANCH'  && gender == 'GENDER'){
+      //           if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }else if(department == 'DEPARTMENT' && branch == 'BRANCH' && gender != 'GENDER'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue4.toUpperCase() == gender){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
 
-            }else if(department != 'DEPARTMENT' && branch != 'BRANCH' && gender == 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue3.toUpperCase() == branch){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(department != 'DEPARTMENT' && branch == 'BRANCH' && gender != 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue4.toUpperCase() == gender){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(department == 'DEPARTMENT' && branch != 'BRANCH' && gender != 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch && txtvalue4.toUpperCase() == gender){
-                    console.log('working')
-                  tr[i].style.display = '';
-                   }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(department != 'DEPARTMENT' && branch != 'BRANCH' && gender != 'GENDER'){
-              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch && txtvalue4.toUpperCase() == gender && txtvalue2.toUpperCase() == department){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }
-            else{
-              // console.log('Working')
-              tr[i].style.display = '';
+      //       }else if(department != 'DEPARTMENT' && branch != 'BRANCH' && gender == 'GENDER'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue3.toUpperCase() == branch){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }else if(department != 'DEPARTMENT' && branch == 'BRANCH' && gender != 'GENDER'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue4.toUpperCase() == gender){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }else if(department == 'DEPARTMENT' && branch != 'BRANCH' && gender != 'GENDER'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch && txtvalue4.toUpperCase() == gender){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //              }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }else if(department != 'DEPARTMENT' && branch != 'BRANCH' && gender != 'GENDER'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch && txtvalue4.toUpperCase() == gender && txtvalue2.toUpperCase() == department){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }
+      //       else{
+      //         // console.log('Working')
+      //         tr[i].style.display = '';
 
-            }
+      //       }
 
 
-          }
-        }
+      //     }
+      //   }
+      //   $('.pager').hide();
+      //   $('.previous').hide();
+      //   $('.next').hide();
       
-      })
+      // })
 
-      $('#gender').click(function(){
-        var input, filter , table , tr , td,i,txtvalue;
-        input = $('#gender').val();
-        filter = input.toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        var department = $('#department1').val().toUpperCase();
-        var status = $('#status').val().toUpperCase();
-        var branch = $('#branch').val().toUpperCase();
-        // alert(tr)
-        // alert(tr.length)
-        // alert(filter)
-       for(i = 0 ; i< tr.length; i++){
-        // console.log(tr[i])
-          td = tr[i].getElementsByTagName("td")[8];
-          var td4 = tr[i].getElementsByTagName("td")[4];
-          var td2 = tr[i].getElementsByTagName("td")[3]
-          var td3 = tr[i].getElementsByTagName("td")[2];
-          if(td){
-            txtvalue = td.textContent || td.innerText;
-            var txtvalue2 = td2.textContent || td2.innerText;
-            var txtvalue3 = td3.textContent || td3.innerText;
-            var txtvalue4 = td4.textContent || td4.innerText;
-            // alert(txtvalue.toUpperCase())
-            // alert(filter)
-            // alert(txtvalue)
-            // if(txtvalue.toUpperCase() == filter ){
-            //   tr[i].style.display = '';
-            //   console.log(txtvalue)
-            //   console.log(tr[i].innerText)
-            // }else{
-            //   tr[i].style.display = 'none';GENDER
-            // }
-            if(filter != "GENDER" && branch == 'BRANCH' && status == 'STATUS' && department == 'DEPARTMENT'){
-                  if(txtvalue.toUpperCase().indexOf(filter) > -1){
-                  tr[i].style.display = '';
-                }else{
-                  tr[i].style.display = 'none';
-                }
-            }
-            else if(filter == 'GENDER' && department != "DEPARTMENT" ){
-              // alert('working')
-              if(txtvalue2.toUpperCase() == department){
-                  // console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
-            }
-            else if(filter == 'GENDER' && branch != "BRANCH" ){
-              if(txtvalue3.toUpperCase() == branch){
-                  // console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
+      // $('#gender').click(function(){
+      //   var input, filter , table , tr , td,i,txtvalue;
+      //   input = $('#gender').val();
+      //   filter = input.toUpperCase();
+      //   table = document.getElementById("myTable");
+      //   tr = table.getElementsByTagName("tr");
+      //   var department = $('#department1').val().toUpperCase();
+      //   var status = $('#status').val().toUpperCase();
+      //   var branch = $('#branch').val().toUpperCase();
+      //   // alert(tr)
+      //   // alert(tr.length)
+      //   // alert(filter)
+      //  for(i = 0 ; i< tr.length; i++){
+      //   // console.log(tr[i])
+      //     td = tr[i].getElementsByTagName("td")[8];
+      //     var td4 = tr[i].getElementsByTagName("td")[4];
+      //     var td2 = tr[i].getElementsByTagName("td")[3]
+      //     var td3 = tr[i].getElementsByTagName("td")[2];
+      //     if(td){
+      //       txtvalue = td.textContent || td.innerText;
+      //       var txtvalue2 = td2.textContent || td2.innerText;
+      //       var txtvalue3 = td3.textContent || td3.innerText;
+      //       var txtvalue4 = td4.textContent || td4.innerText;
+      //       // alert(txtvalue.toUpperCase())
+      //       // alert(filter)
+      //       // alert(txtvalue)
+      //       // if(txtvalue.toUpperCase() == filter ){
+      //       //   tr[i].style.display = '';
+      //       //   console.log(txtvalue)
+      //       //   console.log(tr[i].innerText)
+      //       // }else{
+      //       //   tr[i].style.display = 'none';GENDER
+      //       // }
+      //       if(filter != "GENDER" && branch == 'BRANCH' && status == 'STATUS' && department == 'DEPARTMENT'){
+      //             if(txtvalue.toUpperCase().indexOf(filter) > -1){
+      //             tr[i].style.display = '';
+      //           }else{
+      //             tr[i].style.display = 'none';
+      //           }
+      //       }
+      //       else if(filter == 'GENDER' && department != "DEPARTMENT" ){
+      //         // alert('working')
+      //         if(txtvalue2.toUpperCase() == department){
+      //             // console.log('working')
+      //           tr[i].style.display = '';
+      //             }else{
+      //               tr[i].style.display = 'none';
+      //             }
+      //       }
+      //       else if(filter == 'GENDER' && branch != "BRANCH" ){
+      //         if(txtvalue3.toUpperCase() == branch){
+      //             // console.log('working')
+      //           tr[i].style.display = '';
+      //             }else{
+      //               tr[i].style.display = 'none';
+      //             }
 
-            }
-            else if (filter == 'GENDER' && status != "STATUS" ){
-              if(txtvalue4.toUpperCase() == status){
-                  // console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
-            }
-            else if(department != 'DEPARTMENT' && branch == 'BRANCH' && status == 'STATUS'){
-                if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department){
-                  console.log('working')
-                tr[i].style.display = '';
-                  }else{
-                    tr[i].style.display = 'none';
-                  }
-            }else if(department == 'DEPARTMENT' && branch != 'BRANCH'  && status == 'STATUS'){
-                if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(department == 'DEPARTMENT' && branch == 'BRANCH' && status != 'STATUS'){
-              if(txtvalue.toUpperCase() == filter && txtvalue4.toUpperCase() == status){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
+      //       }
+      //       else if (filter == 'GENDER' && status != "STATUS" ){
+      //         if(txtvalue4.toUpperCase() == status){
+      //             // console.log('working')
+      //           tr[i].style.display = '';
+      //             }else{
+      //               tr[i].style.display = 'none';
+      //             }
+      //       }
+      //       else if(department != 'DEPARTMENT' && branch == 'BRANCH' && status == 'STATUS'){
+      //           if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department){
+      //             console.log('working')
+      //           tr[i].style.display = '';
+      //             }else{
+      //               tr[i].style.display = 'none';
+      //             }
+      //       }else if(department == 'DEPARTMENT' && branch != 'BRANCH'  && status == 'STATUS'){
+      //           if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }else if(department == 'DEPARTMENT' && branch == 'BRANCH' && status != 'STATUS'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue4.toUpperCase() == status){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
 
-            }else if(department != 'DEPARTMENT' && branch != 'BRANCH' && status == 'STATUS'){
-              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue3.toUpperCase() == branch){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(department != 'DEPARTMENT' && branch == 'BRANCH' && status != 'STATUS'){
-              if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue4.toUpperCase() == status){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(department == 'DEPARTMENT' && branch != 'BRANCH' && status != 'STATUS'){
-              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch && txtvalue4.toUpperCase() == status){
-                    console.log('working')
-                  tr[i].style.display = '';
-                   }else{
-                      tr[i].style.display = 'none';
-                    }
-            }else if(department != 'DEPARTMENT' && branch != 'BRANCH' && status != 'STATUS'){
-              if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch && txtvalue4.toUpperCase() == status && txtvalue2.toUpperCase() == department){
-                    console.log('working')
-                  tr[i].style.display = '';
-                    }else{
-                      tr[i].style.display = 'none';
-                    }
-            }
-            else{
-              console.log('Working')
-              tr[i].style.display = '';
-            }
-          }
-        }
+      //       }else if(department != 'DEPARTMENT' && branch != 'BRANCH' && status == 'STATUS'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue3.toUpperCase() == branch){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }else if(department != 'DEPARTMENT' && branch == 'BRANCH' && status != 'STATUS'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue2.toUpperCase() == department && txtvalue4.toUpperCase() == status){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }else if(department == 'DEPARTMENT' && branch != 'BRANCH' && status != 'STATUS'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch && txtvalue4.toUpperCase() == status){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //              }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }else if(department != 'DEPARTMENT' && branch != 'BRANCH' && status != 'STATUS'){
+      //         if(txtvalue.toUpperCase() == filter && txtvalue3.toUpperCase() == branch && txtvalue4.toUpperCase() == status && txtvalue2.toUpperCase() == department){
+      //               console.log('working')
+      //             tr[i].style.display = '';
+      //               }else{
+      //                 tr[i].style.display = 'none';
+      //               }
+      //       }
+      //       else{
+      //         console.log('Working')
+      //         tr[i].style.display = '';
+      //       }
+      //     }
+      //   }
+      //   $('.pager').hide();
+      //   $('.previous').hide();
+      //   $('.next').hide();
       
-      })
+      // })
       function export2csv() {
         let data = "";
         const tableData = [];
@@ -1538,7 +1754,7 @@ $('table.paginated').each(function(){
                   success : function(response){
                   //reset the form after successful submit
                     // alert(response)
-                    if(response != 'File data not present in database'){
+                    if(response != 'Certificate not available at present. Please send email to follow-up'){
                       var url = response
                     // window.location = url; 
                     window.open(url, '_blank').focus();

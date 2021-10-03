@@ -16,6 +16,7 @@ class Image(models.Model):
         if self.image_file:
             image_file = open(self.image_file.url,'rb')
             self.imgae_b64 = base64.b64encode(img_file.read())
+            super(Image, self).save()
 
 
 class Company(models.Model):
