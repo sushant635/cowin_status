@@ -184,7 +184,7 @@ div.pager span {
 .next{
   width: 2.8em !important;
   background: #f0f2fa !important;
-  color: #035397  !important;
+  /* color: #035397  !important; */
   border-radius: 1px !important;
   
 
@@ -195,14 +195,46 @@ div.pager span.active {
     background: #035397;
     color: #fff;
 }
-@media only screen and (max-width:1024) {
+@media screen and (max-width: 900px) {
   .form-select{
   background-color:#f0f2fa !important;
   border: none !important;
-  width:100px !important;
+  width:100% !important;
 }
+      #myTable{
+            display: none;
+        }
+        #site_csvsample{
+          display: none; 
+        }
+        #upload_csv{
+          display: none; 
+        }
+        .profile{
+          display: none;
+        }
+        .dashboard1{
+          display: none;
+        }
+        #pages{
+          display: none;
+        }
+        .profile2{
+          display: none;
+        }
+        .col-md-12 {
+          width: 70%  !important;
+          /* text-align: center  !important; */
+          margin-left: 120px  !important;
+
+        }
+        .exporticon{
+          text-align: center;
+        }
+
 }
-@media only screen and (max-width: 600px) {
+
+@media screen and (max-width: 600px) {
         #myTable{
             display: none;
         }
@@ -221,9 +253,9 @@ div.pager span.active {
         #pages{
           display: none;
         }
-        .exporticon{
+        /* .exporticon{
           text-align: center;
-        }
+        } */
         .profile2{
           display: none;
         }
@@ -237,11 +269,24 @@ div.pager span.active {
           width:100% !important;
           height:100% !important;
         }
-       
+        .col-xs-12{
+          width:100% !important;
+        }
+        .secondtbutton{
+          /* padding-left: 10px !important; */
+        }
+        .col-md-12 {
+          /* text-align: center  !important; */
+          margin-left: 0%  !important;
 
-        
-
-    }
+        }
+      }
+      /* @media screen and (max-width: 350 px){
+        .secondbutton{
+          padding-left: 60px !important;
+        }
+      }
+   */
 </style>
 {% endblock content_css %}
 {% block page_name %} 
@@ -376,7 +421,7 @@ div.pager span.active {
                       <button id="exportfile" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV File" type='button'><img src="/static/img/export.png" height='24px'></button>
                     </form>
                   </div>
-                  <div class='col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-4 datag'>
+                  <div class='col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-4 datag secondbutton'>
                     <form method="POST" action="{% url 'exportfile'%}" id="exportemail_form" >
                       <button id="exportemailfile" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV for Email" type='button'><img src="/static/img/send-mail.png" height='24px'></button>
                     </form>
@@ -440,7 +485,7 @@ div.pager span.active {
       </div>
     </div>
     </div>
-    <div class='col-lg-3 col-md-3 col-sm-3 col-xs-12 col-xl-3'> 
+    <div class='col-lg-3 col-md-12 col-sm-3 col-xs-12 col-xl-3'> 
       <div class='data'>
         <div id="container"  style="width: 100%;">
           <canvas id="pie-chart" class='centerimg pt-4' height='140px;'></canvas>
@@ -1750,7 +1795,7 @@ $('table.paginated').each(function(){
                 ctx.save();
                 var image = new Image();      
                 image.src = "{% static 'img/vaccine.png' %}";      
-                imageSize = 160;
+                imageSize = 140;
                 ctx.drawImage(image, chart.chart.width / 2 - imageSize / 2, chart.chart.height / 2 - imageSize / 2, imageSize, imageSize);
                 ctx.restore();
               }

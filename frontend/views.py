@@ -1394,9 +1394,14 @@ def export_csv_request(request):
             # print(c)
             d = None
             
-            for i in c:
+            for i in a:
                 writer.writerow(i)
+        
                 # d = i
+
+            writer.writerow(['Total Consumed','Date ','Date Wish Cosumed'])
+            for j in b:
+                 writer.writerow(j)
             print('data',d)
             # email.attach('media/status.csv',csvfile.getvalue() ,'text/csv')
             # mail_subject = "Hi! CoWin Status CSV"

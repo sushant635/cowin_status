@@ -43,18 +43,21 @@ body{
 }
 .card{
   border-radius: 12px !important;
-  height:408px !important;
-  width: 418px !important;
+  height:80% !important;
+  width: 100% !important;
 }
 .data{
-  width:338px !important ;
-  height:44px ;
+  width:100% !important ;
+  height:100% !important ;
   background:#f0f2fa !important;
   border: none !important;
   border-radius: 6px;
 
 }
-@media only screen and (max-width: 900px) {
+.login-heading{
+      text-align: center;
+    }
+@media screen and (max-width: 900px) {
     /* #history {
       margin-top: 20px;
     }
@@ -66,10 +69,43 @@ body{
     .logout {
       display: none;
     } */
+    .login-heading{
+      text-align: center;
+      /* margin-left: 70px !important; */
+    }
+    .card{
+      border-radius: 12px !important;
+      height:80% !important;
+      width: 120% !important;
+    }
     .bg-image{
       display: none;
     }
   }
+
+  @media screen and (max-width: 600px) {
+  .bg-image{
+    display: none !important;
+  }
+  .login-heading{
+      text-align: center;
+    }
+  .card{
+      border-radius: 12px !important;
+      height:80% !important;
+      width: 100% !important;
+      /* margin-left: 100px  !important; */
+
+
+    }
+  .col-xs-12{
+    width:100% !important;
+  }
+
+}
+@media screen and (max-width: 350px){
+
+}
 /* .btn {
     margin-left: 23px !important;
 } */
@@ -79,14 +115,14 @@ body{
 <body class="my-login-page">
     <div class="container ps-md-0">
         <div class="row g-0">
-          <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
-          <div class="col-md-8 col-lg-6">
+          <div class="d-none d-md-flex  col-lg-6 col-xl-6 col-md-6 col-sm-6 bg-image"></div>
+          <div class="col-md-6 col-lg-6 col-sm-6 col-xl-6 col-xs-12">
             <div class="login d-flex align-items-center py-5">
               <div class="container">
                 <div class="row">
-                  <div class="col-md-9 col-lg-8 mx-auto">
+                  <div class="col-md-9 col-lg-8 col-xl-8 col-xs-12 mx-auto">
                     <!-- <h3 class="display-4 text-center mb-2" style="color: #021b79; font-weight: 500 !important;">Quick HR</h3> -->
-                    <h3 class="login-heading  text-center mt-5" style="font-weight: 500 !important;">Welcome back!</h3>
+                    <h3 class="login-heading   mt-5" style="font-weight: 500 !important;">Welcome back!</h3>
                     <!-- <p class=" text-center ">Sign in to your account to continue </p> -->
                     <div class="card ">
                         <div class="card-body">
@@ -121,7 +157,7 @@ body{
                                     </label>
                                 </div>
                                 <div class="d-grid mt-4 m-2">
-                                    <button class="btn btn-login text-uppercase fw-bold mb-2 ms-3" type="submit" style='background:#021b79; color:#f0f2fa; width:338px;height: 44px;'>Sign in</button>
+                                    <button class="btn btn-login text-uppercase fw-bold mb-2 ms-3" type="submit" style='background:#021b79; color:#f0f2fa;'>Sign in</button>
                                   </div>
                             </form>
                         </div>
