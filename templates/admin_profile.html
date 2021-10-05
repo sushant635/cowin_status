@@ -408,7 +408,7 @@
                   <label for="id_old_password">Old password:</label>
                 </div>
                 <div class="col-xl-4 col-sm-5 col-md-5 col-lg-5 col-xs-12">
-                  <input type="password" name="old_password" autocomplete="current-password" autofocus="" id="id_old_password" class="form-control required-field" required=""/>
+                  <input type="password" name="old_password" autocomplete="current-password" autofocus="" id="id_old_password" class="form-control required-field" />
                 </div>
               </div>
               <div class="row">
@@ -416,7 +416,7 @@
                   <label for="id_new_password1">New password:</label>
                 </div>
                 <div class="col-xl-4 col-sm-5 col-md-5 col-lg-5 col-xs-12">
-                  <input type="password" name="new_password1" autocomplete="new-password"  id="id_new_password1" class="form-control required-field" required=""/>
+                  <input type="password" name="new_password1" autocomplete="new-password"  id="id_new_password1" class="form-control required-field" />
                 </div>
               </div>
               <div class="row">
@@ -424,7 +424,7 @@
                   <label for="id_new_password2">New password confirmation:</label>
                 </div>
                 <div class="col-xl-4 col-sm-5 col-md-5 col-lg-5 col-xs-12">
-                  <input type="password" name="new_password2" autocomplete="new-password" id="id_new_password2" class="form-control required-field" required="">
+                  <input type="password" name="new_password2" autocomplete="new-password" id="id_new_password2" class="form-control required-field" >
                 </div>
               </div>
               <!-- {% for field in form %}
@@ -469,16 +469,16 @@
       };
    
     {% endfor %}
-      // $('#modalsubmit').click(function(){
-      //   var old_password = $('#old_password').val();
-      //   var new_password1 = $('#new_password1').val();
-      //   var new_password2 = $('#new_password2').val();
-      //   alert(new_password2)
-      //   if(new_password1 == undefined && new_password1 == undefined){
-      //     alert('working')
-      //     return false;
-      //   }
-      // })
+      $('#modalsubmit').click(function(){
+        var old_password = $('#old_password').val();
+        var new_password1 = $('#new_password1').val();
+        var new_password2 = $('#new_password2').val();
+        // alert(new_password2)
+        if(new_password1 == undefined && new_password1 == undefined){
+          alert('working')
+          event.preventDefault();
+        }
+      })
       
     $('#exportfile').click(function(){
       name = $('#company_name').val();
