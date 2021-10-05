@@ -36,6 +36,7 @@ import pytz
 from .filters import EmployeeFilter
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q, Count
+import re
 
 
 def test(request):
@@ -492,8 +493,8 @@ def confirmOTP(request):
             print(user_id)
             print(request.POST)
             otp = request.POST.get('otp')
-            print(sha_signature)
-            print(otp,txtId)
+            txtId = request.session.get('txnId')
+            sha_signature = encrypt_string(otp)
             url = 'https://cdn-api.co-vin.in/api/v2/auth/validateMobileOtp'
             headers = {
                 'accept':'application/json',
@@ -1153,11 +1154,11 @@ def user_profile(request):
             branch = request.POST.get('branch')
             department = request.POST.get('department')
             phone_number = request.POST.get('mobile_number')
-            Pattern = re.compile("(0|91)?[6-9][0-9]{9}")
-            if phone_number != '':
-                if not Pattern.match(phone_number):
-                    messages.error(request,'please upload valid phone')
-                    return redirect('user_profile')
+            #Pattern = re.compile("(0|91)?[6-9][0-9]{9}")
+            #if phone_number != '':
+             #   if not Pattern.match(phone_number):
+              #      messages.error(request,'please upload valid phone')
+               #     return redirect('user_profile')
             beneficiary = request.POST.get('beneficiary')
             if not beneficiary.isdigit(): 
                 messages.error(request,'please check beneficiary ')
