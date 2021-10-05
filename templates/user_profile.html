@@ -202,7 +202,7 @@ figure img{
         <div class='row'>
             <div class=''>
                 <div class='container mt-5 justify-content-center'>
-                    <div class='card p-2 ms-3' style="box-shadow: 1px 1px 1px 1px #000000;border-radius: 10px;">
+                    <div class='card p-2 ms-3' style="border-radius: 10px;box-shadow: 5px 6px 6px 2px #e9ecef">
                         <div class='row '>
                             <div class='col-lg-6 col-sm-7 col-md-6 col-xs-12 col-xl-6 '>
                                 <h3 class='ms-4 vertical-center'>You Status is</h3>
@@ -237,7 +237,7 @@ figure img{
                                         <label class='required-field'>Name</label>
                                     </div>
                                     <div class='col-lg-6 col-sm-6 col-md-6 col-xs-12 col-xl-5'>
-                                        <input type='text' class='form-control' name='user_name' id='user_name' value='{{name}}' required>
+                                        <input type='text' class='form-control' name='user_name' id='user_name' value='{{name}}' disabled>
                                     </div>
                                 </div>
                                 <div class='row mt-4'>
@@ -245,7 +245,7 @@ figure img{
                                         <label class='required-field'>Emp Code</label>
                                     </div>
                                     <div class='col-lg-6 col-sm-6 col-md-6 col-xs-12 col-xl-5'>
-                                        <input type='text' class='form-control' name='emp_code' id='emp_code' value='{{emp_code}}' required>
+                                        <input type='text' class='form-control' name='emp_code' id='emp_code' value='{{emp_code}}' disabled>
                                     </div>
                                 </div>
                             
@@ -254,7 +254,7 @@ figure img{
                                     <label class='required-field' >Department</label>
                                 </div>
                                 <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6 col-xl-5'>
-                                    <input type='text' class='form-control'  name="department" id='department' value='{{department}}' required>
+                                    <input type='text' class='form-control'  name="department" id='department' value='{{department}}' disabled>
                                 </div>
                             </div>
                             <div class='row mt-4'>
@@ -262,7 +262,7 @@ figure img{
                                     <label class='required-field'>Branch</label>
                                 </div>
                                 <div class='col-lg-6 col-sm-6 col-md-6 col-xs-6 col-xl-5'>
-                                    <input type='text' class='form-control' name="branch" id='branch' value='{{branch}}' required>
+                                    <input type='text' class='form-control' name="branch" id='branch' value='{{branch}}' disabled>
                                 </div>
                             </div>
                             <div class='row mt-4'>
@@ -297,13 +297,13 @@ figure img{
         <div class='data' >
             <div class='container css_big'>
                 <div class='row '>
-                    <div class='col-md-5 col-lg-5 col-sm-5 col-xs-5 mt-5 col-xl-3' >
+                    <div class='col-md-5 col-lg-5 col-sm-5 col-xs-5 mt-3 col-xl-3' >
                         <figure>
                             <img src="/static/img/form 1.png" alt="image">
                             <div class = "vertical" style="margin-left: 30px;"></div>
                           </figure>
                     </div>
-                    <div class='col-md-7 col-lg-7 col-sm-7 col-xs-7 mt-5 col-xl-9' style="padding: 0% !important;">
+                    <div class='col-md-7 col-lg-7 col-sm-7 col-xs-7 mt-3 col-xl-9' style="padding: 0% !important;">
                         <label class='fs-5 mt-1 write' style="  font-weight: 900; color:#fff">Ensure all the details are filled</label>
                     </div>
                 </div>

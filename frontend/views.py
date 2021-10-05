@@ -37,7 +37,10 @@ from .filters import EmployeeFilter
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q, Count
 import re
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7ccf010d15cfe3655def97a7f6ac3803d3aa3faf
 
 def test(request):
     email = 'shindesushant818@gmail.com'
@@ -184,8 +187,9 @@ def user_login(request):
 #     except Exception as e:
 #         print(e,'error of line number {}'.format(sys.exc_info()[-1].tb_lineno))
 
-import re
+
 import base64
+import pandas as pd
 
 @login_required
 # @type_user
@@ -200,6 +204,7 @@ def dashboard(request):
             company_name = company.company
             print('company',company)
             csv_file = request.FILES["upload"]
+            print(csv_file)
             if not csv_file.name.endswith('.csv'):
                 messages.error(request,'Please upload proper file template')
                 return HttpResponseRedirect(reverse('dashboard'))
@@ -208,11 +213,21 @@ def dashboard(request):
             Pattern = re.compile("(0|91)?[6-9][0-9]{9}")
             lines = file_data.split("\n")
             first = 0
+            print(lines)
+            print(len(lines))
+            is_empty = None
             emp_details = []
-            for line in lines:                     
+            for line in lines: 
+                number_of_rows = line
+                if number_of_rows == 1:
+                    header = fields[0]
+                    print('header',header) 
+
+
+                print('number_of_rows',number_of_rows)
+                print(line)          
                 if line != '':
-                    if first != 0:
-                        
+                    if first != 0: 
                         fields = line.split(',')
                         # print(fields)
                         username1 = fields[2]
@@ -222,21 +237,33 @@ def dashboard(request):
                         branch = fields[3]
                         department = fields[4]
                         beneficialy_id = fields[5]
+                        if branch == '':
+                            messages.error(request,'please provide the valid branch')
+                            return redirect('dashboard') 
+                        if department == '':
+                            messages.error(request,'please provide the valid department')
+                            return redirect('dashboard')
+
                         if not (re.fullmatch(regex, username1)):
-                            messages.error(request,'please upload valid email')
+                            messages.error(request,'please provide the valid email')
                             return redirect('dashboard')
                         mobile_number = fields[6]
                         print('username1@@@@@@@@@@@@@@@@@@@@@@@@@',mobile_number)
                         print('###################################@@@@@@@',mobile_number)
+                        print(beneficialy_id,len(beneficialy_id))
                         if mobile_number != '':
+                            print(mobile_number)
                             if not Pattern.match(mobile_number):
-                                messages.error(request,'please upload valid phone')
+                                messages.error(request,'Please provide the valid mobile number')
                                 return redirect('dashboard')
                         if beneficialy_id != '':
                             if not beneficialy_id.isdigit():
-                                messages.error(request,'please check beneficialyid  ',emp_name)
+                                messages.error(request,'please check beneficiary reference id',emp_name)
                                 return redirect('dashboard')
-
+                            if not len(beneficialy_id) >= 13:
+                                    print('working beneficialy_id lenght')
+                                    messages.error(request,'please check beneficiary reference id',emp_name)
+                                    return redirect('dashboard') 
                         # print(fields)
                         if User.objects.filter(username=username1).exists():
                             # print(emp_name)
@@ -1012,13 +1039,23 @@ def admin_profile(request):
         date = datetime.strptime(purchase_date, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
         pur = models.Purchase.objects.filter(company=company_obj).values('today_purchase','created').order_by('-created')
         con = models.Consumed.objects.filter(company=company).values('Consumed','today_consumed').order_by('-created')
-        print(con)
+        print('jbeb',con)
         con_data = []
         for i in con:
             con_data.append(i)
         print(con_data)
+        
+        last_consumed = None
+        second_last_consumed= None
         if len(con_data) >= 2:
-            print('data',con_data[0]['Consumed'])
+            last_consumed = con_data[0]['today_consumed']
+            second_last_consumed = con_data[1]['today_consumed']
+        else:
+            last_consumed = con_data[0]['today_consumed']
+            
+
+        print('buvb',last_consumed,second_last_consumed)
+            
         # con = models.Consumed.objects.filter(company=company_obj).values('today_consumed','created').order_by('-created')
         # today = date.today()
         # print('today',today)
@@ -1075,7 +1112,7 @@ def admin_profile(request):
             last_time = date_last1.time().strftime('%H:%M')
             print(last_day)
 
-
+        # second_last_purchase= None
 
         print(last_date,last_purchase)
         print(purchase_date)
@@ -1084,7 +1121,7 @@ def admin_profile(request):
         password = user.password
         form = PasswordChangeForm(request.user)
         context = {'company':company,'available':available,'consumed':consumed,'purchase':purchase,'user':user,'password':password,'form':form,'last_day':last_day,'last_time':last_time,'last_purchase':last_purchase,\
-            'second_day':second_day,'second_time':second_time,'second_last_purchase':second_last_purchase}
+            'second_day':second_day,'second_time':second_time,'second_last_purchase':second_last_purchase,'last_consumed':last_consumed,'second_last_consumed':second_last_consumed}
         
         return render(request,'admin_profile.html',context)
     except Exception as e:
@@ -1139,6 +1176,7 @@ def change_username_company(request):
 
 
 
+
 # @type_user
 @login_required
 def user_profile(request):
@@ -1154,15 +1192,27 @@ def user_profile(request):
             branch = request.POST.get('branch')
             department = request.POST.get('department')
             phone_number = request.POST.get('mobile_number')
+<<<<<<< HEAD
             #Pattern = re.compile("(0|91)?[6-9][0-9]{9}")
             #if phone_number != '':
              #   if not Pattern.match(phone_number):
               #      messages.error(request,'please upload valid phone')
                #     return redirect('user_profile')
+=======
+            # Pattern = re.compile("(0|91)?[6-9][0-9]{9}")
+            # if phone_number != '':
+            #     if not Pattern.match(phone_number):
+            #         messages.error(request,'please upload valid phone')
+            #         return redirect('user_profile')
+>>>>>>> 7ccf010d15cfe3655def97a7f6ac3803d3aa3faf
             beneficiary = request.POST.get('beneficiary')
             if not beneficiary.isdigit(): 
-                messages.error(request,'please check beneficiary ')
+                messages.error(request,'please check beneficiary reference id')
                 return redirect('user_profile')
+            if department == '':
+                messages.error(request,'please provide the valid department')
+                return redirect('dashboard')
+            
             url = 'https://cdn-api.co-vin.in/api/v2/auth/generateMobileOTP'
             headers = {
                 'accept':'application/json',

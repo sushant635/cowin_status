@@ -333,12 +333,14 @@
                 <h5>Used</h5>
               </div>
               <div class="col-lg-4 col-md-12 col-sm-12 col-xl-4 col-xs-12" style="margin: 10px">
-                <h4 style="color:#20e074"><b>0</b></h4>
+                <h4 style="color:#20e074"><b>{{last_consumed}}</b></h4>
               </div>
             </div>
           </div>
         </div>
+        {% if second_last_purchase == None %}
 
+        {% else %}
         <div class="row">
           <div class="col-lg-7 col-md-12 col-xs-12 col-sm-6 col-xl-6">
             <input type="date" id="todaydate" class="form-control mt-5 radius" data-date="" data-date-format="DD MMMM YYYY"
@@ -380,12 +382,12 @@
                 <h5>Used</h5>
               </div>
               <div class="col-lg-4 col-md-12 col-sm-12 col-xl-4 col-xs-12" style="margin: 10px">
-                <h4 style="color:#20e074"><b></b></h4>
+                <h4 style="color:#20e074"><b>{{second_last_consumed}}</b></h4>
               </div>
             </div>
           </div>
         </div>
-        
+        {% endif %}
         
       </div>
     </div>
@@ -406,8 +408,7 @@
                   <label for="id_old_password">Old password:</label>
                 </div>
                 <div class="col-xl-4 col-sm-5 col-md-5 col-lg-5 col-xs-12">
-                  <input type="password" name="old_password" autocomplete="current-password" autofocus="" required
-                    id="id_old_password" class="form-control required-field" />
+                  <input type="password" name="old_password" autocomplete="current-password" autofocus="" id="id_old_password" class="form-control required-field" />
                 </div>
               </div>
               <div class="row">
@@ -415,8 +416,7 @@
                   <label for="id_new_password1">New password:</label>
                 </div>
                 <div class="col-xl-4 col-sm-5 col-md-5 col-lg-5 col-xs-12">
-                  <input type="password" name="new_password1" autocomplete="new-password" required
-                    id="id_new_password1" class="form-control required-field" />
+                  <input type="password" name="new_password1" autocomplete="new-password"  id="id_new_password1" class="form-control required-field" />
                 </div>
               </div>
               <div class="row">
@@ -424,8 +424,7 @@
                   <label for="id_new_password2">New password confirmation:</label>
                 </div>
                 <div class="col-xl-4 col-sm-5 col-md-5 col-lg-5 col-xs-12">
-                  <input type="password" name="new_password2" autocomplete="new-password" required
-                    id="id_new_password2" class="form-control required-field" />
+                  <input type="password" name="new_password2" autocomplete="new-password" id="id_new_password2" class="form-control required-field" >
                 </div>
               </div>
               <!-- {% for field in form %}
@@ -474,10 +473,10 @@
         var old_password = $('#old_password').val();
         var new_password1 = $('#new_password1').val();
         var new_password2 = $('#new_password2').val();
-        alert(new_password2)
+        // alert(new_password2)
         if(new_password1 == undefined && new_password1 == undefined){
           alert('working')
-          return false;
+          event.preventDefault();
         }
       })
       

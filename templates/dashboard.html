@@ -221,11 +221,14 @@ div.pager span.active {
         #pages{
           display: none;
         }
-        #exporticon{
+        .exporticon{
           text-align: center;
         }
         .profile2{
           display: none;
+        }
+        .datag{
+          width:17% !important;
         }
 
     }
@@ -282,7 +285,7 @@ div.pager span.active {
 </form>
 {% endblock Gender %}
 {% block submit_button %} 
-<button class="btn btn-primary" type="submit" id='submit'>Search</button>
+<button class="btn " type="submit" id='submit' style="background-image: linear-gradient(#00bbff, #035397); color:#f0f2fa">Search</button>
 
 {% endblock submit_button %}
 </form>
@@ -326,15 +329,15 @@ div.pager span.active {
                   
                 </ul> --> 
             </div>
-              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2 mt-2' id="exporticon">
-                <div class='row'>
-                  <div class='col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-6'>
+              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2 mt-2' >
+                <div class='row exporticon'>
+                  <div class='col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-4 datag' >
                     <form method="POST" action="{% url 'exportfiledata'%}" id="export_form" >
                       {% csrf_token %}
                       <button id="exportfile" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV File" type='button'><img src="/static/img/export.png" height='24px'></button>
                     </form>
                   </div>
-                  <div class='col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-6'>
+                  <div class='col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-4 datag'>
                     <form method="POST" action="{% url 'exportfile'%}" id="exportemail_form" >
                       <button id="exportemailfile" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV for Email" type='button'><img src="/static/img/send-mail.png" height='24px'></button>
                     </form>
@@ -368,7 +371,7 @@ div.pager span.active {
                           <td class='p-4'>{{emps.branch}}</td>
                           <td class='p-4'>{{emps.department}}</td>
                           {% if emps.status == "Not Checked" %}
-			                      <td  class='p-4' style=" "><b style="padding:10px;;background-color:#ffebeb;border-radius: 20px;"><span style="color: #fd3636;">{{emps.status}}</span></b></td>                                
+			                      <td  class='p-4' ><b style="padding:10px;;background-color:#ffebeb;border-radius: 20px;"><span style="color: #fd3636;">{{emps.status}}</span></b></td>                                
                           {% elif emps.status == 'Partially Vaccinated' %}
                           <td  class='p-4' style="color:#ffb800"><b style="padding:10px;;background-color:#fff8e5;border-radius: 20px;" >{{emps.status}}</b></td>                                
                           {% elif emps.status == 'Fully Vaccinated' %}
@@ -408,7 +411,7 @@ div.pager span.active {
           <div class='card ' style="box-shadow: 5px 6px 6px 2px #035397;border-radius: 10px;">
             <div class='rows'>
               <!-- <div class='col-lg-3 col-xs-6 col-sm-4 col-md-4 col-xl-2'> -->
-                <h1 style="color: #035397; font-weight:500px !important;">{{total}}</h1>
+                <h1 style="color: #000; font-weight:500px !important;">{{total}}</h1>
               <!-- </div> -->
               <!-- <div class='col-lg-5 col-xl-6 col-xs-6 col-sm-8 col-md-8'> -->
                 <h5 class="card-title">Total Employee</h5>
