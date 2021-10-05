@@ -204,6 +204,7 @@ def dashboard(request):
             company_name = company.company
             print('company',company)
             csv_file = request.FILES["upload"]
+            
             print(csv_file)
             if not csv_file.name.endswith('.csv'):
                 messages.error(request,'Please upload proper file template')
@@ -212,20 +213,22 @@ def dashboard(request):
             regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
             Pattern = re.compile("(0|91)?[6-9][0-9]{9}")
             lines = file_data.split("\n")
+            temp = []
+            for line in lines:
+                if line != "":
+                    fields = line.split(',')
+                    temp.append(fields[0])
+            print(temp,len(temp))
+            if len(temp) == 0 :
+                messages.error(request,'Please fill in the required employee details in csv file')
+                return redirect('dashboard') 
+
             first = 0
             print(lines)
             print(len(lines))
             is_empty = None
             emp_details = []
-            for line in lines: 
-                number_of_rows = line
-                if number_of_rows == 1:
-                    header = fields[0]
-                    print('header',header) 
-
-
-                print('number_of_rows',number_of_rows)
-                print(line)          
+            for line in lines:          
                 if line != '':
                     if first != 0: 
                         fields = line.split(',')
@@ -471,7 +474,7 @@ def dashboard(request):
                 else:
                     not_vaccinated += 1 
                 emp_list.append({'name':name,'emp_code':emp_code,'branch':branch,'department':department,'status':status,'last_checked':last_checked1,'beneficialy_id':beneficialy_id,'gender':gender,'birth_year':birth_year,'does1_date':does1_date1,'does2_date':does2_date1,'vaccine':vaccine})
-            print(data.filter(Q(employee_department=department1)|Q(employee_branch=branch1)).values('employee_name','employee_code','employee_branch','employee_department'))
+            print(data.filter(Q(employee_department=department1)|Q(employee_branch=branch1)).values('employee_name','employee_code','employee_branch','employee_department',))
             
             filtered_qs = EmployeeFilter(
                       request.GET, 
@@ -487,7 +490,7 @@ def dashboard(request):
             # print(person_page_obj)
 
             
-            context = {'emp':emp_list,'partial_vaccinated':partial_vaccinated,'fully_vaccinated':fully_vaccinated,'not_vaccinated':not_vaccinated,'not_checked':not_checked,'total':total,'branch':branches,'department':departments}
+            context = {'emp':emp_list,'partial_vaccinated':partial_vaccinated,'fully_vaccinated':fully_vaccinated,'not_vaccinated':not_vaccinated,'not_checked':not_checked,'total':total,'branch':branches,'department':departments,'status1':status1,'department1':department1,'branch1':branch1,'gender1':gender1}
             return render(request,'dashboard.html',context)
 
     except Exception as e:
@@ -522,6 +525,8 @@ def confirmOTP(request):
             otp = request.POST.get('otp')
             txtId = request.session.get('txnId')
             sha_signature = encrypt_string(otp)
+            print(sha_signature)
+            print(otp,txtId)
             url = 'https://cdn-api.co-vin.in/api/v2/auth/validateMobileOtp'
             headers = {
                 'accept':'application/json',
@@ -1237,7 +1242,7 @@ def user_profile(request):
                 request.session['txnId'] = txnId
                 print(re)
                 print(name)
-                data = models.Employeeprofile.objects.filter(employee=user_id).update(employee_name=name,employee_code=emp_code,employee_branch=branch,employee_department=department,phoneNumber=phone_number,Beneficiary_Id=beneficiary)
+                data = models.Employeeprofile.objects.filter(employee=user_id).update(phoneNumber=phone_number,Beneficiary_Id=beneficiary)
                 return redirect('user_profile')
             else:
                 messages.error(request,'error are come for api'+res.text)
@@ -1401,9 +1406,14 @@ def export_csv_request(request):
             # print(c)
             d = None
             
-            for i in c:
+            for i in a:
                 writer.writerow(i)
+        
                 # d = i
+
+            writer.writerow(['Total Consumed','Date ','Date Wish Cosumed'])
+            for j in b:
+                 writer.writerow(j)
             print('data',d)
             # email.attach('media/status.csv',csvfile.getvalue() ,'text/csv')
             # mail_subject = "Hi! CoWin Status CSV"

@@ -22,7 +22,7 @@
   /* width: 20%; */
 }
 .data{
-  height: 990px !important;
+  height: 100% !important;
   background-image: linear-gradient(#00bbff, #035397);
   display: flex;
   width:100% !important;
@@ -51,6 +51,9 @@ figure{
     /* margin-right: 10px; */
     background: #fff;
     line-height: 1.7em;
+}
+.second_card{
+    display:none;
 }
 
 figure img{
@@ -92,9 +95,12 @@ figure img{
 
             /* left: 50%; */
         }
+.linear1{
+    display:none !important ;
+}
      
 .line { border-bottom: 1px solid red; position: absolute; top: 10px; width: 100%; z-index: -1; }
-@media only screen and (max-width: 900px) {
+@media screen and (max-width: 900px) {
         #history{
           margin-top: 20px;
         }
@@ -115,7 +121,71 @@ figure img{
     } */
 
     }
-@media only screen and (max-width:500px) {
+    @media screen and (max-width:600px){
+        .work{
+        width:10px !important;
+    }
+    .second_card{
+        display: block  !important;
+    }
+    .linear1{
+    display:block !important ;
+}
+    .figure{
+    display:block;
+    width:50px;
+    height: 50px;
+    border-radius: 50px;
+    font-size: 25px;
+    text-align: center;
+    /* margin-right: 10px; */
+    background: #fff;
+    line-height: 1.7em;
+    }
+
+    .figure img{
+    display:inline-block;
+    width: 30px;
+    height: auto;
+    margin-top: 15px;
+    }
+        #submit_button1{
+        margin-left: 65px;
+    }
+    /* .row>*{
+        width: fit-content !important;
+    } */
+    #history{
+        width: fit-content !important;
+    }
+    #otpsubmit{
+            width:300px !important;
+        }
+    #otp{
+        width:200px !important; 
+    }
+    #check_status{
+        margin-left: 100px !important;
+        /* text-align: center; */
+    }
+    .data{
+        width:100% !important;
+        margin-top: 0%  !important;
+        display:none !important;
+    }
+    .data1{
+        background-image: linear-gradient(#00bbff, #035397);
+        display: flex;
+        width:100% !important;
+        /* width:360px !important; */
+        max-height: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        /* margin-left: 30px !important; */
+    }
+
+    } 
+    @media screen and (max-width:500px) {
     .work{
         width:10px !important;
     }
@@ -130,7 +200,9 @@ figure img{
     background: #fff;
     line-height: 1.7em;
 }
-
+.linear1{
+    display:block !important ;
+}
 .figure img{
    display:inline-block;
    width: 30px;
@@ -138,7 +210,7 @@ figure img{
    margin-top: 15px;
 }
 .write{
-    width:250px !important;
+    width:220px !important;
 }
     /* .icons{
         width:300px !important;
@@ -164,8 +236,23 @@ figure img{
         margin-left: 100px !important;
         /* text-align: center; */
     }
+    .data1{
+        background-image: linear-gradient(#00bbff, #035397);
+        display: flex;
+        width:100% !important;
+        /* width:360px !important; */
+        max-height: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        /* margin-left: 30px !important; */
+    }
+    .required-field::after {
+    content: "*";
+    color: red;
+    /* padding-left: 20px  !important; */
 }
-@media only screen and (max-width:350px){
+}
+@media screen and (max-width:350px){
     .write{
             width:200px !important;
         } 
@@ -180,6 +267,38 @@ figure img{
     }
     #submit_button1{
         margin-left: 50px;
+    }
+    .linear1{
+    display:block !important ;
+}
+    .data1{
+        background-image: linear-gradient(#00bbff, #035397);
+    display: flex;
+    width:100% !important;
+    max-height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    }
+}
+@media screen and (max-width: 280px){
+    .write{
+            width:100px !important;
+        } 
+        .row>*{
+                width: fit-content !important;
+            }   
+        #otpsubmit{
+            width:250px !important;
+        }
+        #otp{
+        width:120px !important; 
+    }
+    #submit_button1{
+        margin-left: 20px;
+    }
+    #check_status{
+        margin-left: 50px !important;
+        /* text-align: center; */
     }
 }
 
@@ -224,6 +343,60 @@ figure img{
                 </div>
             </div>
         </div>
+        <div class='linear1'>
+            <div class='col-xs-12'>
+                <div class='data1 mt-3 ' >
+                    <div class='container css_big'>
+                        <div class='row '>
+                            <div class='col-md-5 col-lg-5 col-sm-5 col-xs-5 mt-3 col-xl-3' >
+                                <figure>
+                                    <img src="/static/img/form 1.png" alt="image">
+                                    <div class = "vertical" style="margin-left: 30px;"></div>
+                                  </figure>
+                            </div>
+                            <div class='col-md-7 col-lg-7 col-sm-7 col-xs-7 mt-3 col-xl-9' style="padding: 0% !important;">
+                                <label class='fs-5 mt-1 write' style="  font-weight: 900; color:#fff">Ensure all the details are filled</label>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-md-5 col-lg-5 col-sm-5 col-xs-4 mt-4 col-xl-3' >
+                                <figure>
+                                    <img src="/static/img/submit 1.png" alt="image">
+                                    <div class = "vertical" style="margin-left: 33px;"></div>
+                                  </figure>
+                            </div>
+                            <div class='col-md-7 col-lg-7 col-sm-7 col-xs-7 mt-4 col-xl-8' style="padding: 0% !important;">
+                                <label class='fs-5 mt-1 write' style="  font-weight: 900;color:#fff"><b>Submit the button</b></label>
+                            </div>
+        
+                        </div>
+                        <!-- <svg width="500" height="500"><line x1="50" y1="50" x2="350" y2="350" stroke="black"/></svg> -->
+                        <div class='row'>
+                            <div class='col-md-5 col-lg-5 col-sm-5 col-xs-4 mt-4 col-xl-3' >
+                                <figure>
+                                    <img src="/static/img/otp.png" alt="image">
+                                    <div class = "vertical" style="margin-left: 33px;"></div>
+                                  </figure>
+                            </div>
+                            <div class='col-md-7 col-lg-7 col-sm-7 col-xs-7 mt-4 col-xl-8' style="padding: 0% !important;">
+                                <label class='fs-5 mt-1' style="  font-weight: 900;color:#fff"><b>Enter the otp</b></label>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-md-5 col-lg-5 col-sm-5 col-xs-4 mt-4 col-xl-3' >
+                                <figure>
+                                    <img src="/static/img/form 1.png" alt="image">
+                                  </figure>
+                            </div>
+                            <div class='col-md-7 col-lg-7 col-sm-7 col-xs-7 mt-4 col-xl-8' style="padding: 0% !important;">
+                                <label class='fs-5 mt-1 write' style="  font-weight: 900;color:#fff"><b>Check the vaccination status</b></label>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+            </div>
+        </div>
+        
         <div class='row'>
             <div class='container'>
                 <div class='container mt-5 justify-content-center'>
@@ -315,7 +488,7 @@ figure img{
                           </figure>
                     </div>
                     <div class='col-md-7 col-lg-7 col-sm-7 col-xs-7 mt-4 col-xl-8' style="padding: 0% !important;">
-                        <label class='fs-5 mt-1' style="  font-weight: 900;color:#fff"><b>Submit the button</b></label>
+                        <label class='fs-5 mt-1 write' style="  font-weight: 900;color:#fff"><b>Submit the button</b></label>
                     </div>
 
                 </div>
@@ -350,7 +523,7 @@ figure img{
                             </div>
                             <div class='row mt-4'>
                                 <div class='col-lg-5 col-md-3 col-sm-5 col-xs-12 col-xl-3'>
-                                    <label class='text-center ms-4 mt-2 required-field' style="color:#fff"><b></b> OTP</label>
+                                    <label class='text-center ms-2 mt-2 required-field' style="color:#fff"><b></b> OTP</label>
                                 </div>
                                 <div class='col-lg-6 col-md-8 col-sm-6 col-xs-12 col-xl-7'>
                                     <input id="otp" type="text" class="form-control" name="otp"  maxlength="8" size="8" required autofocus>
@@ -366,6 +539,26 @@ figure img{
 
             </div>   
         </div>
+    </div>
+    <div class='card css css_right second_card m-3' style="background-color: #035397;box-shadow: 5px 6px 6px 2px;border-radius: 10px;">
+        <form method="post" action="{% url 'confirmotp'%}">
+            {% csrf_token %}
+            <div class='row'>
+                <h4 style="color:#fff" class='text-center mt-4' id='check_status'><b>Check Status</b></h4>
+            </div>
+            <div class='row mt-4'>
+                <div class='col-lg-5 col-md-3 col-sm-5 col-xs-12 col-xl-3'>
+                    <label class='text-center ms-3 mt-2 required-field' style="color:#fff"><b></b> OTP</label>
+                </div>
+                <div class='col-lg-6 col-md-8 col-sm-6 col-xs-12 col-xl-7'>
+                    <input id="otp" type="text" class="form-control" name="otp"  maxlength="8" size="8" required autofocus>
+                </div>
+            </div>
+            <div class='row p-4 mt-3 mb-4'>
+                <input type="submit" class='btn btn-light' id="otpsubmit">
+            </div>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock content %}
@@ -390,6 +583,8 @@ $('#submit_button1').click(function(){
   mobile_number = $('#mobile_number').val();
   console.log(name,emp_code,department,branch,beneficiary)
   console.log('beneficiary',  beneficiary  )
+//   alert(name,emp_code,department,branch,beneficiary)
+
     //   alert('working')
 //     if(name == null && emp_code == null && department == null && branch == null && beneficiary != null  && mobile_number == null){
 //       alert('Please fill in the required details')
