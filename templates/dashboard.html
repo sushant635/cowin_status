@@ -10,7 +10,7 @@
   .form-select{
   background-color:#f0f2fa !important;
   border-color: #035397;
-  width:180px !important;
+  width:100% !important;
 
 }
 .upload-input{
@@ -39,7 +39,7 @@ body{
   height: 65px;
 }
 .data{
-  height: 1000px !important;
+  height: 100% !important;
   background-image: linear-gradient(#00bbff, #035397);
   /* display: flex; */
   max-height: 100%;
@@ -230,6 +230,16 @@ div.pager span.active {
         .datag{
           width:17% !important;
         }
+        .firstbutton{
+          margin-left: 30% !important;
+        }
+        .data{
+          width:100% !important;
+          height:100% !important;
+        }
+       
+
+        
 
     }
 </style>
@@ -248,10 +258,18 @@ div.pager span.active {
 {% block Department %}
 <form method="get" action="{% url 'dashboard'%}" id='filter_form'>
 <select class='form-select select' name="department" id="department1" >
+  {% if department1 != None%}
+  <option >{{department1}}</option>
   <option value="Department">Department</option>
   {% for i in department%}
   <option value="{{i}}">{{i}}</option>
   {% endfor %}
+  {% else %}
+  <option value="Department">Department</option>
+  {% for i in department%}
+  <option value="{{i}}">{{i}}</option>
+  {% endfor %}
+  {% endif %}
 </select>
 <!-- <input type="submit" value='submit'>  -->
 
@@ -259,28 +277,51 @@ div.pager span.active {
 
 {% block Branch %} 
 <select class='form-select' name='branch' id='branch'>
+  {% if branch1 != None%}
+  <option >{{branch1}}</option>
   <option value="Branch">Branch</option>
     {% for i in branch %}
     <option value='{{i}}'>{{i}}</option>
     {% endfor %}
+  {% else %}
+  <option value="Branch">Branch</option>
+    {% for i in branch %}
+    <option value='{{i}}'>{{i}}</option>
+    {% endfor %}
+  {% endif %}
 </select>
 {% endblock Branch %}
 {% block Status %} 
 <select class='form-select' id="status" name="status">
+  {% if status1 != None%}
+  <option >{{status1}}</option>
   <option>Status</option>
   <option>Fully Vaccinated</option>
   <option>Partially Vaccinated</option>
   <option>Not Vaccinated</option>
   <option>Not Checked</option>
-   
+  {% else %}
+  <option>Status</option>
+  <option>Fully Vaccinated</option>
+  <option>Partially Vaccinated</option>
+  <option>Not Vaccinated</option>
+  <option>Not Checked</option>
+   {% endif %}
 </select>
 {% endblock Status %}
 
 {% block Gender %} 
 <select class='form-select' id="gender" name="gender">
+  {% if gender1 != None%}
+  <option >{{gender1}}</option>
   <option>Gender</option>
   <option>Male</option>
-  <option>Female</option>               
+  <option>Female</option>
+  {% else %}
+    <option>Gender</option>
+    <option>Male</option>
+    <option>Female</option> 
+  {% endif %}              
 </select>
 </form>
 {% endblock Gender %}
@@ -320,8 +361,6 @@ div.pager span.active {
               </div>
               <div class='col-lg-4 col-sm-1 col-md-6 col-xs-3 col-xl-6' id="pages">
                 <div class="pager">
-                  <span class="previous">Prev</spnan>
-                    <span class="next "><b>Next</b></spnan>
                     
                 </div>
                 
@@ -331,7 +370,7 @@ div.pager span.active {
             </div>
               <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2 mt-2' >
                 <div class='row exporticon'>
-                  <div class='col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-4 datag' >
+                  <div class='col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-4 datag firstbutton' >
                     <form method="POST" action="{% url 'exportfiledata'%}" id="export_form" >
                       {% csrf_token %}
                       <button id="exportfile" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV File" type='button'><img src="/static/img/export.png" height='24px'></button>
@@ -676,8 +715,8 @@ $('table.paginated').each(function(){
     var numPages = Math.ceil(numRows / numPerPage);
     console.log(numPages)
     var $pager = $('.pager');
-    var $previous = $('.previous');
-    var $next = $('.next')
+    var $previous = $('<span class="previous">Prev</spnan>');
+    var $next = $('<span class="next "><b>Next</b></spnan>')
     for (var page = 0; page < numPages; page++) {
       $('<span class="page-number"></span>').text(page + 1).bind('click', {
           newPage: page
