@@ -37,10 +37,6 @@ from .filters import EmployeeFilter
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q, Count
 import re
-<<<<<<< HEAD
-
-=======
->>>>>>> 7ccf010d15cfe3655def97a7f6ac3803d3aa3faf
 
 def test(request):
     email = 'shindesushant818@gmail.com'
@@ -1197,19 +1193,16 @@ def user_profile(request):
             branch = request.POST.get('branch')
             department = request.POST.get('department')
             phone_number = request.POST.get('mobile_number')
-<<<<<<< HEAD
             #Pattern = re.compile("(0|91)?[6-9][0-9]{9}")
             #if phone_number != '':
              #   if not Pattern.match(phone_number):
               #      messages.error(request,'please upload valid phone')
                #     return redirect('user_profile')
-=======
             # Pattern = re.compile("(0|91)?[6-9][0-9]{9}")
             # if phone_number != '':
             #     if not Pattern.match(phone_number):
             #         messages.error(request,'please upload valid phone')
             #         return redirect('user_profile')
->>>>>>> 7ccf010d15cfe3655def97a7f6ac3803d3aa3faf
             beneficiary = request.POST.get('beneficiary')
             if not beneficiary.isdigit(): 
                 messages.error(request,'please check beneficiary reference id')
