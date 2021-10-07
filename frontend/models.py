@@ -61,10 +61,23 @@ class Available(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.availabel
+        return self.availabel + " " + self.company.name
 
     class Meta:
         db_table = 'availabe_request'
+
+# def auto_total_purchase():
+#     today_purchase = models.Purchase
+#     total_Purchase = models.Purchase.objects.filter(company=company).order_by('id').last()
+#     print(purchase)
+#     if total_Purchase == 0 and total_Purchase == '':
+#         total_Purchase = 0
+#     return total_Purchase
+    
+
+        
+
+
 
 class Purchase(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,null=False,blank=False)
@@ -75,7 +88,7 @@ class Purchase(models.Model):
 
 
     def __str__(self):
-        return self.purchase
+        return self.purchase + " " + self.company.name
 
     class Meta:
         db_table = 'purchase_request'

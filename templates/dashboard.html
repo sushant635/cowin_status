@@ -159,7 +159,7 @@ div.pager {
     margin: 1em 0;
 }
 
-div.pager span {
+div.pager li {
     display: inline-block;
     width: 2.0em;
     height: 2.0em;
@@ -167,12 +167,16 @@ div.pager span {
     text-align: center;
     cursor: pointer;
     background: #ffffff;
-    color: #000;
+    /* color: #000; */
     margin-right: 0.8em;
     margin-top:0% !important;
     border-radius: 50%;
 }
-.previous{
+li a {
+  text-decoration: none;
+  color: black; 
+}
+#previous-page{
   width: 2.8em !important;
   background: #f0f2fa !important;
   color: #707070  !important;
@@ -181,19 +185,65 @@ div.pager span {
   /* position: fixed; */
 
 }
-.next{
+#next-page{
   width: 2.8em !important;
   background: #f0f2fa !important;
   /* color: #035397  !important; */
-  border-radius: 1px !important;
+  color: #707070  !important;
+  border-radius: 1px !important;status_tr
   
 
 }
+div.pager li.active{
+  background-color:#035397;
+  color: #ffffff;
+}
+
+/* div.pager li.active, a.active {
+    background-color: #035397;
+    color:#f0f2fa !important;
+} */
+@media screen and (max-width:1024px)  {
+  table{
+    width:100% !important;
+    height:100%  !important;
+  }
+    .form-select{
+    background-color:#f0f2fa !important;
+    border: none !important;
+    width:100% !important;
+  }
+  #exportfile{
+    height:40px !important;
+  }
+  .col-lg-9{
+    width:70% !important;
+  }
+  /* table>tbody>tr>td{
+  padding-bottom: 0px !important;
+  padding-top:0px !important;
+} */
+/* table>tr{
+  width:100% !important;
+} */
+.col-lg-3{
+  width:30% !important;
+}
+.col-lg-4{
+  width:40%  !important;
+}
+.status_tr{
+  width:100px  !important;
+}
+.h5, h5{
+  font-size: 1.00rem !important;
+}
+/* .centerimg{
+  height:100px !important;
+} */
 
 
-div.pager span.active {
-    background: #035397;
-    color: #fff;
+
 }
 @media screen and (max-width: 900px) {
   .form-select{
@@ -304,8 +354,12 @@ div.pager span.active {
 <form method="get" action="{% url 'dashboard'%}" id='filter_form'>
 <select class='form-select select' name="department" id="department1" >
   {% if department1 != None%}
+  {% if department1 == 'Department' %}
+  <option value="Department">Department</option>
+  {% else %}
   <option >{{department1}}</option>
   <option value="Department">Department</option>
+  {% endif %}
   {% for i in department%}
   <option value="{{i}}">{{i}}</option>
   {% endfor %}
@@ -323,8 +377,12 @@ div.pager span.active {
 {% block Branch %} 
 <select class='form-select' name='branch' id='branch'>
   {% if branch1 != None%}
+  {% if branch1 == 'Branch' %}
+  <option value="Branch">Branch</option>
+  {% else %}
   <option >{{branch1}}</option>
   <option value="Branch">Branch</option>
+  {% endif %}
     {% for i in branch %}
     <option value='{{i}}'>{{i}}</option>
     {% endfor %}
@@ -339,8 +397,12 @@ div.pager span.active {
 {% block Status %} 
 <select class='form-select' id="status" name="status">
   {% if status1 != None%}
+  {% if status1 == 'Status' %}
+  <option>Status</option>
+  {% else %}
   <option >{{status1}}</option>
   <option>Status</option>
+  {% endif %}
   <option>Fully Vaccinated</option>
   <option>Partially Vaccinated</option>
   <option>Not Vaccinated</option>
@@ -358,8 +420,12 @@ div.pager span.active {
 {% block Gender %} 
 <select class='form-select' id="gender" name="gender">
   {% if gender1 != None%}
+  {% if gender1 == 'Gender' %}
+  <option>Gender</option>
+  {% else %}
   <option >{{gender1}}</option>
   <option>Gender</option>
+  {% endif %}
   <option>Male</option>
   <option>Female</option>
   {% else %}
@@ -393,7 +459,7 @@ div.pager span.active {
         <div class='container mt-5'>
           <div class='container mt-5 justify-content-center'>
             <div class='row'>
-              <div class='col-lg- col-md-4 col-sm-3 col-xs-12 col-xl-2 mt-2'>
+              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2 mt-2'>
                   <!-- <button>Data</button> -->
                   <a href="/static/sampletemplate/new_template.csv" download  class='btn btn-primary' style="color:black ;background-color:#ffffff;" id='site_csvsample'><img src="/static/img/download.png" height='20px'> Template</a>
               </div>
@@ -415,13 +481,13 @@ div.pager span.active {
             </div>
               <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2 mt-2' >
                 <div class='row exporticon'>
-                  <div class='col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-4 datag firstbutton' >
+                  <div class='col-xl-3 col-lg-3 col-md-5 col-sm-6 col-xs-4 datag firstbutton' >
                     <form method="POST" action="{% url 'exportfiledata'%}" id="export_form" >
                       {% csrf_token %}
                       <button id="exportfile" class='btn btn-primary ' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV File" type='button'><img src="/static/img/export.png" height='24px'></button>
                     </form>
                   </div>
-                  <div class='col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-4 datag secondbutton'>
+                  <div class='col-xl-3 col-lg-3 col-md-5 col-sm-6 col-xs-4 datag secondbutton'>
                     <form method="POST" action="{% url 'exportfile'%}" id="exportemail_form" >
                       <button id="exportemailfile" class='btn btn-primary' style="height: 40px; background-image: linear-gradient(#00bbff, #035397);" data-toggle="tooltip" data-placement="top" title="Export CSV for Email" type='button'><img src="/static/img/send-mail.png" height='24px'></button>
                     </form>
@@ -434,7 +500,7 @@ div.pager span.active {
         <div class='container-fluid	'>
           <div class="container mt-5 justify-content-center">
             <div class="card ">
-              <div style="overflow-x:auto;" class="table-responsive">
+              <div  class="table-responsive">
                 <table class="table paginated" id="myTable">
                   <thead style="background-image: linear-gradient(#00bbff, #035397);border-radius: 25px !important" class='topnav'>
                     <tr class='text-light'>
@@ -455,13 +521,13 @@ div.pager span.active {
                           <td class='p-4'>{{emps.branch}}</td>
                           <td class='p-4'>{{emps.department}}</td>
                           {% if emps.status == "Not Checked" %}
-			                      <td  class='p-4' ><b style="padding:10px;;background-color:#ffebeb;border-radius: 20px;"><span style="color: #fd3636;">{{emps.status}}</span></b></td>                                
+			                      <td  class='p-4 status_tr' ><b style="padding:10px;background-color:#ffebeb;border-radius: 20px;"><span style="color: #fd3636;">{{emps.status}}</span></b></td>                                
                           {% elif emps.status == 'Partially Vaccinated' %}
-                          <td  class='p-4' style="color:#ffb800"><b style="padding:10px;;background-color:#fff8e5;border-radius: 20px;" >{{emps.status}}</b></td>                                
+                          <td  class='p-4 status_tr' style="color:#ffb800" ><b  style="padding:10px;;background-color:#fff8e5;border-radius: 20px;" >{{emps.status}}</b></td>                                
                           {% elif emps.status == 'Fully Vaccinated' %}
-                          <td  class='p-4' style="color:#20e074"><b style="padding:10px;;background-color:#e6fdf4;border-radius: 20px;" >{{emps.status}}</b></td>                                
+                          <td  class='p-4 status_tr' style="color:#20e074" ><b style="padding:10px;;background-color:#e6fdf4;border-radius: 20px;" >{{emps.status}}</b></td>                                
                           {% else %}
-                          <td  class='p-4' style="color:#7d3ac1;"><b style="padding:10px;;background-color:#dbd5e2;border-radius: 20px;" >{{emps.status}}</b></td>                                
+                          <td  class='p-4 status_tr' style="color:#7d3ac1;" ><b style="padding:10px;;background-color:#dbd5e2;border-radius: 20px;" >{{emps.status}}</b></td>                                
                           {% endif %} 
                           <td class='p-4'><a class="use-address" download style="cursor: pointer;">Download Certificate</a></td>
                           {% if emps.status == 'Not Checked'%}
@@ -744,61 +810,182 @@ $('#employee_id').click(function(){
 // })
 
 
-$('table.paginated').each(function(){
-  var currentPage = 0;
-    var numPerPage = 10 ;
-    var $table = $(this);
-    console.log($table)
-    $table.bind('repaginate', function() {
-        $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
-    
-});
-    $table.trigger('repaginate');
-    var numRows = $table.find('tbody tr').length;
-    console.log('numRows',numRows)
-    console.log(numRows)
-    var numPages = Math.ceil(numRows / numPerPage);
-    console.log(numPages)
-    var $pager = $('.pager');
-    var $previous = $('<span class="previous">Prev</spnan>');
-    var $next = $('<span class="next "><b>Next</b></spnan>')
-    for (var page = 0; page < numPages; page++) {
-      $('<span class="page-number"></span>').text(page + 1).bind('click', {
-          newPage: page
-      }, function(event) {
-          currentPage = event.data['newPage'];
-          console.log(currentPage)
-          $table.trigger('repaginate');
-          $(this).addClass('active').siblings().removeClass('active');
-      }).appendTo($pager).addClass('clickable');
+function getPageList(totalPages, page, maxLength) {
+    if (maxLength < 5) throw "maxLength must be at least 5";
+
+    function range(start, end) {
+        return Array.from(Array(end - start + 1), (_, i) => i + start); 
     }
-    // $pager.insertBefore($table).find('span.page-number:first').addClass('active');
-    $pager.find('span.page-number:first').addClass('active')
-    $previous.insertBefore('span.page-number:first');
-    $next.insertAfter('span.page-number:last');
-    $next.click(function (e) {
-        $previous.addClass('clickable');
-        $pager.find('.active').next('.page-number.clickable').click();
-    });
-    $previous.click(function (e) {
-        $next.addClass('clickable');
-        $pager.find('.active').prev('.page-number.clickable').click();
-    });
-    $table.on('repaginate', function () {
-        $next.addClass('clickable');
-        $previous.addClass('clickable');
-        
-        setTimeout(function () {
-            var $active = $pager.find('.page-number.active');
-            if ($active.next('.page-number.clickable').length === 0) {
-                $next.removeClass('clickable');
-            } else if ($active.prev('.page-number.clickable').length === 0) {
-                $previous.removeClass('clickable');
-            }
+
+    var sideWidth = maxLength < 9 ? 1 : 2;
+    var leftWidth = (maxLength - sideWidth*2 - 3) >> 1;
+    var rightWidth = (maxLength - sideWidth*2 - 2) >> 1;
+    if (totalPages <= maxLength) {
+        // no breaks in list
+        return range(1, totalPages);
+    }
+    if (page <= maxLength - sideWidth - 1 - rightWidth) {
+        // no break on left of page
+        return range(1, maxLength - sideWidth - 1)
+            .concat(0, range(totalPages - sideWidth + 1, totalPages));
+    }
+    if (page >= totalPages - sideWidth - 1 - rightWidth) {
+        // no break on right of page
+        return range(1, sideWidth)
+            .concat(0, range(totalPages - sideWidth - 1 - rightWidth - leftWidth, totalPages));
+    }
+    // Breaks on both sides
+    return range(1, sideWidth)
+        .concat(0, range(page - leftWidth, page + rightWidth),
+                0, range(totalPages - sideWidth + 1, totalPages));
+}
+
+// Below is an example use of the above function.
+$(function () {
+    // Number of items and limits the number of items per page
+    var numberOfItems = $("tbody tr").length;
+    var limitPerPage = 10;
+    // Total pages rounded upwards
+    var totalPages = Math.ceil(numberOfItems / limitPerPage);
+    // Number of buttons at the top, not counting prev/next,
+    // but including the dotted buttons.
+    // Must be at least 5:
+    var paginationSize = 5; 
+    var currentPage;
+
+    function showPage(whichPage) {
+        if (whichPage < 1 || whichPage > totalPages) return false;
+        currentPage = whichPage;
+        $("tbody tr").hide()
+            .slice((currentPage-1) * limitPerPage, 
+                    currentPage * limitPerPage).show();
+        // Replace the navigation items (not prev/next):            
+        $(".pager li").slice(1, -1).remove();
+        getPageList(totalPages, currentPage, paginationSize).forEach( item => {
+            $("<li>").addClass("page-item")
+                     .addClass(item ? "current-page" : "disabled")
+                     .toggleClass("active", item === currentPage).append(
+                $("<a>").addClass("page-link1").attr({
+                    href: "javascript:void(0)"}).text(item || "...")
+            ).insertBefore("#next-page");
         });
+        // Disable prev/next when at first/last page:
+        $("#previous-page").toggleClass("disabled", currentPage === 1);
+        $("#next-page").toggleClass("disabled", currentPage === totalPages);
+        return true;
+    }
+
+    // Include the prev/next buttons:
+    $(".pager").append(
+        $("<li>").addClass("page-item").attr({ id: "previous-page" }).append(
+            $("<a>").addClass("page-link1").attr({
+                href: "javascript:void(0)"}).text("Prev")
+        ),
+        $("<li>").addClass("page-item").attr({ id: "next-page" }).append(
+            $("<a>").addClass("page-link1").attr({
+                href: "javascript:void(0)"}).text("Next")
+        )
+    );
+    // Show the page links
+    $("tbody tr").show();
+    showPage(1);
+
+    // Use event delegation, as these items are recreated later    
+    $(document).on("click", ".pager li.current-page:not(.active)", function () {
+        return showPage(+$(this).text());
     });
-    $table.trigger('repaginate');
+    $("#next-page").on("click", function () {
+        return showPage(currentPage+1);
+    });
+
+    $("#previous-page").on("click", function () {
+        return showPage(currentPage-1);
+    });
 });
+
+
+
+
+// $('table.paginated').each(function(){
+//   var currentPage = 0;
+//     var numPerPage = 1 ;
+//     var $table = $(this);
+//     console.log($table)
+//     $table.bind('repaginate', function() {
+//         $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+    
+// });
+//     $table.trigger('repaginate');
+//     var numRows = $table.find('tbody tr').length;
+//     console.log('numRows',numRows)
+//     console.log(numRows)
+//     var numPages = Math.ceil(numRows / numPerPage);
+//     console.log(numPages)
+//     var $pager = $('.pager');
+//     var $previous = $('<span class="previous">Prev</spnan>');
+//     var $next = $('<span class="next "><b>Next</b></spnan>')
+//     for (var page = 0; page < numPages; page++) {
+//       $('<span class="page-number"></span>').text(page + 1).bind('click', {
+//           newPage: page
+//       }, function(event) {
+//           currentPage = event.data['newPage'];
+//           console.log(currentPage)
+//           $table.trigger('repaginate');
+//           $(this).addClass('active').siblings().removeClass('active');
+//       }).appendTo($pager).addClass('clickable');
+//     }
+//     // $pager.insertBefore($table).find('span.page-number:first').addClass('active');
+//     $pager.find('span.page-number:first').addClass('active')
+//     $previous.insertBefore('span.page-number:first');
+//     $next.insertAfter('span.page-number:last');
+//     $next.click(function (e) {
+//         $previous.addClass('clickable');
+//         $pager.find('.active').next('.page-number.clickable').click();
+//     });
+//     $previous.click(function (e) {
+//         $next.addClass('clickable');
+//         $pager.find('.active').prev('.page-number.clickable').click();
+//     });
+//     $table.on('repaginate', function () {
+//         $next.addClass('clickable');
+//         $previous.addClass('clickable');
+        
+//         setTimeout(function () {
+//             var $active = $pager.find('.page-number.active');
+//             if ($active.next('.page-number.clickable').length === 0) {
+//                 $next.removeClass('clickable');
+//             } else if ($active.prev('.page-number.clickable').length === 0) {
+//                 $previous.removeClass('clickable');
+//             }
+//         });
+//     });
+//     var paginationSize = 2;
+//     getPageList(numPages, currentPage, paginationSize)
+//     var list = document.getElementsByClassName("page-number");
+//       for(var i = 2; i < list.length; i++){
+//         console.log(i)
+//       list[i].style.display = 'none';
+//     }
+
+//     $table.trigger('repaginate');
+// });
+
+// var numPerPage = 10 ;
+// var numRows = $table.find('tbody tr').length;
+// var numPages = Math.ceil(numRows / numPerPage);
+
+// $('.pager').twbsPagination({
+//   totalPages: numPages,
+//   visiblePages: 1,
+//   onPageClick: function(event, page) {
+//     var startIndex = (pageSize * (page - 1))
+//     var endIndex = startIndex + pageSize
+//     $('tbody tr').hide().filter(function() {
+//       var idx = $(this).index();
+//       return idx >= startIndex && idx < endIndex;
+//     }).show()
+//   }
+// });
 
       $('.user-email').click(function(){
         // alert('working')

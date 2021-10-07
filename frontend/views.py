@@ -99,7 +99,7 @@ def user_login(request):
                 print('not working')
                 return render(request,'login.html')
     except Exception as e:
-        print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
+        print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), e)
 
 
 
@@ -271,6 +271,39 @@ def dashboard(request):
                         else:
                             if username1 != '' and password1 != '':
                                 try:
+                                    available = models.Available.objects.filter(company=company_name).values('availabel').last()
+                                    print(available)
+                                    available_check = available['availabel']
+                                    print(available_check)
+                                    if int(available_check) <= 0:
+                                        messages.error(request,'No Credits Available. Kindly contact our support team for the renewal')
+                                        return redirect('dashboard')
+
+                                    purchase = models.Purchase.objects.filter(company=company_name).order_by('id').last()
+                                    print(purchase)
+                                    consumed = models.Consumed.objects.filter(company=company_name).values('Consumed').last()
+                                    today_min = datetime.combine(date.today(), time.min)
+                                    today_max = datetime.combine(date.today(), time.max)
+                                    today_cosumed = models.Consumed.objects.filter(company=company_name,created__range=(today_min, today_max)).values('today_consumed').last()
+                                    print(today_cosumed)
+                                    hr = models.Company_HR.objects.get(company=company_name)
+                                    if today_cosumed != None :
+                                        y = today_cosumed['today_consumed']
+                                    else:
+                                        y = 0
+                                    available1 = available['availabel']
+                                    available2 = int(available1)
+                                    available3 = 1
+                                    sub = available2 - available3
+                                    p = int(y)
+                                    q = 1
+                                    add = p + q
+                                    x = consumed['Consumed']
+                                    a = int(x)
+                                    b = 1 
+                                    c = a + b
+                                    consumed = models.Consumed.objects.create(company=company_name,Consumed=c,company_hr=hr,today_consumed=add)
+                                    available = models.Available.objects.create(company=company_name,company_hr=hr,availabel=sub)
                                     user = User.objects.create_user(username=username1,password=password1)
                                     group = Group.objects.get(name='employee')
                                     user.groups.add(group)
@@ -286,6 +319,7 @@ def dashboard(request):
                                     employee = models.Employeeprofile.objects.create(company=company_name,company_HR=company,employee=user,\
                                         employee_name = emp_name, employee_code = emp_code , employee_branch = branch,employee_department=department,\
                                         Beneficiary_Id = beneficialy_id ,phoneNumber = mobile_number)
+                                    
 
                                     email = username1
                                     url = 'http://35.154.107.216/'
@@ -540,33 +574,6 @@ def confirmOTP(request):
             print(res)
             today = date.today()
             if res.status_code == 200:
-                consumed = models.Consumed.objects.filter(company=company).values('Consumed').last()
-                if consumed == None or consumed == 0:
-                    messages.error(request,'employee name  and Cowin name are not same ')
-                    return redirect('user_profile')
-                today_min = datetime.combine(date.today(), time.min)
-                today_max = datetime.combine(date.today(), time.max)
-                today_cosumed = models.Consumed.objects.filter(company=company,created__range=(today_min, today_max)).values('today_consumed').last() 
-                print(today_cosumed)              
-                available = models.Available.objects.filter(company=company).values('availabel').last()
-                hr = models.Company_HR.objects.get(company=company)
-                if today_cosumed !=  None :
-                    y = today_cosumed['today_consumed']
-                else:
-                    y = 0
-                available1 = available['availabel']
-                available2 = int(available1)
-                available3 = 1
-                sub = available2 - available3
-                p = int(y)
-                q = 1
-                add = p +q 
-                x = consumed['Consumed']
-                a = int(x)
-                b = 1 
-                c = a + b
-                consumed = models.Consumed.objects.create(company=company,Consumed=c,company_hr=hr,today_consumed=add)
-                available = models.Available.objects.create(company=company,company_hr=hr,availabel=sub)
                 # for i in consumed:
                 #      x = i['Consumed']
                 
