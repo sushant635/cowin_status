@@ -81,6 +81,11 @@
                     
                   }
                }
+               @media screen and (max-width:1024px) {
+                .imgae{
+                    height: 30px !important;
+                  }
+               }
                 @media only screen and (max-width: 900px) {
                   #name{
                     margin-top:10px;
@@ -142,30 +147,30 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
-              <li class="nav-item ps-4" id='name'>
+              <li class="nav-item ps-2" id='name'>
                 {% block page_name %} {% endblock page_name %}
               </li>
-              <li class="nav-item ps-2" id="dashboard">
+              <li class="nav-item " id="dashboard">
                 {% block dashboard %} {% endblock dashboard %}
               </li>
-              <li class="nav-item ps-2" id="profile">
+              <li class="nav-item " id="profile">
                 {% block profile %} {% endblock profile %}
               </li>
               <!-- <form method="get" action="{% url 'dashboard'%}" id='filter_form'> -->
-              <li class="nav-item ps-2" id="department2">
+              <li class="nav-item " id="department2">
                 {% block Department %} {% endblock Department %}
               </li>
               
-              <li class="nav-item ps-2" id="branch2">
+              <li class="nav-item ps-1" id="branch2">
                 {% block Branch %} {% endblock Branch %}
               </li>
-              <li class="nav-item ps-2" id="status2">
+              <li class="nav-item ps-1" id="status2">
                 {% block Status %} {% endblock Status %}
               </li>
-              <li class="nav-item ps-2" id="gender2">
+              <li class="nav-item ps-1" id="gender2">
                 {% block Gender %} {% endblock Gender %}
               </li>
-              <li class="nav-item ps-2" id="gender2">
+              <li class="nav-item ps-1" id="gender2">
                 {% block submit_button %} {% endblock submit_button %}
               </li>
               <!-- <button type="submit">Search</button> -->

@@ -57,6 +57,15 @@ body{
 .login-heading{
       text-align: center;
     }
+  @media screen and (max-width:1024px) {
+    .card{
+      border-radius: 12px !important;
+      height:80% !important;
+      width: 100% !important;
+      /* margin-left: 100px  !important; */
+
+    }
+  }
 @media screen and (max-width: 900px) {
     /* #history {
       margin-top: 20px;
@@ -103,9 +112,7 @@ body{
   }
 
 }
-@media screen and (max-width: 350px){
 
-}
 /* .btn {
     margin-left: 23px !important;
 } */
@@ -134,7 +141,7 @@ body{
                                     <label for="email " class="m-2">Username</label>
                                   </div>
                                   <div class='col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12'>
-                                    <input id="email" type="text" class="form-control m-2 ms-3 data" name="username" placeholder='Username' value="{{username}}" required autofocus>
+                                    <input id="email" type="text" class="form-control m-2 data" name="username" placeholder='Username' value="{{username}}" required autofocus>
                                   </div>      
                                 </div>
                                 <div class="form-group m-2 mt-4 row">
@@ -143,7 +150,7 @@ body{
                                     </label>
                                   </div>
                                   <div class='col-lg-12 col-xl-12 col-md-12 col-sm-12 col-xs-12'>
-                                    <input id="password" type="password" class="form-control m-2 ms-3 data" name="password" placeholder="Password" value="{{password}}" required data-eye>
+                                    <input id="password" type="password" class="form-control m-2   data" name="password" placeholder="Password" value="{{password}}" required data-eye>
                                   </div>
                                     <div class="invalid-feedback">
                                         Password is required

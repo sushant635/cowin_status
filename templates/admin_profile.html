@@ -144,6 +144,11 @@ hr{
     display:none;
   } */
     /* } */
+  @media screen and(max-width:1024) {
+    .h5text{
+      font-size: 1.00 rem !important;
+    }
+  }
   @media only screen and (max-width: 900px) {
     #history {
       margin-top: 20px;
@@ -170,6 +175,28 @@ hr{
       display: none;
     } */
   }
+  @media only screen and (max-width: 600px){
+    .exportfile1{
+      /* text-align: center;
+       */
+       margin-left: 110px  !important;
+
+    }
+    #history {
+      margin-top: 20px;
+    }
+
+    .dashboard {
+      display: none;
+    }
+    #profile1 {
+      display: none;
+    }
+    #second_time{
+  margin-top: 30px in !important;
+}
+  }
+
   
 </style>
 {% endblock content_css %}
@@ -204,7 +231,7 @@ hr{
             <h1 style="color: #035397; font-weight: 900 !important" class="text-center">
               {{purchase}}
             </h1>
-            <h5 class="card-title text-center">Total Employee</h5>
+            <div class="card-title text-center h5text" style="font-size: 1.25 rem !important;">Total Employee</div>
           </div>
         </div>
         <div class="col-lg-3 mt-3 col-sm-3 col-md-3 col-xs-3 col-xl-3">
@@ -212,7 +239,7 @@ hr{
             <h1 style="color: #035397; font-weight: 900 !important" class="text-center">
               {{consumed}}
             </h1>
-            <h5 class="card-title text-center">Upload Employee</h5>
+            <div class="card-title text-center h5text" style="font-size: 1.25 rem !important;">Upload Employee</div>
           </div>
         </div>
         <div class="col-lg-3 mt-3 col-sm-3 col-md-3 col-xs-3 col-xl-3">
@@ -220,7 +247,7 @@ hr{
             <h1 style="color: #035397; font-weight: 900 !important" class="text-center">
               {{available}}
             </h1>
-            <h5 class="card-title text-center">Available Employee</h5>
+            <div class="card-title text-center h5text" style="font-size: 1.2 rem !important;">Available Employee</div>
           </div>
         </div>
       </div>
@@ -290,7 +317,7 @@ hr{
       <div class="container">
         
         <div class="row">
-          <div class="col-lg-10 col-md-10 col-xs-10 col-sm-10 col-xl-10 mt-4">
+          <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 col-xl-12 mt-4">
             <h5 class="text-light ">Purchase History</h5>
           </div>
           <!-- <div class='col-lg-1 col-sm-1 col-md-1 col-xs-1 col-xl-1 mt-3'>
@@ -301,16 +328,16 @@ hr{
           
         </div>
         <div class="row">
-          <div class="col-lg-8 col-md-12 col-xs-12 col-sm-12 col-xl-6 mt-3">
+          <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 col-xl-6 mt-3">
             <input type="date" id="changedate" class="form-control radius" data-date="" data-date-format="DD MMMM YYYY"
               disabled value="{{last_day}}" style="background:#ffffff"/>
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col-xs-1 col-sm-4 col-md-4 col-xl-4 col-lg-2 mt-2" style="color: #f0f2fa">
+          <div class="col-xs-1 col-sm-4 col-md-4 col-xl-4 col-lg-3 mt-2" style="color: #f0f2fa">
             <label style="font-size: large;color: #f0f2fa">{{last_time}}</label>
           </div>
-          <div class="col-xs-10 col-sm-8 col-md-8 col-xl-8 col-lg-10 mt-2 lines">
+          <div class="col-xs-10 col-sm-8 col-md-8 col-xl-8 col-lg-9 mt-2 lines">
             <hr class="new2" />
           </div>
         </div>
@@ -327,10 +354,10 @@ hr{
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col-xs-1 col-sm-4 col-md-4 col-xl-4 col-lg-2 mt-3" style="color: #f0f2fa">
+          <div class="col-xs-1 col-sm-4 col-md-4 col-xl-4 col-lg-3 mt-3" style="color: #f0f2fa">
             <label style="font-size: large">{{last_time}}</label>
           </div>
-          <div class="col-xs-10 col-sm-8 col-md-8 col-xl-8 col-lg-10 mt-2">
+          <div class="col-xs-10 col-sm-8 col-md-8 col-xl-8 col-lg-9 mt-2">
             <hr class="new2" />
           </div>
         </div>
@@ -350,16 +377,16 @@ hr{
 
         {% else %}
         <div class="row">
-          <div class="col-lg-7 col-md-12 col-xs-12 col-sm-6 col-xl-6">
+          <div class="col-lg-12 col-md-12 col-xs-12 col-sm-6 col-xl-6">
             <input type="date" id="todaydate" class="form-control mt-5 radius" data-date="" data-date-format="DD MMMM YYYY"
               disabled value="{{second_day}}" style="background:#ffffff"/>
           </div>
         </div>
         <div class="row ">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-xl-4 col-lg-2 mt-4"  style="color: #f0f2fa">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-xl-4 col-lg-3 mt-4"  style="color: #f0f2fa">
             <label style="font-size: large">{{second_time}}</label>
           </div>
-          <div class="col-xs-8 col-sm-8 col-md-8 col-xl-8 col-lg-10 mt-2">
+          <div class="col-xs-8 col-sm-8 col-md-8 col-xl-8 col-lg-9 mt-2">
             <hr class="new2" />
           </div>
         </div>
@@ -376,10 +403,10 @@ hr{
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col-xs-5 col-sm-4 col-md-4 col-xl-4 col-lg-2 mt-3" id="second_time" style="color: #f0f2fa">
+          <div class="col-xs-5 col-sm-4 col-md-4 col-xl-4 col-lg-3 mt-3" id="second_time" style="color: #f0f2fa">
             <label style="font-size: large">{{second_time}}</label>
           </div>
-          <div class="col-xs-7 col-sm-8 col-md-8 col-xl-8 col-lg-10 mt-2">
+          <div class="col-xs-7 col-sm-8 col-md-8 col-xl-8 col-lg-9 mt-2">
             <hr class="new2" />
           </div>
         </div>
