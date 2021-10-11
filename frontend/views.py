@@ -1059,6 +1059,10 @@ def admin_profile(request):
         
         last_consumed = None
         second_last_consumed= None
+        conlast_day = None
+        consecondlast_day = None
+        conlast_time = None
+        consecondlast_time = None
         if len(con_data) >= 2:
             print('length 2')
             last_consumed = con_data[0]['today_consumed']
@@ -1082,12 +1086,20 @@ def admin_profile(request):
             conlast_day = con_date_last.date().strftime("%Y-%m-%d")
             second_last_consumed = con_data[1]['today_consumed']
         else:
+            last_consumed = con_data[0]['today_consumed']
+            date = con_data[0]['created']
+            today_min = datetime.combine(date, time.min)
+            today_max = datetime.combine(date, time.max)
+            con1 = models.Consumed.objects.filter(company=company,created__lte=today_max).values('Consumed','today_consumed','created').last()
+            last_consumed = con1['today_consumed']
+            con_date_last = con1['created']
+            conlast_time = con_date_last.time()
+            conlast_day = con_date_last.date().strftime("%Y-%m-%d")
             print('less length')
             date = con_data[0]['created']
             today_min = datetime.combine(date, time.min)
             today_max = datetime.combine(date, time.max)
             print('data ibfuvb',date,today_min,today_max)
-            last_consumed = con_data[0]['today_consumed']
             
 
         print('buvb',last_consumed,second_last_consumed)
