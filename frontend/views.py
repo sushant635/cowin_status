@@ -236,6 +236,9 @@ def dashboard(request):
                         branch = fields[3]
                         department = fields[4]
                         beneficialy_id = fields[5]
+                        if emp_name == '':
+                            messages.error(request,'please provide the valid Employee name')
+                            return redirect('dashboard')
                         if branch == '':
                             messages.error(request,'please provide the valid branch')
                             return redirect('dashboard') 
@@ -247,7 +250,7 @@ def dashboard(request):
                             messages.error(request,'please provide the valid email')
                             return redirect('dashboard')
                         mobile_number = fields[6]
-                        print('username1@@@@@@@@@@@@@@@@@@@@@@@@@',mobile_number)
+                        #print('username1@@@@@@@@@@@@@@@@@@@@@@@@@',mobile_number)
                         print('###################################@@@@@@@',mobile_number)
                         print(beneficialy_id,len(beneficialy_id))
                         if mobile_number != '':
@@ -272,20 +275,20 @@ def dashboard(request):
                             if username1 != '' and password1 != '':
                                 try:
                                     available = models.Available.objects.filter(company=company_name).values('availabel').last()
-                                    print(available)
+                                    #print(available)
                                     available_check = available['availabel']
-                                    print(available_check)
+                                    #print(available_check)
                                     if int(available_check) <= 0:
                                         messages.error(request,'No Credits Available. Kindly contact our support team for the renewal')
                                         return redirect('dashboard')
 
                                     purchase = models.Purchase.objects.filter(company=company_name).order_by('id').last()
-                                    print(purchase)
+                                    #print(purchase)
                                     consumed = models.Consumed.objects.filter(company=company_name).values('Consumed').last()
                                     today_min = datetime.combine(date.today(), time.min)
                                     today_max = datetime.combine(date.today(), time.max)
                                     today_cosumed = models.Consumed.objects.filter(company=company_name,created__range=(today_min, today_max)).values('today_consumed').last()
-                                    print(today_cosumed)
+                                    #print(today_cosumed)
                                     hr = models.Company_HR.objects.get(company=company_name)
                                     if today_cosumed != None :
                                         y = today_cosumed['today_consumed']
@@ -339,12 +342,12 @@ def dashboard(request):
                 #     messages.error(request,'Please upload proper file template')
                 #     return HttpResponseRedirect(reverse('dashboard'))
                 # 
-            print(emp_details)
+            #print(emp_details)
             if len(emp_details) >= 1:
-                    print('working')
+                  #  print('working')
                     listToStr = ','.join([str(elem) for elem in emp_details])
                     messages.error(request,'Employee(s) already exists.  ' + listToStr)  
-                    print(listToStr)
+                  #  print(listToStr)
                     return redirect('dashboard')  
             else:
                 return redirect('dashboard')
@@ -375,7 +378,7 @@ def dashboard(request):
             for i in branch_li:
                 if i not in branches:
                     branches.append(i)
-            print(request.GET)
+          #  print(request.GET)
             obj = models.Employeeprofile.objects.all()
             data = obj.filter(company=company)
             # print(data)
@@ -459,7 +462,7 @@ def dashboard(request):
 
 
             else:
-                print('working')
+              #  print('working')
                 data = data.values('employee_name','employee_code','employee_branch','employee_department',\
                     'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine')
 
@@ -471,7 +474,7 @@ def dashboard(request):
             fully_vaccinated = 0
             not_vaccinated = 0
             not_checked = 0
-            print('data',data)
+           # print('data',data)
             for i in data:
                 name = i['employee_name']
                 emp_code = i['employee_code']

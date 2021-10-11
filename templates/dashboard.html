@@ -199,10 +199,53 @@ div.pager li.active{
   color: #ffffff;
 }
 
+.headerSortUp {
+    background: url("data:image/gif;base64, R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==") no-repeat 100%;
+}
+
 /* div.pager li.active, a.active {
     background-color: #035397;
     color:#f0f2fa !important;
 } */
+@media screen and (max-width:1300px){
+  .status_tr{
+  width:100px  !important;
+  overflow: hidden;
+  position: relative;
+  position:relative !important;
+
+}
+.status_b{
+  position:absolute !important;
+  text-align: center;
+  padding:10px !important;
+  padding-right: 0% !important;
+
+} 
+.secondbutton{
+          padding-left: 30px !important;
+        }
+  /* .headerSortUp{
+    padding: 3rem!important;
+  } */
+  #status_id{
+    /* padding: 3rem!important; */
+    padding-left: 3rem!important;
+    padding-right: 3rem !important;
+    padding-top: 0%  !important;
+
+  }
+  .upload{
+    width:20% !important;
+  }
+  .template{
+    width:17% !important;
+  }
+  #pages{
+    width:45.3% !important;
+  }
+
+}
 @media screen and (max-width:1024px)  {
   table{
     width:100% !important;
@@ -233,16 +276,43 @@ div.pager li.active{
   width:40%  !important;
 }
 .status_tr{
-  width:100px  !important;
+  /* width:100px  !important;
+  overflow: hidden;
+  position: relative; */
+  position:relative !important;
 }
+.status_b{
+  position:absolute !important;
+  text-align: center;
+  padding:7px !important;
+
+}
+#status_id{
+    /* padding: 3rem!important; */
+    padding-left: 3rem!important;
+    padding-right: 3rem !important;
+    padding-top: 0%  !important;
+
+  }
 .h5, h5{
   font-size: 1.00rem !important;
 }
 /* .centerimg{
   height:100px !important;
 } */
+.upload{
+    width:22% !important;
+  }
+  .template{
+    width:25% !important;
+  }
+  #pages{
+    width:45.3% !important;
+  }
 
-
+.secondbutton{
+          padding-left: 10px !important;
+        }
 
 }
 @media screen and (max-width: 900px) {
@@ -459,11 +529,11 @@ div.pager li.active{
         <div class='container mt-5'>
           <div class='container mt-5 justify-content-center'>
             <div class='row'>
-              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2 mt-2'>
+              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-12 col-xl-2 mt-2 template'>
                   <!-- <button>Data</button> -->
                   <a href="/static/sampletemplate/new_template.csv" download  class='btn btn-primary' style="color:black ;background-color:#ffffff;" id='site_csvsample'><img src="/static/img/download.png" height='20px'> Template</a>
               </div>
-              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-4 col-xl-2 mt-2'>
+              <div class='col-lg-3 col-md-4 col-sm-3 col-xs-4 col-xl-2 mt-2 upload'>
                   <form action="/dashboard/" method="POST" enctype="multipart/form-data" id='upload_csv'> 
                       {% csrf_token %}
                       <label for="upload" class='btn ' style="background-image: linear-gradient(#00bbff, #035397); color:#ffffff" ><img src="/static/img/plus.png" height='20px'> Upload File</label>                    
@@ -504,11 +574,11 @@ div.pager li.active{
                 <table class="table paginated" id="myTable">
                   <thead style="background-image: linear-gradient(#00bbff, #035397);border-radius: 25px !important" class='topnav'>
                     <tr class='text-light'>
-                      <th scope="col" class='p-4' id="employee_id" style="cursor: pointer;">Employee Name</th>
+                      <th scope="col" class='p-4 headerSortUp' id="employee_id" style="cursor: pointer;">Employee Name</th>
                       <th scope="col" class='p-4'>Last checked</th>
                       <th scope="col" class='p-4'>Branch</th>
                       <th scope="col" class='p-4'>Department</th>
-                      <th scope="col" class='p-4' id="status_id" style="cursor: pointer;">Status</th>
+                      <th scope="col" class='p-4 headerSortUp' id="status_id" style="cursor: pointer;">Status</th>
                       <th scope="col" class='p-4' >Download Certificate</th>
                       <th scope="col" class='p-4'>Action</th>
                     </tr>
@@ -521,13 +591,13 @@ div.pager li.active{
                           <td class='p-4'>{{emps.branch}}</td>
                           <td class='p-4'>{{emps.department}}</td>
                           {% if emps.status == "Not Checked" %}
-			                      <td  class='p-4 status_tr' ><b style="padding:10px;background-color:#ffebeb;border-radius: 20px;"><span style="color: #fd3636;">{{emps.status}}</span></b></td>                                
+			                      <td  class='p-4 status_tr' ><b style="padding:10px;background-color:#ffebeb;border-radius: 20px;" class='status_b'><span style="color: #fd3636;">{{emps.status}}</span></b></td>                                
                           {% elif emps.status == 'Partially Vaccinated' %}
-                          <td  class='p-4 status_tr' style="color:#ffb800" ><b  style="padding:10px;;background-color:#fff8e5;border-radius: 20px;" >{{emps.status}}</b></td>                                
+                          <td  class='p-4 status_tr' style="color:#ffb800" ><b  style="padding:10px;;background-color:#fff8e5;border-radius: 20px;" class='status_b'>{{emps.status}}</b></td>                                
                           {% elif emps.status == 'Fully Vaccinated' %}
-                          <td  class='p-4 status_tr' style="color:#20e074" ><b style="padding:10px;;background-color:#e6fdf4;border-radius: 20px;" >{{emps.status}}</b></td>                                
+                          <td  class='p-4 status_tr' style="color:#20e074" ><b style="padding:10px;;background-color:#e6fdf4;border-radius: 20px;" class='status_b'>{{emps.status}}</b></td>                                
                           {% else %}
-                          <td  class='p-4 status_tr' style="color:#7d3ac1;" ><b style="padding:10px;;background-color:#dbd5e2;border-radius: 20px;" >{{emps.status}}</b></td>                                
+                          <td  class='p-4 status_tr' style="color:#7d3ac1;" ><b style="padding:10px;;background-color:#dbd5e2;border-radius: 20px;" class='status_b'>{{emps.status}}</b></td>                                
                           {% endif %} 
                           <td class='p-4'><a class="use-address" download style="cursor: pointer;">Download Certificate</a></td>
                           {% if emps.status == 'Not Checked'%}
@@ -844,7 +914,10 @@ function getPageList(totalPages, page, maxLength) {
 $(function () {
     // Number of items and limits the number of items per page
     var numberOfItems = $("tbody tr").length;
-    var limitPerPage = 10;
+    if(numberOfItems == 0){
+      console.log('workig')
+    }else{
+      var limitPerPage = 10;
     // Total pages rounded upwards
     var totalPages = Math.ceil(numberOfItems / limitPerPage);
     // Number of buttons at the top, not counting prev/next,
@@ -854,6 +927,8 @@ $(function () {
     var currentPage;
 
     function showPage(whichPage) {
+      var list = document.getElementsByClassName("page-item");
+      console.log('jnwefubub',list)
         if (whichPage < 1 || whichPage > totalPages) return false;
         currentPage = whichPage;
         $("tbody tr").hide()
@@ -901,6 +976,10 @@ $(function () {
     $("#previous-page").on("click", function () {
         return showPage(currentPage-1);
     });
+    console.log(list)
+    }
+    
+
 });
 
 
