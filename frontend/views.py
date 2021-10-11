@@ -1060,6 +1060,10 @@ def admin_profile(request):
         
         last_consumed = None
         second_last_consumed= None
+        conlast_day = None
+        consecondlast_day = None
+        conlast_time = None
+        consecondlast_time = None
         if len(con_data) >= 2:
             print('length 2')
             last_consumed = con_data[0]['today_consumed']
@@ -1073,22 +1077,48 @@ def admin_profile(request):
             con1 = models.Consumed.objects.filter(company=company,created__lte=today_max).values('Consumed','today_consumed','created').last()
             con2 = models.Consumed.objects.filter(company=company,created__lte=today_max2).values('Consumed','today_consumed','created').last()
             print('hdfvbb',con1['Consumed'])
-            last_consumed = con1['today_consumed']
-            second_last_consumed = con2['Consumed']
             con_date_last = con1['created']
             con_date_second = con2['created']
-            conlast_time = con_date_last.time()
-            consecondlast_time = con_date_second.time()
-            consecondlast_day = con_date_second.date().strftime("%Y-%m-%d")
-            conlast_day = con_date_last.date().strftime("%Y-%m-%d")
+            date_last = con_date_last.strftime("%d/%m/%Y %H:%M:%S")
+            date_last1 = datetime.strptime(date_last, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
+            # date_last1 = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
+            local_timezone = pytz.timezone('Asia/Kolkata')
+            date_last1  = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').astimezone(local_timezone)
+            seconddate_last = con_date_second.strftime("%d/%m/%Y %H:%M:%S")
+            seconddate_last1 = datetime.strptime(seconddate_last, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
+            # date_last1 = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
+            local_timezone = pytz.timezone('Asia/Kolkata')
+            seconddate_last1  = datetime.strptime(seconddate_last1, '%Y-%m-%d %H:%M:%S').astimezone(local_timezone)
+            last_consumed = con1['today_consumed']
+            second_last_consumed = con2['Consumed']
+            
+            conlast_time = date_last1.time()
+            consecondlast_time = seconddate_last1.time()
+            consecondlast_day = seconddate_last1.date().strftime("%Y-%m-%d")
+            conlast_day = date_last1.date().strftime("%Y-%m-%d")
             second_last_consumed = con_data[1]['today_consumed']
         else:
-            print('less length')
+            last_consumed = con_data[0]['today_consumed']
             date = con_data[0]['created']
             today_min = datetime.combine(date, time.min)
             today_max = datetime.combine(date, time.max)
+            con1 = models.Consumed.objects.filter(company=company,created__lte=today_max).values('Consumed','today_consumed','created').last()
+            last_consumed = con1['today_consumed']
+            con_date_last = con1['created']
+            con_date_last = con1['created']
+            conlast_time = con_date_last.time()
+            conlast_day = con_date_last.date().strftime("%Y-%m-%d")
+            print('less length')
+            date_last = con_date_last.strftime("%d/%m/%Y %H:%M:%S")
+            date_last1 = datetime.strptime(date_last, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
+            # date_last1 = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
+            local_timezone = pytz.timezone('Asia/Kolkata')
+            date_last1  = datetime.strptime(date_last1, '%Y-%m-%d %H:%M:%S').astimezone(local_timezone)
+            conlast_time = date_last1.time()
+            conlast_day = date_last1.date().strftime("%Y-%m-%d")
+            today_min = datetime.combine(date, time.min)
+            today_max = datetime.combine(date, time.max)
             print('data ibfuvb',date,today_min,today_max)
-            last_consumed = con_data[0]['today_consumed']
             
 
         print('buvb',last_consumed,second_last_consumed)
