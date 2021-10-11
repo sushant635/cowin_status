@@ -194,7 +194,7 @@ def dashboard(request):
         if request.method == 'POST':
             current_user = request.user
             print(current_user)
-            user_id = current_user.id
+            user_id = current_user.ids
             user = User.objects.get(id=user_id)
             company = models.Company_HR.objects.get(user=user)
             company_name = company.company
@@ -236,6 +236,10 @@ def dashboard(request):
                         branch = fields[3]
                         department = fields[4]
                         beneficialy_id = fields[5]
+                        if emp_name == '':
+                            messages.error(request,'please provide the valid Employee name')
+                            return redirect('dashboard')
+
                         if branch == '':
                             messages.error(request,'please provide the valid branch')
                             return redirect('dashboard') 
@@ -623,15 +627,15 @@ def confirmOTP(request):
                                 gender = i['gender']
                                 # purchase_date = datetime.strptime(date_purchase, "%d/%m/%Y %H:%M:%S")
                                 if dose1_date == '':
-                                    data = models.Employeeprofile.objects.filter(employee=user_id).update(gender=gender,cowin_status=vaccination_status,vaccine=vaccine,birth_year=birth_year,last_checked=today)
+                                    data = models.Employeeprofile.objects.filter(employee=user_id).update(employee_name_cowin=name,gender=gender,cowin_status=vaccination_status,vaccine=vaccine,birth_year=birth_year,last_checked=today)
 
                                 dose1_date1 = datetime.strptime(dose1_date, '%d-%m-%Y').strftime('%Y-%m-%d')
                                 today = datetime.today().strftime('%Y-%m-%d')
                                 if dose2_date != '':
                                     dose2_date2 = datetime.strptime(dose2_date, '%d-%m-%Y').strftime('%Y-%m-%d')
-                                    data = models.Employeeprofile.objects.filter(employee=user_id).update(gender=gender,cowin_status=vaccination_status,does1_date=dose1_date1,does2_date=dose2_date2,vaccine=vaccine,birth_year=birth_year,last_checked=today)
+                                    data = models.Employeeprofile.objects.filter(employee=user_id).update(employee_name_cowin=name,gender=gender,cowin_status=vaccination_status,does1_date=dose1_date1,does2_date=dose2_date2,vaccine=vaccine,birth_year=birth_year,last_checked=today)
                                 else:
-                                    data = models.Employeeprofile.objects.filter(employee=user_id).update(gender=gender,cowin_status=vaccination_status,does1_date=dose1_date1,vaccine=vaccine,birth_year=birth_year,last_checked=today)
+                                    data = models.Employeeprofile.objects.filter(employee=user_id).update(employee_name_cowin=name,gender=gender,cowin_status=vaccination_status,does1_date=dose1_date1,vaccine=vaccine,birth_year=birth_year,last_checked=today)
                                 params = {
                                 "beneficiary_reference_id":beneficiary_reference_id,
                                     }
@@ -798,7 +802,7 @@ def dashboard2(request):
 #                 'x-api-key':'3sjOr2rmM52GzhpMHjDEE1kpQeRxwFDr4YcBEimi',
 #                 'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
 #             }
-#             params = {
+#             params = {Not
 #                 "otp":sha_signature,
 #                 "txnId":txtId
 #             }
@@ -836,7 +840,7 @@ def exportcsv(request):
         if request.method == 'POST':
             csvfile = StringIO()
             csvwriter = csv.writer(csvfile)
-            csvwriter.writerow(['Name','Last Checked','Branch','Department','Status','Emp Code','Gender','Birth Year','Beneficiary Id','vaccine','Dose1 Date','Does2 Date','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'])
+            csvwriter.writerow(['Name','Name Cowin','Last Checked','Branch','Department','Status','Emp Code','Gender','Birth Year','Beneficiary Id                        ','vaccine','Dose1 Date','Does2 Date','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'])
             current_user = request.user
             print(current_user)
             user_id = current_user.id
@@ -855,75 +859,75 @@ def exportcsv(request):
             if department1 != 'Department' and branch1 == 'Branch' and status1 == 'Status' and gender1 == 'Gender':
                     print('working Department')
                     data = data.filter(employee_department=department1).values('employee_name','employee_code','employee_branch','employee_department',\
-                        'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine')
+                        'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine','employee_name_cowin')
             elif  branch1 != 'Branch' and department1 == 'Department' and status1 == 'Status' and gender1 == 'Gender' :
                 print('Branch')
                 data = data.filter(employee_branch=branch1).values('employee_name','employee_code','employee_branch','employee_department',\
-                    'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine')
+                    'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine','employee_name_cowin')
             elif  department1 == 'Department' and branch1 == 'Branch' and status1 != 'Status' and gender1 == 'Gender' :
                 print('Status')
                 data = data.filter(cowin_status=status1).values('employee_name','employee_code','employee_branch','employee_department',\
-                    'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine')
+                    'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine','employee_name_cowin')
             elif department1 == 'Department' and branch1 == 'Branch' and status1 == 'Status' and gender1 != 'Gender':
                 print('Gender')
                 data = data.filter(gender=gender1).values('employee_name','employee_code','employee_branch','employee_department',\
-                    'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine')
+                    'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine','employee_name_cowin')
             elif department1 != 'Department' and branch1 != 'Branch' and status1 == 'Status' and gender1 == 'Gender':
                 print('Department , Branch')
                 data = data.filter(employee_department=department1,employee_branch=branch1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 != 'Department' and branch1 == 'Branch' and status1 != 'Status' and gender1 == 'Gender':
                 print('Department , Status')
                 data = data.filter(employee_department=department1 ,cowin_status=status1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 != 'Department' and branch1 == 'Branch' and status1 == 'Status' and gender1 != 'Gender':
                 print('Department , Gender')
                 data = data.filter(employee_department=department1,gender=gender1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 == 'Department' and branch1 != 'Branch' and status1 != 'Status' and gender1 == 'Gender':
                 print('Branch , Status')
                 data = data.filter(employee_branch=branch1,cowin_status=status1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 == 'Department' and branch1 != 'Branch' and status1 == 'Status' and gender1 != 'Gender':
                 print('Branch , Gender')
                 data = data.filter(employee_branch=branch1,gender=gender1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 == 'Department' and branch1 == 'Branch' and status1 != 'Status' and gender1 != 'Gender':
                 print('Status , Gender ')
                 data = data.filter(cowin_status=status1,gender=gender1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 != 'Department' and branch1 != 'Branch' and status1 != 'Status' and gender1 == 'Gender':
                 print('Department , Branch ,Status')
                 data = data.filter(cowin_status=status1,employee_branch=branch1,employee_department=department1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 == 'Department' and branch1 != 'Branch' and status1 != 'Status' and gender1 != 'Gender':
                 print('Branch , Status , Gender')
                 data = data.filter(cowin_status=status1,employee_branch=branch1,gender=gender1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 != 'Department' and branch1 == 'Branch' and status1 != 'Status' and gender1 != 'Gender':
                 print('Department , Status ,Gender')
                 data = data.filter(cowin_status=status1,gender=gender1,employee_department=department1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 != 'Department' and branch1 != 'Branch' and status1 == 'Status' and gender1 != 'Gender':
                 print('Department ,Branch,Gender')
                 data = data.filter(gender=gender1,employee_branch=branch1,employee_department=department1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 == 'Department' and branch1 == 'Branch' and status1 == 'Status' and gender1 == 'Gender':
                 data = data.values('employee_name','employee_code','employee_branch','employee_department',\
-                'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine')
+                'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine','employee_name_cowin')
             else:
                 data = data.values('employee_name','employee_code','employee_branch','employee_department',\
-                'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine')
+                'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine','employee_name_cowin')
             
             today_date = datetime.now().date()
             print(today_date)
@@ -943,7 +947,7 @@ def exportcsv(request):
                     delta2 = today_date - dose2_date
                     diff_dose2 = delta2.days
                     print(delta.days)
-                csvwriter.writerow([i['employee_name'],i['last_checked'],i['employee_branch'],i['employee_department'],i['cowin_status'],i['employee_code'],i['gender'],i['birth_year'],i['Beneficiary_Id'],i['vaccine'],i['does1_date'],i['does2_date'],diff_dose1,diff_dose2])
+                csvwriter.writerow([i['employee_name'],i['employee_name_cowin'],i['last_checked'],i['employee_branch'],i['employee_department'],i['cowin_status'],i['employee_code'],i['gender'],i['birth_year'],i['Beneficiary_Id'],i['vaccine'],i['does1_date'],i['does2_date'],diff_dose1,diff_dose2])
             mail_subject = "Hi! CoWin Status CSV"
             message = "This is csv file where all details about cowin status"
             email = EmailMessage(
@@ -1046,19 +1050,40 @@ def admin_profile(request):
         purchase_date = datetime.strptime(date_purchase, "%d/%m/%Y %H:%M:%S").strftime('%Y-%m-%d %H:%M:%S')
         date = datetime.strptime(purchase_date, '%Y-%m-%d %H:%M:%S').replace(tzinfo=tz.gettz('Asia/Kolkata'))
         pur = models.Purchase.objects.filter(company=company_obj).values('today_purchase','created').order_by('-created')
-        con = models.Consumed.objects.filter(company=company).values('Consumed','today_consumed').order_by('-created')
+        con = models.Consumed.objects.filter(company=company).values('Consumed','today_consumed','created').order_by('-created')
         print('jbeb',con)
         con_data = []
         for i in con:
             con_data.append(i)
+            print(i)
         print(con_data)
         
         last_consumed = None
         second_last_consumed= None
         if len(con_data) >= 2:
+            print('length 2')
             last_consumed = con_data[0]['today_consumed']
+            date = con_data[0]['created']
+            date2 = con_data[-1]['created']
+            print('berubru',date2)
+            today_min = datetime.combine(date, time.min)
+            today_max = datetime.combine(date, time.max)
+            today_min2 = datetime.combine(date2, time.min)
+            today_max2 = datetime.combine(date2, time.max)
+            con1 = models.Consumed.objects.filter(company=company,created__lte=today_max).values('Consumed','today_consumed','created').last()
+            con2 = models.Consumed.objects.filter(company=company,created__lte=today_max2).values('Consumed','today_consumed','created').last()
+            print('hdfvbb',con1['Consumed'])
+            last_consumed = con1['today_consumed']
+            second_last_consumed = con2['Consumed']
+            con_date_last = con1['created']
+            conlast_day = con_date_last.date().strftime("%Y-%m-%d")
             second_last_consumed = con_data[1]['today_consumed']
         else:
+            print('less length')
+            date = con_data[0]['created']
+            today_min = datetime.combine(date, time.min)
+            today_max = datetime.combine(date, time.max)
+            print('data ibfuvb',date,today_min,today_max)
             last_consumed = con_data[0]['today_consumed']
             
 
@@ -1129,7 +1154,7 @@ def admin_profile(request):
         password = user.password
         form = PasswordChangeForm(request.user)
         context = {'company':company,'available':available,'consumed':consumed,'purchase':purchase,'user':user,'password':password,'form':form,'last_day':last_day,'last_time':last_time,'last_purchase':last_purchase,\
-            'second_day':second_day,'second_time':second_time,'second_last_purchase':second_last_purchase,'last_consumed':last_consumed,'second_last_consumed':second_last_consumed}
+            'second_day':second_day,'second_time':second_time,'second_last_purchase':second_last_purchase,'last_consumed':last_consumed,'second_last_consumed':second_last_consumed,'conlast_day':conlast_day}
         
         return render(request,'admin_profile.html',context)
     except Exception as e:
@@ -1463,81 +1488,81 @@ def exportfile_csv(request):
             # force download.
             response['Content-Disposition'] = 'attachment;filename=status.csv'
             writer = csv.writer(response)
-            writer.writerow(['Name','Last Checked','Branch','Department','Status','Emp Code','Gender','Birth Year','Beneficiary Id','vaccine','Dose1 Date','Does2 Date','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'])
+            writer.writerow(['Name','Name Cowin','Last Checked','Branch','Department','Status','Emp Code','Gender','Birth Year','Beneficiary Id                    ','vaccine','Dose1 Date','Does2 Date','Difference between Dose 1 to today(in Days)','Difference between Dose 2 to today(in Days)'])
             obj = models.Employeeprofile.objects.all()
             data = obj.filter(company=company)
             if department1 != 'Department' and branch1 == 'Branch' and status1 == 'Status' and gender1 == 'Gender':
                     print('working Department')
                     data = data.filter(employee_department=department1).values('employee_name','employee_code','employee_branch','employee_department',\
-                        'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine')
+                        'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine','employee_name_cowin')
             elif  branch1 != 'Branch' and department1 == 'Department' and status1 == 'Status' and gender1 == 'Gender' :
                 print('Branch')
                 data = data.filter(employee_branch=branch1).values('employee_name','employee_code','employee_branch','employee_department',\
-                    'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine')
+                    'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine','employee_name_cowin')
             elif  department1 == 'Department' and branch1 == 'Branch' and status1 != 'Status' and gender1 == 'Gender' :
                 print('Status')
                 data = data.filter(cowin_status=status1).values('employee_name','employee_code','employee_branch','employee_department',\
-                    'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine')
+                    'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine','employee_name_cowin')
             elif department1 == 'Department' and branch1 == 'Branch' and status1 == 'Status' and gender1 != 'Gender':
                 print('Gender')
                 data = data.filter(gender=gender1).values('employee_name','employee_code','employee_branch','employee_department',\
-                    'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine')
+                    'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine','employee_name_cowin')
             elif department1 != 'Department' and branch1 != 'Branch' and status1 == 'Status' and gender1 == 'Gender':
                 print('Department , Branch')
                 data = data.filter(employee_department=department1,employee_branch=branch1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 != 'Department' and branch1 == 'Branch' and status1 != 'Status' and gender1 == 'Gender':
                 print('Department , Status')
                 data = data.filter(employee_department=department1 ,cowin_status=status1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 != 'Department' and branch1 == 'Branch' and status1 == 'Status' and gender1 != 'Gender':
                 print('Department , Gender')
                 data = data.filter(employee_department=department1,gender=gender1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 == 'Department' and branch1 != 'Branch' and status1 != 'Status' and gender1 == 'Gender':
                 print('Branch , Status')
                 data = data.filter(employee_branch=branch1,cowin_status=status1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 == 'Department' and branch1 != 'Branch' and status1 == 'Status' and gender1 != 'Gender':
                 print('Branch , Gender')
                 data = data.filter(employee_branch=branch1,gender=gender1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 == 'Department' and branch1 == 'Branch' and status1 != 'Status' and gender1 != 'Gender':
                 print('Status , Gender ')
                 data = data.filter(cowin_status=status1,gender=gender1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 != 'Department' and branch1 != 'Branch' and status1 != 'Status' and gender1 == 'Gender':
                 print('Department , Branch ,Status')
                 data = data.filter(cowin_status=status1,employee_branch=branch1,employee_department=department1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 == 'Department' and branch1 != 'Branch' and status1 != 'Status' and gender1 != 'Gender':
                 print('Branch , Status , Gender')
                 data = data.filter(cowin_status=status1,employee_branch=branch1,gender=gender1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 != 'Department' and branch1 == 'Branch' and status1 != 'Status' and gender1 != 'Gender':
                 print('Department , Status ,Gender')
                 data = data.filter(cowin_status=status1,gender=gender1,employee_department=department1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 != 'Department' and branch1 != 'Branch' and status1 == 'Status' and gender1 != 'Gender':
                 print('Department ,Branch,Gender')
                 data = data.filter(gender=gender1,employee_branch=branch1,employee_department=department1).values('employee_name','employee_code',\
                     'employee_branch','employee_department','last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date',\
-                    'vaccine')
+                    'vaccine','employee_name_cowin')
             elif department1 == 'Department' and branch1 == 'Branch' and status1 == 'Status' and gender1 == 'Gender':
                 data = data.values('employee_name','employee_code','employee_branch','employee_department',\
-                'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine')
+                'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine','employee_name_cowin')
             else:
                 data = data.values('employee_name','employee_code','employee_branch','employee_department',\
-                'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine')
+                'last_checked','Beneficiary_Id','gender','cowin_status','birth_year','does1_date','does2_date','vaccine','employee_name_cowin')
             
             today_date = datetime.now().date()
             print(today_date)
@@ -1558,7 +1583,7 @@ def exportfile_csv(request):
                     delta2 = today_date - dose2_date
                     diff_dose2 = delta2.days
                     print(delta.days)
-                writer.writerow([i['employee_name'],i['last_checked'],i['employee_branch'],i['employee_department'],i['cowin_status'],i['employee_code'],i['gender'],i['birth_year'],i['Beneficiary_Id'],i['vaccine'],i['does1_date'],i['does2_date'],diff_dose1,diff_dose2])
+                writer.writerow([i['employee_name'],i['employee_name_cowin'],i['last_checked'],i['employee_branch'],i['employee_department'],i['cowin_status'],i['employee_code'],i['gender'],i['birth_year'],i['Beneficiary_Id'],i['vaccine'],i['does1_date'],i['does2_date'],diff_dose1,diff_dose2])
 
         return response
     except Exception as e:

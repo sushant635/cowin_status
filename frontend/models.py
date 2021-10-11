@@ -126,6 +126,7 @@ class Employeeprofile(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,null=False,blank=False)
     company_HR = models.ForeignKey(Company_HR,on_delete=models.CASCADE,null=False,blank=False)
     employee = models.ForeignKey(User,on_delete=models.CASCADE,null=False,blank=False)
+    employee_name_cowin = models.CharField(max_length=500,blank=True,null=True)
     employee_name = models.CharField(max_length=500,blank=True,null=True)
     employee_code = models.CharField(max_length=100,blank=True,null=True)
     employee_branch = models.CharField(max_length=500,blank=True,null=True)

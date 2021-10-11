@@ -31,7 +31,12 @@ def unauthenticated_user(view_func):
             group = request.user.groups.get()
             print(group)
         if request.user.is_authenticated:
-            return redirect('dashboard')
+            group = request.user.groups.get().name
+            print(group)
+            if group == 'employee':
+                return redirect('user_profile')
+            else:
+                return redirect('dashboard')
 
         else:
             return view_func(request,*args,**kwargs)
