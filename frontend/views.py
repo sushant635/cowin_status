@@ -1076,6 +1076,10 @@ def admin_profile(request):
             last_consumed = con1['today_consumed']
             second_last_consumed = con2['Consumed']
             con_date_last = con1['created']
+            con_date_second = con2['created']
+            conlast_time = con_date_last.time()
+            consecondlast_time = con_date_second.time()
+            consecondlast_day = con_date_second.date().strftime("%Y-%m-%d")
             conlast_day = con_date_last.date().strftime("%Y-%m-%d")
             second_last_consumed = con_data[1]['today_consumed']
         else:
@@ -1154,7 +1158,8 @@ def admin_profile(request):
         password = user.password
         form = PasswordChangeForm(request.user)
         context = {'company':company,'available':available,'consumed':consumed,'purchase':purchase,'user':user,'password':password,'form':form,'last_day':last_day,'last_time':last_time,'last_purchase':last_purchase,\
-            'second_day':second_day,'second_time':second_time,'second_last_purchase':second_last_purchase,'last_consumed':last_consumed,'second_last_consumed':second_last_consumed,'conlast_day':conlast_day}
+            'second_day':second_day,'second_time':second_time,'second_last_purchase':second_last_purchase,'last_consumed':last_consumed,'second_last_consumed':second_last_consumed,'conlast_day':conlast_day,'consecondlast_day':consecondlast_day,'conlast_time':conlast_time,\
+                'consecondlast_time':consecondlast_time}
         
         return render(request,'admin_profile.html',context)
     except Exception as e:
